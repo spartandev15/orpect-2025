@@ -225,7 +225,11 @@ const Layout = ({ children }) => {
 {/* Mobile View Sidebar */}
         <div className="border-end bg-white mobilesidebar" id="sidebar-wrapper">
           <div className="sidebar-heading border-bottom">
-            <a href="/dashboard">
+            <spna  onClick={handleSidebarToggle}
+            >
+
+        
+            <Link to="/dashboard">
               <img
                 src={o2}
                 className="logoclass"
@@ -233,7 +237,7 @@ const Layout = ({ children }) => {
                 height="40"
                 width="150"
               />
-            </a>
+            </Link>    </spna>
             <button
               className="btn togglebtn"
               style={{ marginLeft: "2rem", position: "absolute" }}
@@ -267,7 +271,8 @@ const Layout = ({ children }) => {
           <div className="list-group list-group-flush">
             <div className="profile-sec">
               <div className="profile-dtl">
-                <a href="/dashboard">
+              <span  onClick={handleSidebarToggle}>
+              <Link to="/dashboard">
                   {" "}
                   <img
                     src={
@@ -280,16 +285,17 @@ const Layout = ({ children }) => {
                     alt=""
                   />
                   <p>{user?.company_name}</p>
-                </a>
+                </Link></span>
               </div>
             </div>
             <nav className="sb-sidenav-menu-nested nav  ">
-              <ul className="list-unstyled">
+         
+                 <ul className="list-unstyled">
                 <li>
-                  <a
+                  <NavLink
                     exact
                     activeClassName="active"
-                    href=" "
+                    to=" "
                     data-toggle="collapse"
                     data-target="#submenu1"
                   >
@@ -300,80 +306,99 @@ const Layout = ({ children }) => {
                       Employees &nbsp;
                       <i className="fa fa-caret-down"></i>
                     </span>
-                  </a>
+                  </NavLink>
                   <ul
                     className="navi nav-list collapse curentemploye1"
                     id="submenu1"
                   >
                     <li className="dropdown-item curentemployepadding curentemploye1">
-                      <a href="/employee">
+                    <span  onClick={handleSidebarToggle}>
+                      <NavLink to="/employee"> 
                       <svg height="1em" viewBox="0 0 640 512">      
                       <path d="M211.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM32 256c0 17.7 14.3 32 32 32h85.6c10.1-39.4 38.6-71.5 75.8-86.6c-9.7-6-21.2-9.4-33.4-9.4H96c-35.3 0-64 28.7-64 64zm461.6 32H576c17.7 0 32-14.3 32-32c0-35.3-28.7-64-64-64H448c-11.7 0-22.7 3.1-32.1 8.6c38.1 14.8 67.4 47.3 77.7 87.4zM391.2 226.4c-6.9-1.6-14.2-2.4-21.6-2.4h-96c-8.5 0-16.7 1.1-24.5 3.1c-30.8 8.1-55.6 31.1-66.1 60.9c-3.5 10-5.5 20.8-5.5 32c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32c0-11.2-1.9-22-5.5-32c-10.8-30.7-36.8-54.2-68.9-61.6zM563.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM321.6 192a80 80 0 1 0 0-160 80 80 0 1 0 0 160zM32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>                 
-                        <span className="iconmenu"> Current Employees</span>
-                      </a>
+                        <span className="iconmenu"> &nbsp; Current Employees</span>
+                      </NavLink></span>
                     </li>
                     <li className="dropdown-item logouticon curentemployepadding curentemploye1 curentemploye2">
-                      <a href="/ex-employee">
+                    <span  onClick={handleSidebarToggle}>
+                      <NavLink to="/ex-employee">
                       <i className="fa  fa-users-slash"></i>
-                        <span className="iconmenu"> Ex Employees</span>
-                      </a>{" "}
+                        <span className="iconmenu">  &nbsp; Ex Employees</span>
+                      </NavLink>{" "}</span>
                     </li>
                   </ul>
                 </li>
                 <li className="position">
-                  <a activeClassName="active" href="/add-position">
-                  <svg height="1em" viewBox="0 0 512 512">                   
+                  <span  onClick={handleSidebarToggle}>
+                  <NavLink activeClassName="active" to="/add-position">
+                     <svg height="1em" viewBox="0 0 512 512">
+                      {" "}
                       <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
-                    </svg> 
+                    </svg>   
+                    &nbsp;  {" "}
                     <span className="iconmenu"> &nbsp; Add Position</span>
-                  </a>
+                  </NavLink></span>
                 </li>
                 <li>
-                  <a activeClassName="active" href="/add-employee">
-                    <i className="fa fa-user-plus"></i> &nbsp;
+                  <span  onClick={handleSidebarToggle}>
+                  <NavLink activeClassName="active" to="/add-employee">
+                    <i className="fa fa-user-plus"></i> &nbsp;{" "}
                     <span className="iconmenu"> Add Employee</span>
-                  </a>
+                  </NavLink>
+                            </span>
                 </li>
-                <li>
-                  <a activeClassName="active" href="/non-joiner">
-                    <i className="fa fa-user-slash "></i>&nbsp; 
+                <li >
+                <span  onClick={handleSidebarToggle}>
+                  <NavLink activeClassName="active" to="/non-joiner"   >
+                    <i className="fa fa-user-slash "  ></i>&nbsp;{" "}
                     <span className="iconmenu">Non Joiners</span>
-                  </a>{" "}
+                  </NavLink>{" "}
+                  </span  >
                 </li>
                 <li>
-                  <a
+                <span  onClick={handleSidebarToggle}>
+
+                  <NavLink
                     activeClassName="active"
-                    className="reviewmenu"
-                    href="/add-review"
+                    // className="reviewmenu"
+                    to="/add-review"
                   >
                     <i className="fa fa-edit"></i> &nbsp;{" "}
                     <span className="iconmenu">Add Review</span>
-                  </a>
+                  </NavLink></span>
                 </li>
                 <li>
-                  <a activeClassName="active" href="/previous-review">
+                <span  onClick={handleSidebarToggle}>
+
+                  <NavLink activeClassName="active" to="/previous-review">
                     <i className="fa fa-star"></i> &nbsp;
                     <span className="iconmenu"> Previous Reviews</span>
-                  </a>
+                  </NavLink></span>
                 </li>
                 <li>
-                  <a activeClassName="active" href="/search-employee">
-                    <i className="fa fa-search"></i> &nbsp;
-                    <span className="iconmenu"> Search Employees</span>
-                  </a>
+                <span  onClick={handleSidebarToggle}>
+
+                  <NavLink activeClassName="active" to="/search-employee">
+                    <i className="fa fa-search"></i> &nbsp;{" "}
+                    <span className="iconmenu">Search Employees</span>
+                  </NavLink></span>
                 </li>
 
                 <li>
-                  <a activeClassName="active" href="/upload-csv">
+                <span  onClick={handleSidebarToggle}>
+
+                  <NavLink activeClassName="active" to="/upload-csv">
                     <i className="fa fa-upload"></i> &nbsp;{" "}
                     <span className="iconmenu">Upload CSV</span>
-                  </a>
+                  </NavLink></span>
                 </li>
                 <li>
-                  <a activeClassName="active" href="/profile">
+                <span  onClick={handleSidebarToggle}>
+
+                  <NavLink activeClassName="active" to="/profile">
                     <i className="fa fa-user"></i> &nbsp;{" "}
                     <span className="iconmenu">Profile</span>{" "}
-                  </a>
+                  </NavLink></span>
                 </li>
                 <li className="logouticon">
                   <a onClick={logoutUser}>

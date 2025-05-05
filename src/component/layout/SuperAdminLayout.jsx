@@ -241,6 +241,8 @@ console.log(notifications)
         {/* Mobile View Sidebar */}
         <div className="border-end bg-white mobilesidebar" id="sidebar-wrapper">
           <div className="sidebar-heading border-bottom">
+          <span  onClick={handleSidebarToggle}>
+
           <Link to="/super-admin/dashboard">
               <img
                 src={o2}
@@ -249,7 +251,7 @@ console.log(notifications)
                 height="40"
                 width="150"
               />
-            </Link>
+            </Link></span>
             <button
               className="btn togglebtn"
               style={{ marginLeft: "2rem", position: "absolute" }}
@@ -283,6 +285,8 @@ console.log(notifications)
           <div className="list-group list-group-flush">
             <div className="profile-sec">
               <div className="profile-dtl">
+              <span  onClick={handleSidebarToggle}>
+
               <Link to="/super-admin/dashboard">
                   {" "}
                   <img
@@ -300,7 +304,7 @@ console.log(notifications)
 
                   />
                   <p>{user?.company_name}</p>
-                </Link>
+                </Link></span>
               </div>
             </div>
             <nav className="sb-sidenav-menu-nested nav  ">
@@ -326,6 +330,8 @@ console.log(notifications)
                     id="submenu1"
                   >
                     <li className="dropdown-item curentemployepadding curentemploye1">
+                    <span  onClick={handleSidebarToggle}>
+
                       <NavLink
                         activeClassName="active"
                         // className="reviewmenu"
@@ -333,12 +339,14 @@ console.log(notifications)
                       >
                         <i className="fa fa-edit"></i> &nbsp;{" "}
                         <span className="iconmenu">User</span>
-                      </NavLink>
+                      </NavLink></span>
                     </li>
 
 
 
                     <li className="dropdown-item logouticon curentemployepadding curentemploye1 curentemploye2">
+                    <span  onClick={handleSidebarToggle}>
+
                       <NavLink
                         activeClassName="active"
                         // className="reviewmenu"
@@ -346,12 +354,14 @@ console.log(notifications)
                       >
                         <i className="fa fa-user-plus"></i> &nbsp;{" "}
                         <span className="iconmenu">Add User</span>
-                      </NavLink>
+                      </NavLink></span>
                     </li>
                   </ul>
                 </li>
 
                 <li>
+                <span  onClick={handleSidebarToggle}>
+
                   <NavLink
                     activeClassName="active"
                     // className="reviewmenu"
@@ -359,9 +369,11 @@ console.log(notifications)
                   >
                     <i className="fa fa-list"></i> &nbsp;{" "}
                     <span className="iconmenu">Companies</span>
-                  </NavLink>
+                  </NavLink></span>
                 </li>
                 <li>
+                <span  onClick={handleSidebarToggle}>
+
                   <NavLink
                     activeClassName="active"
                     // className="reviewmenu"
@@ -369,7 +381,7 @@ console.log(notifications)
                   >
                     <i className="fa fa-building"></i> &nbsp;{" "}
                     <span className="iconmenu">Add Company</span>
-                  </NavLink>
+                  </NavLink></span>
                 </li>
                 {/* <li>
                   <NavLink
@@ -392,6 +404,8 @@ console.log(notifications)
                   </NavLink>
                 </li> */}
                 <li>
+                <span  onClick={handleSidebarToggle}>
+
                   <NavLink
                     activeClassName="active"
                     // className="reviewmenu"
@@ -399,9 +413,11 @@ console.log(notifications)
                   >
                     <i className="fa fa-user"></i> &nbsp;{" "}
                     <span className="iconmenu">Profile</span>
-                  </NavLink>
+                  </NavLink></span>
                 </li>
                 <li>
+                <span  onClick={handleSidebarToggle}>
+
                   <NavLink
                     activeClassName="active"
                     // className="reviewmenu"
@@ -410,7 +426,7 @@ console.log(notifications)
 
                     <i className="fa fa-bell"></i> &nbsp;{" "}
                     <span className="iconmenu"> Notification List</span>
-                  </NavLink>
+                  </NavLink></span>
                 </li>
               </ul>
               {/* <ul className="list-unstyled">
