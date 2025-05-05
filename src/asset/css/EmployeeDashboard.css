@@ -1,0 +1,123 @@
+    .navsearch{
+      padding: 0px 8px;
+      margin: 0 15px;
+    }
+    .navsearch{
+    position: relative;
+    }    
+    .navsearch1{
+    border-radius: 30px;
+    }    
+    .searchicon{
+      position: absolute;
+      background: #fff;
+      top: 10px;
+      right: 20px;
+    }    
+    .searchbtn{
+      position: absolute;
+      background: #134d75;
+      padding: 5px 10px;
+      border-radius: 30px;
+      color: #fff;
+      right: 0px;
+    }   
+     
+    /*Footer CSS*/    
+    .bg-footer{
+      background: #fff;
+      border-top: 1px solid #dee2e6!important;
+      padding: 10px;
+      width: 100%;
+     }
+    
+     .footer_left{
+      font-size: 14px;
+     }
+    
+     .footer_right{
+    text-align: right;
+    font-size: 14px;
+     }
+    
+    
+      /*Employee Dashoard css*/
+/*     
+    #employeedashboard{
+      padding: 1.5rem 0;
+      min-height: 100vh;
+    }
+    
+    
+    .user-card {
+      padding: 20px;
+      border: 1px solid #ccc;
+      height: 100%;
+      background: #fff;
+    }
+    
+    .user-avatar img {
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+    }
+    
+    .user-info{
+      text-align: center;
+    }
+    
+    .user-details h4 {
+      margin: 0;
+      color: #134d75;
+      font-weight: 500;
+    }
+    
+    .user-details p {
+      color: #888;
+      font-size: 14px;
+    }
+    
+    .time-list {
+      display: flex;
+      flex-grow: 1;
+    }
+    .dash-stats-list {
+      align-items: center;
+      display: flex;
+      flex-flow: column wrap;
+      flex-grow: 1;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+    .dash-stats-list+.dash-stats-list {
+      border-left: 1px solid #e7e7e7;
+    }
+    .card-info{
+    display: flex;
+    justify-content:space-between;
+    align-items: center;
+    }
+    
+    .reviewfont{
+    font-size: 14px;
+    margin: 5px 0;
+    }
+    
+    .bodycard{
+    padding: 20px;
+    }
+    .commpanysec{
+      color: #134d75;
+      font-weight: 500;
+    }
+    
+    /*Add Company Review*/
+    .addcmpnyreview{
+      background: #fff;
+      padding: 1.5rem 0;
+    }
+
+    .cureentworking{
+      background: #f5f6fa;
+      padding: 10px;
+    }

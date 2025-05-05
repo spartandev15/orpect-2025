@@ -1,0 +1,62 @@
+.company-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .company-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333;
+  }
+  
+  .company-logo-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .company-logo {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+  }
+  
+  .company-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .company-detail {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .detail-label {
+    font-weight: 500;
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+  
+  .detail-value {
+    font-size: 16px;
+    color: #222;
+  }
+  
+  .loading,
+  .error {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 50px;
+  }
+  

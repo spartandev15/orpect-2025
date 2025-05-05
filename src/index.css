@@ -1,0 +1,168 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif !important;
+  background: #F9FAFB;
+  overflow-x: hidden;
+}
+ 
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+
+.msg{
+  text-align: initial;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+.password-icon{
+  position: absolute;
+  top: 5px;
+  right: 10px;
+    }
+ 
+    .icn{
+      margin-left: 8px;
+    }
+
+    .type-animation {
+      /* Your CSS rules here */
+      color: blue;
+      font-weight: bold;
+      /* ... */
+    }
+
+    
+
+
+    .popup-content{
+      background: whitesmoke;
+      border-radius: 10px;
+      padding: 15px;
+      width: 25%;
+      text-align: center;
+      position: absolute;
+      z-index: 999;
+      pointer-events: auto;
+      /* top: 700px !important;
+      left: 995px !important; */
+    }
+
+    .w-100 {
+      width: 100%!important;
+      color:black;
+    }
+
+    @media(max-width:767px){
+
+      .popup-content { 
+        background: whitesmoke; 
+        border-radius: 10px; 
+        padding: 15px; 
+        left: 5rem !important; 
+        position: absolute !important; 
+        width: 55vw; 
+        text-align: center; 
+      }
+  
+    }
+
+    .star {
+      cursor: pointer;
+      color: #ccc;
+    }
+    
+    .filled {
+      color: #f6a21e;
+    }
+
+    .responsiveSearch{
+      width: auto;
+    }
+    
+      @media   (min-width: 720px) and (max-width:1200px) {
+        .responsiveSearch {
+          width: 69% !important;
+          margin-left: 0rem !important;
+        }
+      }
+ @media(max-width:700px){
+      .navibar{
+        margin-left: 0 !important;
+      }
+      .navibarmobile1{
+        display: none;
+          }
+ }
+  @media(min-width:700px){
+          .navibarmobile{
+        display: none;
+          }
+  }
+
+
+  @media(max-width:338px) {
+          .navibar {
+            width: 50%;
+            margin-left: 0.5rem;
+            position: relative;
+          }
+        }
+        
+        .csvcheckmobile li{
+          font-size: 14px;
+   }
+        
+  @media(max-width:719px){
+          .responsiveSearch{
+            display: none;
+          }
+          .navibar {
+            width: 55%;
+            margin-left: 0px !important;
+            position: relative;
+        }
+        .navibarmobile{
+        display: block;
+        }
+}
+
+@media  (max-width: 400px) {
+  .capcha{
+      transform:scale(0.75);
+      transform-origin:0 0;
+  }
+}  
+
+
+
+.datalist-ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #eaecf0;
+  border-radius: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #fff;
+}
+
+.datalist-ul option {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.datalist-ul option:hover,
+.datalist-ul option:focus {
+  background-color: #f9fafb;
+}
+
+.datalist-ul option:active {
+  background-color: #e9ecef;
+}
+
+ 

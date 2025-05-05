@@ -1,0 +1,39 @@
+
+/* Submenu styling */
+.dropdown-menu-end.droplogin1 > li:hover > .submenu {
+    display: block; /* Show the submenu on hover */
+  }
+  
+  .dropdown-menu-end.droplogin1 .submenu {
+    display: none; /* Hide the submenu by default */
+    position: absolute;
+    background-color: #fff; /* Set the background color */
+    min-width: 100px; /* Set the minimum width of the submenu */
+    z-index: 1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 0;
+  padding: 0;
+  }
+  .dropdown-menu-end.droplogin1 .submenu li{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  }
+  
+  .dropdown-menu-end.droplogin1 .submenu .dropdown-item {
+    color: #fff; /* Set the text color */
+    padding: 4px 14px; /* Adjust the padding */
+  }
+  
+  .dropdown-menu-end.droplogin1 .submenu .dropdown-item:hover {
+    background-color: #134d75; /* Set the background color on hover */
+    color: #fff; /* Set the text color on hover */
+  }
+  
+  .dropdown-menu-end.droplogin1 .submenu .dropdown-item:active {
+    background-color: #134d75; /* Set the background color on hover */
+    color: #fff; /* Set the text color on hover */
+  }
+  
+  
