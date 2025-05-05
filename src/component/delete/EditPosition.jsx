@@ -221,7 +221,7 @@ const EditPosition = ({ positionId, oldPosition }) => {
                 <div className="modal-footer">
                   <div className="col-lg-12 col-sm-12" style={{ textAlign: "center" }}>
                     <Button
-                      className="btn mybtn bntresponsive"
+                      className="btn mybtn "
                       loading={isLoading}
                       text="Submit"
                     />
