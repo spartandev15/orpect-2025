@@ -119,13 +119,8 @@ const Companies = () => {
                           )}
                         </button>
                       </td>
-
-
-
                       <td className="sticky-column-last  ">
                         <span className="d-flex">
-
-                       
                         <Link to={`/super-admin/viewcompany/${company?.id}`} style={{ textDecoration: "none" }}>
                           <button type="button" className="btn act_btn_v">
                             <span className="hoverable">

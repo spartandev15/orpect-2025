@@ -15,7 +15,7 @@ const Dashboard = () => {
         </div>
        
         <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
-         <Link to="/employee" className="cardtag"> <div className="card  ">
+         <Link to="/super-admin/companies" className="cardtag"> <div className="card  ">
           <img src={currentem} className="card1 img-fluid" alt='' />
             <div className="os-inner-col">
            <h4 className="blue-violet">Total Companies</h4>
@@ -25,7 +25,7 @@ const Dashboard = () => {
           </div></Link>
         </div>
         <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
-         <Link to="/ex-employee" className="cardtag"> <div className="card  ">
+         <Link to="/super-admin/user" className="cardtag"> <div className="card  ">
           <img src={exemploye} className="card1 img-fluid" alt ='' />
             <div className="os-inner-col">
              <h4 className="blue-violet">Total Admins</h4>
@@ -34,7 +34,7 @@ const Dashboard = () => {
           </div></Link>
         </div>
         <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
-         <Link to="/non-joiner" className="cardtag"> <div className="card  ">
+         <Link to="/super-admin/companies" className="cardtag"> <div className="card  ">
           <img src={nonjoiner}className="card1 img-fluid" alt='' />
             <div className="os-inner-col">
             <h4 className="blue-violet">Pending Requests</h4>
@@ -43,7 +43,7 @@ const Dashboard = () => {
           </div></Link>
         </div>
         <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
-         <Link to="/previous-review" className="cardtag"> <div className="card  ">
+         <Link to="#" className="cardtag"> <div className="card  ">
           <img src={review} className="card1 img-fluid" alt='' />
             <div className="os-inner-col">
            <h4 className="blue-violet"> Submitted Reviews</h4>
