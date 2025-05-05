@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+
 import { useGetNotificationsQuery, useIsReadNotificationByIdMutation, useIsReadNotificationMutation } from "../../../apis/SuperAdmin/notification";
 import Pagination from "../../../component/Pagination";
 import NotificationDelete from "../../../component/SuperAdmin/NotificationDelete";
