@@ -13,6 +13,13 @@ export const reviewApi = api.injectEndpoints({
     viewGlobalSearchedEmpById: builder.query({
       query: (id) => `viewGlobalSearchedEmp/${id}`,
     }),
+    dataRequest: builder.mutation({
+      query: ({  data }) => ({
+        url: `store/data-request-form`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -20,4 +27,5 @@ export const reviewApi = api.injectEndpoints({
 export const {
   useAddRateReviewMutation,
   useViewGlobalSearchedEmpByIdQuery,
+  useDataRequestMutation
 } = reviewApi;

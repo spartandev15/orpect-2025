@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { saveFormData } from "../../store/FormSlice";
 import LayoutOrpect from "../LandingPage/Index";
 import { useLoginUserMutation } from "../../apis/auth";
+import { fetchPosition } from "../../store/positionSlice";
 
 // RTK Query Hook
 
@@ -42,6 +43,8 @@ const LoginWrapper = () => {
         setToLocalStorage("user", response?.user);
         setToLocalStorage("token", response?.token);
         navigate("/dashboard");
+        dispatch(fetchPosition());
+
       } else {
         navigate("/verification");
       }
@@ -53,7 +56,9 @@ const LoginWrapper = () => {
       toast.error(errorMessage);
     }
   };
-
+  // useEffect(() => {
+  //   dispatch(fetchPosition());
+  // }, [dispatch]);
   return (
     <LayoutOrpect>
       <section className="signuppage">

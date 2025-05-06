@@ -232,6 +232,17 @@ console.log(notifications)
                     <span className="iconmenu"> Notification List</span>
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    activeClassName="active"
+                    // className="reviewmenu"
+                    to="/super-admin/data-request"
+                  >
+
+                    <i className="fa fa-book"></i> &nbsp;{" "}
+                    <span className="iconmenu"> Data Request</span>
+                  </NavLink>
+                </li>
                
               </ul>
             </nav>
@@ -427,6 +438,17 @@ console.log(notifications)
                     <i className="fa fa-bell"></i> &nbsp;{" "}
                     <span className="iconmenu"> Notification List</span>
                   </NavLink></span>
+                </li>
+                <li>
+                  <NavLink
+                    activeClassName="active"
+                    // className="reviewmenu"
+                    to="/super-admin/data-request"
+                  >
+
+                    <i className="fa fa-book"></i> &nbsp;{" "}
+                    <span className="iconmenu"> Data Request</span>
+                  </NavLink>
                 </li>
               </ul>
               {/* <ul className="list-unstyled">

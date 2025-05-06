@@ -27,7 +27,7 @@ const CookieConsent = () => {
   return (
     <div style={styles.container}>
       <p style={styles.text}>
-        We use cookies to improve your experience. Do you accept?
+      We use cookies to enhance your experience, personalize content, and analyze traffic. By clicking 'Accept All', you consent to our use of cookies
       </p>
       <div style={styles.buttonContainer}>
         <button onClick={handleAccept} style={{ ...styles.button, ...styles.accept }}>

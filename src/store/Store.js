@@ -60,6 +60,7 @@ const store = configureStore({
     getDefaultMiddleware().concat(api.middleware),
 });
 if(isLoggedIn){
+  console.log(isLoggedIn,"login")
   store.dispatch(fetchPosition());
 }
 

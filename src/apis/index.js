@@ -75,8 +75,8 @@ const customBaseQuery = async (args, api, extraOptions) => {
   if (result.error) {
     if (result.error.status === 401) {
       toast.error(result.error.data?.message || "Unauthorized");
-      removeAllFromLocalStorage();
-      window.location.replace('/orpect');
+      // removeAllFromLocalStorage();
+      // window.location.replace('/orpect');
     } else if (result.error.data?.message) {
       // Optional global toast for non-401 errors
       toast.error(result?.error?.data?.message || "Something Went Wrong");

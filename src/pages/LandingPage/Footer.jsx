@@ -37,6 +37,9 @@ const Footer = () => {
                   <li className="nav-item">
                     <Link className="nav-link" to="/community-guidlines">Community Guidelines</Link>
                   </li>
+                  <li className="nav-item">
+                   <Link className="nav-link" to="/data-request-form">Data Request Form</Link> 
+                  </li>
                 </ul></div>
             </div>
             <div className="col-md-4 footer-column">
@@ -45,6 +48,7 @@ const Footer = () => {
                   <li className="nav-item">
                     <span className="footer-title">Contact & Support</span>
                   </li>
+            
                   <li className="nav-item">
                     <Link className="nav-link" to="tel:+1-8632168452"><i className="fas fa-phone phonerotation"></i> &nbsp;+1-8632168452</Link>
                   </li>

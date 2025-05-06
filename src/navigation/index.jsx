@@ -64,6 +64,9 @@ import CurrentEmployee from "../pages/SuperAdmin/Employee/CurrentEmployee";
 import ExEmployee from "../pages/SuperAdmin/Employee/ExEmployee";
 import NonJoiner from "../pages/SuperAdmin/Employee/NonJoiner";
 import NotificationList from "../pages/SuperAdmin/Notification/NotificationList";
+import DataRequestFrom from "../pages/LandingPage/DataRequestFrom";
+import ImportExportComponent from "../pages/ImpExpt";
+import DataRequest from "../pages/SuperAdmin/DataRequest/DataRequest";
 
 const Navigation = () => {
   const location = useLocation();
@@ -98,6 +101,9 @@ const Navigation = () => {
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/verification" element={<VerificationPage />} />
+          <Route path="/data-request-form" element={<DataRequestFrom />} />
+
+
           {/* Employee Dashboard */}
      <Route path="/employee-signup" element={<EmployeeRegister />}/>
         <Route path="/employee-dashboard" element={<EmployeeDashboard/>} />
@@ -182,7 +188,14 @@ const Navigation = () => {
               </ProtectedRoute>
             }
           />
-
+ <Route
+            path="/import-export"
+            element={
+              <ProtectedRoute>
+                <ImportExportComponent />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/add-position"
             element={
@@ -286,6 +299,8 @@ const Navigation = () => {
                  <Route path="nonJoiner/:id" element={<NonJoiner/>} />
 
                  <Route path="notification-list" element={<NotificationList/>} />
+                 <Route path="data-request" element={<DataRequest/>} />
+
 
 
                </Route>
