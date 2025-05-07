@@ -3,7 +3,7 @@ import React from "react";
 function DownloadCsvExel() {
   const handleDownload = () => {
     const fileName = "CSVFormat.csv";
-  const csvContent = `S.no, Emp Id, Emp Name, Email, Phone, Position, Date Of Birth, Tax Number,  Permanent Address , City, Country, State, Postal Code, Date Of Joining, Date Of Leaving, Ex Employee, Non Joiner, Performance Rating, Professional Skills Rating, Teamwork Communication Rating, Attitude Behaviour Rating, Review, linked In, Last CTC, Image Name\n`;
+  const csvContent = `S.no, Emp Id, Emp Name, Email, Phone, Position, Date Of Birth, Tax Number,  Permanent Address , City, Country, State, Postal Code, Date Of Joining, Date Of Leaving, Ex Employee, Non Joiner, Performance Rating, Professional Skills Rating, Teamwork Communication Rating, Attitude Behaviour Rating, Review, linked In, Last CTC,\n`;
 
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);

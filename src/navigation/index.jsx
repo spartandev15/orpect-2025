@@ -184,7 +184,9 @@ const Navigation = () => {
             path="/upload-csv"
             element={
               <ProtectedRoute>
-                <UploadCsv />
+                {/* <UploadCsv /> */}
+                <ImportExportComponent />
+
               </ProtectedRoute>
             }
           />

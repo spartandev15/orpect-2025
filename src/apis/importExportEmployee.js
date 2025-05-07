@@ -9,12 +9,27 @@ export const importExportEmployee = api.injectEndpoints({
         // body: data,
       }),
     }),
-
-  
+    excelExport: builder.mutation({
+      query: ( data) => ({
+        url: `store-excel-export`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    importCSV: builder.mutation({
+      query: ( data) => ({
+        url: `uploadCSV`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+   
   }),
   overrideExisting: false,
 });
 
 export const {
-useLazyGetExcelEmployeeQuery
+useLazyGetExcelEmployeeQuery,
+useExcelExportMutation,
+useImportCSVMutation
 } = importExportEmployee;

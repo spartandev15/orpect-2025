@@ -28,7 +28,7 @@ const DataRequest = () => {
   const totalPages = data?.data?.last_page || 1;
 
   const filteredData = dataList.filter((item) =>
-    item.name?.toLowerCase().includes(searchText.toLowerCase())
+    item?.name?.toLowerCase().includes(searchText.toLowerCase())
   );
 
   useEffect(() => {
@@ -87,14 +87,14 @@ const DataRequest = () => {
                     </td>
                   </tr>
                 ) : (
-                  filteredData.map((item, index) => (
+                  filteredData?.map((item, index) => (
                     <tr key={index} className="table_data_background">
-                      <td>{item.id}</td>
-                      <td>{item.name}</td>
-                      <td>{item.registered_email || "N/A"}</td>
-                      <td>{item.type_of_request}</td>
-                      <td>{item.country}</td>
-                      <td>{new Date(item.created_at).toLocaleString()}</td>
+                      <td>{item?.id}</td>
+                      <td>{item?.name}</td>
+                      <td>{item?.registered_email || "N/A"}</td>
+                      <td>{item?.type_of_request}</td>
+                      <td>{item?.country}</td>
+                      <td>{new Date(item?.created_at).toLocaleString()}</td>
                     </tr>
                   ))
                 )}

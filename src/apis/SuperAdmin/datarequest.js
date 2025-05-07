@@ -4,7 +4,7 @@ export const datarequestApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getDataRequest: builder.query({
       query: ({ page = 1}) => ({
-        url: `get/data-request-form?page=${page}`,
+        url: `admin/get/data-request-form?page=${page}`,
         method: "GET",
 
       }),

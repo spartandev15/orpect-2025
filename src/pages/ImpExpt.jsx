@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../component/layout";
 import Button from "../component/Button";
-import { useLazyGetExcelEmployeeQuery } from "../apis/importExportEmployee";
+import { useExcelExportMutation, useImportCSVMutation, useLazyGetExcelEmployeeQuery } from "../apis/importExportEmployee";
 import { toast } from "react-toastify";
 
 const ImportExportComponent = () => {
@@ -9,13 +9,11 @@ const ImportExportComponent = () => {
   const [exportFilter, setExportFilter] = useState("all");
   const [type, setType] = useState("pdf");
 
-  const [importFilter, setImportFilter] = useState("employee");
   const [importFile, setImportFile] = useState(null);
   const [exportDateFrom, setExportDateFrom] = useState("");
   const [exportDateTo, setExportDateTo] = useState("");
-  const [importDate, setImportDate] = useState("");
-  const [getExcelEmployee, { isLoading: loading }] =
-    useLazyGetExcelEmployeeQuery();
+  const [excelExport, { isLoading: loading }] =useExcelExportMutation();
+  const [importCSV, { isLoading: importloading }]=useImportCSVMutation()
 
   //   const handleExport = () => {
   //     console.log("Exporting:", {
@@ -26,12 +24,14 @@ const ImportExportComponent = () => {
   //     // TODO: Add export CSV logic
   //   };
   const handleExport = async (format) => {
-    try {
-      const response = await getExcelEmployee({
-        start_date: exportDateFrom,
+    const data  ={
+      start_date: exportDateFrom,
         end_date: exportDateTo,
-        status: type,
-      }).unwrap();
+        status: exportFilter,
+        type:type
+    }
+    try {
+      const response = await excelExport(data).unwrap();
 
       const fileUrl = response?.file_url;
       if (!fileUrl) {
@@ -47,14 +47,38 @@ const ImportExportComponent = () => {
     }
   };
 
-  const handleImport = () => {
-    console.log("Importing:", {
-      filter: importFilter,
-      file: importFile,
-      date: importDate,
-    });
-    // TODO: Add file upload logic
+  const handleImport = async () => {
+    try {
+      console.log("Importing:", { file: importFile });
+  
+      const formData = new FormData();
+      formData.append("csv_file", importFile);
+  
+      const response = await importCSV(formData).unwrap();
+      console.log("Response:", response);
+  
+      if (response.status) {
+        toast.success(response.message || "File imported successfully");
+      } else {
+        // Main error message
+        toast.error(response.message || "Some entries failed to import.");
+  
+        // Optional: Show details of the first error
+        if (response.errorList?.length > 0) {
+          const firstError = response.errorList[0];
+          toast.error(
+            `Error for ${firstError.emp_name} (${firstError.emp_id}): ${firstError.message}`
+          );
+        }
+  
+        // Optional: You could render a modal or side panel with full errorList if needed
+      }
+    } catch (error) {
+      console.error("File import failed:", error);
+      toast.error("An error occurred during import. Please try again.");
+    }
   };
+  
 
   return (
     <Layout>
@@ -100,10 +124,10 @@ const ImportExportComponent = () => {
                     onChange={(e) => setExportFilter(e.target.value)}
                   >
                     <option value="all">All</option>
-                    <option value="positions">Positions</option>
-                    <option value="employee">Employee</option>
+                    {/* <option value="positions">Positions</option> */}
+                    <option value="Employee">Employee</option>
                     <option value="exemployee">Ex-Employee</option>
-                    <option value="nonjoiner">Non-Joiner</option>
+                    <option value="non-joiner">Non-Joiner</option>
                   </select>
                 </div>
                 <div className="col-md-6">
@@ -160,28 +184,7 @@ const ImportExportComponent = () => {
           {activeTab === "import" && (
             <div>
               <h5>Import Data</h5>
-              <div className="mb-3">
-                <label className="form-label">Import Type</label>
-                <select
-                  className="form-select"
-                  value={importFilter}
-                  onChange={(e) => setImportFilter(e.target.value)}
-                >
-                  <option value="employee">Employee</option>
-                  <option value="exemployee">Ex-Employee</option>
-                  <option value="nonjoiner">Non-Joiner</option>
-                  <option value="positions">Position</option>
-                </select>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Import Date</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  value={importDate}
-                  onChange={(e) => setImportDate(e.target.value)}
-                />
-              </div>
+         
               <div className="mb-3">
                 <label className="form-label">Choose CSV File</label>
                 <input
@@ -192,7 +195,7 @@ const ImportExportComponent = () => {
                 />
               </div>
               <Button
-                //    loading={loading}
+                   loading={importloading}
                 className="btn mybtn"
                 text="Import CSV"
                 onClick={handleImport}
