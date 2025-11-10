@@ -119,14 +119,14 @@ const Companies = () => {
                       <td className="text-center">
                         <button
                           type="button"
-                          className={`btn btn-sm w-100 text-white ${company?.is_account_verified === 1 ? "btn-success" : "btn-danger"}`}
+                          className={`btn btn-sm w-100 text-white ${String(company?.is_account_verified) === "1" ? "btn-success" : "btn-danger"}`}
                           onClick={() => handleVerify(company?.id)}
                           style={{ minWidth: "100px" }}
                         >
                           {isLoading ? (
                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                           ) : (
-                            company?.is_account_verified === 1 ? "Verified" : "Not Verified"
+                            String(company?.is_account_verified) === "1" ? "Verified" : "Not Verified"
                           )}
                         </button>
                       </td>

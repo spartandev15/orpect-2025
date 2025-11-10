@@ -105,11 +105,11 @@ const AddCompany = () => {
           </div>
 
 
-          {/* Full Name */}
+          {/* Owner Name */}
           <div className="col-lg-6 col-sm-12 pb-4">
           <div className="form-outline">
 
-            <InputAdd name="fullName" value={values.fullName} onChange={handleChange} label="Full Name" star={true} />
+            <InputAdd name="fullName" value={values.fullName} onChange={handleChange} label="Owner Name" star={true} />
             {errors.fullName && touched.fullName && <p className="text-danger msg">{errors.fullName}</p>}
           </div>
           </div>
@@ -154,7 +154,18 @@ const AddCompany = () => {
           <div className="col-lg-6 col-sm-12 pb-4">
           <div className="form-outline">
 
-            <InputAdd type="number" name="companyPhone" value={values.companyPhone} onChange={handleChange} label="Company Phone" star={true} />
+            <InputAdd 
+              type="tel" 
+              name="companyPhone" 
+              value={values.companyPhone} 
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, ''); // Only allow digits
+                setFieldValue("companyPhone", value);
+              }}
+              label="Company Phone" 
+              star={true} 
+              maxLength="15" 
+            />
             {errors.companyPhone && touched.companyPhone && <p className="text-danger msg">{errors.companyPhone}</p>}
           </div>
           </div>

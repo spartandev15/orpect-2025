@@ -109,19 +109,33 @@ const AddUser = () => {
   }));
 
   const handleCountryChange = (selectedOption) => {
-    setFieldValue("country", selectedOption?.label);
-    const countryCode = selectedOption?.value;
-    const country = countries.find((c) => c.isoCode === countryCode);
-    setSelectedCountry(country);
-    setSelectedState(null);
+    const countryValue = selectedOption?.label || "";
+    setFieldValue("country", countryValue, true); // Mark as touched
+    if (!selectedOption) {
+      // If cleared, also clear state
+      setFieldValue("state", "", true);
+      setSelectedCountry(null);
+      setSelectedState(null);
+    } else {
+      setFieldValue("state", ""); // Clear state when country changes
+      const countryCode = selectedOption?.value;
+      const country = countries.find((c) => c.isoCode === countryCode);
+      setSelectedCountry(country);
+      setSelectedState(null);
+    }
   };
 
   const handleStateChange = (selectedOption) => {
-    const stateId = selectedOption?.value;
-    setFieldValue("state", selectedOption?.label);
+    const stateValue = selectedOption?.label || "";
+    setFieldValue("state", stateValue, true); // Mark as touched
 
-    const state = states.find((s) => s.isoCode === stateId);
-    setSelectedState(state);
+    if (selectedOption) {
+      const stateId = selectedOption?.value;
+      const state = states.find((s) => s.isoCode === stateId);
+      setSelectedState(state);
+    } else {
+      setSelectedState(null);
+    }
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
@@ -180,8 +194,18 @@ const AddUser = () => {
           <div className="col-lg-6 col-sm-12 pb-4">
           <div className="form-outline">
 
-            <InputAdd type="number" name="phone" value={values.phone} onChange={handleChange}
-             label="Phone Number" star={true} />
+            <InputAdd 
+              type="tel" 
+              name="phone" 
+              value={values.phone} 
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, ''); // Only allow digits
+                setFieldValue("phone", value);
+              }}
+              label="Phone Number" 
+              star={true} 
+              maxLength="10" 
+            />
             {errors.phone && touched.phone && <p className="text-danger msg">{errors.phone}</p>}
           </div>
           </div>
@@ -197,16 +221,20 @@ const AddUser = () => {
 
 
           <div className="col-lg-6 col-sm-12 pb-4">
+            <label className="form-label">Country</label>
             <Select
               classNamePrefix="select"
               placeholder="Select Country..."
               isClearable
               options={countryOptions}
               onChange={handleCountryChange}
+              value={countryOptions.find(option => option.label === values.country) || null}
             />
+            {errors.country && touched.country && <p className="text-danger msg">{errors.country}</p>}
           </div>
 
           <div className="col-lg-6 col-sm-12 pb-4">
+            <label className="form-label">State</label>
             <Select
               classNamePrefix="select"
               placeholder="Select State..."
@@ -214,12 +242,24 @@ const AddUser = () => {
               isClearable
               options={stateOptions}
               onChange={handleStateChange}
+              value={stateOptions.find(option => option.label === values.state) || null}
             />
+            {errors.state && touched.state && <p className="text-danger msg">{errors.state}</p>}
           </div>
 
           <div className="col-lg-6 col-sm-12 pb-4">
           <div className="form-outline">
-            <InputAdd type="number" name="postal_code" value={values.postal_code} onChange={handleChange} label="Postal Code" />
+            <InputAdd 
+              type="text" 
+              name="postal_code" 
+              value={values.postal_code} 
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, ''); // Only allow digits
+                setFieldValue("postal_code", value);
+              }}
+              label="Postal Code" 
+              maxLength="10" 
+            />
             {errors.postal_code && touched.postal_code && <p className="text-danger msg">{errors.postal_code}</p>}
           </div>
           </div>

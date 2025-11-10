@@ -267,7 +267,11 @@ export const adduserSchema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters"),
+    .min(6, "Password must be at least 6 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    ),
 
   address: yup.string().nullable(),
 
@@ -299,14 +303,19 @@ export const addCompanySchema = yup.object().shape({
     .required("Company Type is required"),
 
   fullName: yup.string()
-    .required("Full Name is required"),
+    .matches(/^[a-zA-Z ]+$/, "Owner name must contain alphabets only")
+    .required("Owner Name is required")
+    .typeError("Owner name must be a string"),
 
   designation: yup.string()
     .required("Designation is required"),
 
   domainName: yup.string()
-    // .url("Enter a valid Domain URL")
-    .required("Domain Name is required"),
+    .required("Domain Name is required")
+    .matches(
+      /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/,
+      "Invalid domain name format"
+    ),
 
   email: yup.string()
     .email("Invalid email format")
@@ -331,8 +340,16 @@ export const addCompanySchema = yup.object().shape({
     .required("Registration Number is required"),
 
   companySocialLink: yup.string()
-    .url("Enter a valid Social Link URL"),
-    // .required("Company Social Link is required"),
+    .test('is-url-or-empty', 'Enter a valid Social Link URL', function(value) {
+      if (!value || value.trim() === '') return true; // Allow empty
+      try {
+        new URL(value);
+        return true;
+      } catch {
+        return false;
+      }
+    })
+    .nullable(),
 
   termsNconditions: yup.number()
     .oneOf([1], "You must accept the terms and conditions")

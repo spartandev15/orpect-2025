@@ -89,8 +89,6 @@ const NotificationList = () => {
               <thead>
                 <tr>
                   <th className="sticky-column-1 column-1" style={{ background: "#e1e9ed" }}>Title</th>
-                  <th className="sticky-column-2" style={{ background: "#e1e9ed" }}>Email</th>
-                  <th className="sticky-column-3" style={{ background: "#e1e9ed" }}>Phone Number</th>
                   <th style={{ background: "#e1e9ed" }}>Status</th>
                   <th style={{ background: "#e1e9ed" }}>Created At</th>
                   <th className="sticky-column-last" style={{ background: "#e1e9ed" }}>Action</th>
@@ -99,20 +97,18 @@ const NotificationList = () => {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan="6" style={{ height: "200px" }}>
+                    <td colSpan="4" style={{ height: "200px" }}>
                       Loading...
                     </td>
                   </tr>
                 ) : !notifications.length ? (
                   <tr>
-                    <td colSpan="6">No Notifications Found</td>
+                    <td colSpan="4">No Notifications Found</td>
                   </tr>
                 ) : (
                   notifications.map((notification, index) => (
                     <tr key={index} className="table_data_background">
                       <td className="sticky-column-1 column-1">{notification.title}</td>
-                      <td className="sticky-column-2">{notification.email}</td>
-                      <td className="sticky-column-3">{notification.phone}</td>
                       <td>
                         <button
                           className={`btn ${notification.is_read ? "btn-success" : "btn-danger"}`}

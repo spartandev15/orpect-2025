@@ -131,7 +131,7 @@ const { id } = useParams();
             </table>
           </div>
         </div>
-      </div>
+      </div>  
       <div className="col-md-12 mt-4"></div>
       <div>
         {totalPages > 1 && (
