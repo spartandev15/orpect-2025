@@ -9,7 +9,7 @@ import { useGetNotificationsQuery } from './apis/SuperAdmin/notification';
 const Notification = () => {
     const [storeDeviceToken] = useStoreDeviceTokenMutation();
       const [currentPage, setCurrentPage] = useState(1);
-      const [searchText, setSearchText] = useState("");
+      const [search, setSearch] = useState("");
       const {
         data,
         isLoading: loading,
@@ -17,7 +17,7 @@ const Notification = () => {
         refetch,
       } = useGetNotificationsQuery({
         page: currentPage,
-        searchText,
+        search,
       });
 
       useEffect(() => {

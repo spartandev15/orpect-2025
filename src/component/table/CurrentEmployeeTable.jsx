@@ -133,6 +133,7 @@ const CurrentEmployeeTable = () => {
           <Pagination
             totalPages={totalPages}
             handlePageChange={handlePageChange}
+            currentPage={currentPage}
           />
         )}
       </div>

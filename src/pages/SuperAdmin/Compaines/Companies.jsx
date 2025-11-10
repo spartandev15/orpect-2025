@@ -10,11 +10,21 @@ import { toast } from "react-toastify";
 import Pagination from "../../../component/Pagination";
 
 const Companies = () => {
-  const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useGetAllCompaniesQuery({ page: currentPage });
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const { data, isLoading } = useGetAllCompaniesQuery({ page: currentPage, search: debouncedSearch });
   const [accountVerified, { isLoading: verifiedLoading, error }] = useAccountVerifiedMutation()
   const companies = data?.allCompanies?.data || [];
   const totalPages = data?.allCompanies?.last_page || 1;
@@ -27,15 +37,16 @@ const Companies = () => {
       console.error("Verification failed:", err);
     }
   };
-  // Filter companies by search text (searching company name or full name)
-  const filteredCompanies = companies.filter((company) =>
-    company.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
-    company.full_name.toLowerCase().includes(searchText.toLowerCase())
-  );
 
   useEffect(() => {
-    dispatch(setCurrentEmployeeCount(filteredCompanies.length));
-  }, [filteredCompanies, dispatch]);
+    dispatch(setCurrentEmployeeCount(companies.length));
+  }, [companies, dispatch]);
+
+  // Reset to page 1 when debounced search text changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch]);
+
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
   };
@@ -52,8 +63,8 @@ const Companies = () => {
               type="search"
               className="form-control inner_search_icon"
               placeholder="Search"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <i className="fa fa-search navi-search"></i>
           </div>
@@ -86,7 +97,7 @@ const Companies = () => {
                       Loading...
                     </td>
                   </tr>
-                ) : filteredCompanies.length === 0 ? (
+                ) : companies.length === 0 ? (
                   <tr>
                     <td colSpan="8" style={{ textAlign: "center" }}>
                       <Link to="/super-admin/addcompany" className="addempbtn1">
@@ -96,7 +107,7 @@ const Companies = () => {
                     </td>
                   </tr>
                 ) : (
-                  filteredCompanies?.map((company, index) => (
+                  companies?.map((company, index) => (
                     <tr key={index} className="table_data_background">
                       <td >{company.sid}</td>
                       <td >{company.company_name}</td>
@@ -147,6 +158,7 @@ const Companies = () => {
           <Pagination
             totalPages={totalPages}
             handlePageChange={handlePageChange}
+            currentPage={currentPage}
           />
         )}
       </div>

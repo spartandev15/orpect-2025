@@ -6,10 +6,20 @@ import NotificationDelete from "../../../component/SuperAdmin/NotificationDelete
 
 const NotificationList = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isReadNotificationById] = useIsReadNotificationByIdMutation();
   const [isReadNotification] = useIsReadNotificationMutation();
   
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
   const {
     data,
     isLoading: loading,
@@ -17,11 +27,16 @@ const NotificationList = () => {
     refetch,
   } = useGetNotificationsQuery({
     page: currentPage,
-    searchText,
+    search: debouncedSearch,
   });
 
   const notifications = data?.notificationlists?.data || [];
   const totalPages = data?.notificationlists?.last_page || 1;
+
+  // Reset to page 1 when debounced search text changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch]);
 
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
@@ -42,21 +57,21 @@ const NotificationList = () => {
   return (
     <div className="container-fluid viewemployee main_inner_padding">
       <div className="row">
-        <div className="col-lg-8">
+        <div className="col-lg-6">
           <h3>Notifications</h3>
         </div>
-        <div className="col-lg-2 col-md-6 pb-4">
+        <div className="col-lg-3 col-md-6 pb-4">
         <button type="button" class="btn btn-outline-secondary" onClick={markAllAsRead}>Mark All as Read</button>
    
           </div>
-        <div className="col-lg-2 col-md-6 pb-4">
+        <div className="col-lg-3 col-md-6 pb-4">
           <div className="search_button">
             <input
               type="search"
               className="form-control inner_search_icon"
               placeholder="Search"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <i className="fa fa-search navi-search"></i>
           </div>
@@ -124,6 +139,7 @@ const NotificationList = () => {
           <Pagination
             totalPages={totalPages}
             handlePageChange={handlePageChange}
+            currentPage={currentPage}
           />
         )}
       </div>

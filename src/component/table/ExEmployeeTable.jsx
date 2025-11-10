@@ -131,6 +131,7 @@ const ExEmployeeTable = () => {
         <Pagination
           totalPages={totalPages}
           handlePageChange={handlePageChange}
+          currentPage={currentPage}
         />
       )}
     </div>

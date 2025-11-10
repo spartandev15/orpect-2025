@@ -136,6 +136,7 @@ const { id } = useParams();
           <Pagination
             totalPages={totalPages}
             handlePageChange={handlePageChange}
+            currentPage={currentPage}
           />
         )}
       </div>

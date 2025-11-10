@@ -144,6 +144,7 @@ const AddPosition = () => {
                 <Pagination
                   totalPages={totalPages}
                   handlePageChange={handlePageChange}
+                  currentPage={currentPage}
                 />
               )}
       </div>

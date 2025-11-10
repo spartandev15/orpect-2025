@@ -271,6 +271,7 @@ const PreviousReviewTable = () => {
           <Pagination
             totalPages={totalPages}
             handlePageChange={handlePageChange}
+            currentPage={currentPage}
           />
         )}
       </div>

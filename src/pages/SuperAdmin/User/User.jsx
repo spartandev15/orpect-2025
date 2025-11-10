@@ -9,22 +9,33 @@ import Pagination from "../../../component/Pagination";
 
 const User = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const dispatch = useDispatch();
 
-  const { data, isLoading } = useGetAllAdminsQuery({page:currentPage});
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const { data, isLoading } = useGetAllAdminsQuery({page: currentPage, search: debouncedSearch});
 
   const admins = data?.allAdmins?.data || [];
   const totalPages = data?.allAdmins?.last_page || 1;
 
-  // Filter admins by search text
-  const filteredAdmins = admins.filter((admin) =>
-    admin.fullname.toLowerCase().includes(searchText.toLowerCase())
-  );
-
   useEffect(() => {
-    dispatch(setCurrentEmployeeCount(filteredAdmins.length));
-  }, [filteredAdmins, dispatch]);
+    dispatch(setCurrentEmployeeCount(admins.length));
+  }, [admins, dispatch]);
+
+  // Reset to page 1 when debounced search text changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch]);
+
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
   };
@@ -41,8 +52,8 @@ const User = () => {
               type="search"
               className="form-control inner_search_icon"
               placeholder="Search"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <i className="fa fa-search navi-search"></i>
           </div>
@@ -71,7 +82,7 @@ const User = () => {
                       Loading...
                     </td>
                   </tr>
-                ) : filteredAdmins.length === 0 ? (
+                ) : admins.length === 0 ? (
                   <tr>
                     <td colSpan="7" style={{ textAlign: "center" }}>
                       <Link to="/super-admin/adduser" className="addempbtn1">
@@ -81,7 +92,7 @@ const User = () => {
                     </td>
                   </tr>
                 ) : (
-                  filteredAdmins.map((admin, index) => (
+                  admins.map((admin, index) => (
                     <tr key={index} className="table_data_background">
                       <td className="sticky-column-1 column-1">{admin.sid}</td>
                       <td className="sticky-column-2">{admin.fullname}</td>
@@ -117,6 +128,7 @@ const User = () => {
                       <Pagination
                         totalPages={totalPages}
                         handlePageChange={handlePageChange}
+                        currentPage={currentPage}
                       />
                     )}
     </div>

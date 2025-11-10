@@ -5,8 +5,8 @@ export const companiesApi = api.injectEndpoints({
 
   endpoints: (builder) => ({
     getAllCompanies: builder.query({
-      query: ({ page = 1,}) => ({
-        url: `admin/getCompanies?page=${page}`,
+      query: ({ page = 1, search = ""}) => ({
+        url: `admin/getCompanies?page=${page}&search=${search}`,
         method: "GET",
 
       }),
