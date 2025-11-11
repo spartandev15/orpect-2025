@@ -64,6 +64,12 @@ const sidebarRoutes = [
     label: "Data Request",
     icon: "fa fa-book",
   },
+  {
+    type: "link",
+    path: "/super-admin/company-reviews",
+    label: "Company Reviews",
+    icon: "fa fa-star",
+  },
 ];
 
 const SuperAdminLayout = ({ children }) => {

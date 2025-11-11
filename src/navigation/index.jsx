@@ -67,6 +67,7 @@ import NotificationList from "../pages/SuperAdmin/Notification/NotificationList"
 import DataRequestFrom from "../pages/LandingPage/DataRequestFrom";
 import ImportExportComponent from "../pages/ImpExpt";
 import DataRequest from "../pages/SuperAdmin/DataRequest/DataRequest";
+import CompanyReviews from "../pages/SuperAdmin/Compaines/CompanyReviews";
 
 const Navigation = () => {
   const location = useLocation();
@@ -302,6 +303,7 @@ const Navigation = () => {
 
                  <Route path="notification-list" element={<NotificationList/>} />
                  <Route path="data-request" element={<DataRequest/>} />
+                 <Route path="company-reviews" element={<CompanyReviews/>} />
 
 
 

@@ -54,6 +54,13 @@ export const companiesApi = api.injectEndpoints({
         },
         invalidatesTags: ['Companies'],
       }),
+      getCompanyReviews: builder.query({
+        query: ({ page = 1, search = "" }) => ({
+          url: `admin/getCompanyReviews?page=${page}&search=${search}`,
+          method: "GET",
+        }),
+        providesTags: ['Companies'],
+      }),
   
   }),
   overrideExisting: false,
@@ -65,5 +72,6 @@ export const {
  useDeleteCompanyByIdMutation,
  useAccountVerifiedMutation,
  useAddCompanyMutation,
- useUpdateCompanyMutation
+ useUpdateCompanyMutation,
+ useGetCompanyReviewsQuery
 } = companiesApi;
