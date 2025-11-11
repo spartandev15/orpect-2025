@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { logout } from "../../api/logout";
 import NotificationDropdown from "../extras/Notification/NotificationBell";
 import { Navigate } from "react-router-dom";
+import { ADMIN_ROUTES, COMPANY_ROUTES } from "../../config/routes.config";
 
 // Routes configuration array
 const sidebarRoutes = [
@@ -106,11 +107,13 @@ console.log(notifications)
   const logoutUser = () => {
     dispatch(logoutUserapi())
       .then((res) => {
-        logout();
+        logout(true); // Pass true to indicate admin logout
         toast.success("Logged out successfully");
       })
       .catch((err) => {
-        console.log(err);
+        // Even if API call fails, still logout locally
+        logout(true);
+        toast.success("Logged out successfully");
       });
   };
 
@@ -247,12 +250,12 @@ console.log(notifications)
 
 // If user only has regular token (not admin), redirect to dashboard
 if (regularToken && !superAdminToken) {
-  return <Navigate to="/dashboard" replace />;
+  return <Navigate to={COMPANY_ROUTES.DASHBOARD} replace />;
 }
 
 // If no admin token at all, redirect to admin login
 if (!superAdminToken) {
-  return <Navigate to="/super-admin/login" replace />;
+  return <Navigate to={ADMIN_ROUTES.LOGIN} replace />;
 }
   return (
     <>

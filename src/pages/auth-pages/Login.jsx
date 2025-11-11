@@ -13,6 +13,7 @@ import { saveFormData } from "../../store/FormSlice";
 import LayoutOrpect from "../LandingPage/Index";
 import { useLoginUserMutation } from "../../apis/auth";
 import { fetchPosition } from "../../store/positionSlice";
+import { COMPANY_ROUTES, PUBLIC_ROUTES } from "../../config/routes.config";
 
 // RTK Query Hook
 
@@ -30,7 +31,7 @@ const LoginWrapper = () => {
   useEffect(() => {
     const isLoggedIn = !!getFromLocalStorage("token");
     if (isLoggedIn) {
-      navigate("/dashboard");
+      navigate(COMPANY_ROUTES.DASHBOARD);
     }
   }, [navigate]);
 
@@ -42,16 +43,16 @@ const LoginWrapper = () => {
       if (response?.is_verified === 1) {
         setToLocalStorage("user", response?.user);
         setToLocalStorage("token", response?.token);
-        navigate("/dashboard");
+        navigate(COMPANY_ROUTES.DASHBOARD);
         dispatch(fetchPosition());
 
       } else {
-        navigate("/verification");
+        navigate(PUBLIC_ROUTES.VERIFICATION);
       }
     } catch (error) {
       const errorMessage = error?.data?.message || "Invalid Credentials";
       if (errorMessage === "Account not verified.") {
-        navigate("/verification");
+        navigate(PUBLIC_ROUTES.VERIFICATION);
       }
       toast.error(errorMessage);
     }

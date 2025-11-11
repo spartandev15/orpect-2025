@@ -24,11 +24,13 @@ const Layout = ({ children }) => {
   const logoutUser = () => {
     dispatch(logoutUserapi())
       .then((res) => {
-        logout();
+        logout(false); // Pass false to indicate regular user logout
         toast.success("Logged out successfully");
       })
       .catch((err) => {
-        console.log(err);
+        // Even if API call fails, still logout locally
+        logout(false);
+        toast.success("Logged out successfully");
       });
   };
 

@@ -13,6 +13,7 @@ import { saveFormData } from "../../../store/FormSlice";
 import LayoutOrpect from "../../LandingPage/Index";
 import { useLoginUserMutation } from "../../../apis/auth";
 import { useLoginSuperAdminMutation } from "../../../apis/SuperAdmin/auth";
+import { ADMIN_ROUTES } from "../../../config/routes.config";
 
 // RTK Query Hook
 
@@ -30,7 +31,7 @@ const SuperAdmin_login = () => {
   useEffect(() => {
     const isLoggedIn = !!getFromLocalStorage("superAdmintoken");
     if (isLoggedIn) {
-      navigate("/super-admin/dashboard");
+      navigate(ADMIN_ROUTES.DASHBOARD);
     }
   }, [navigate]);
 
@@ -39,14 +40,14 @@ const SuperAdmin_login = () => {
       dispatch(saveFormData(null));
       const response = await loginSuperAdmin(values).unwrap();
       console.log(response)
-      navigate("/super-admin/dashboard");
+      navigate(ADMIN_ROUTES.DASHBOARD);
       if (response?.status) {
         setToLocalStorage("user", response?.user);
         setToLocalStorage("token", response?.token);
         setToLocalStorage("superAdmintoken", response?.token); // Store super admin token separately
-        navigate("/super-admin/dashboard");
+        navigate(ADMIN_ROUTES.DASHBOARD);
       } else {
-        navigate("/super-admin/login");
+        navigate(ADMIN_ROUTES.LOGIN);
       }
     } catch (error) {
       const errorMessage = error?.data?.message || "Invalid Credentials";

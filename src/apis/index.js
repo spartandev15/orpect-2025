@@ -55,11 +55,12 @@
 
 // export default instance;
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getFromLocalStorage, removeAllFromLocalStorage } from "../helper";
+import { getFromLocalStorage } from "../helper";
 import { toast } from "react-toastify";
+import { BASE_URL } from "../config/api.config";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://spartanbots.xyz/borpact/public/api",
+  baseUrl: BASE_URL,
   prepareHeaders: (headers) => {
     const token = getFromLocalStorage("token");
     if (token) {

@@ -1,19 +1,16 @@
 import axios from 'axios';
 import { getFromLocalStorage ,removeAllFromLocalStorage} from '../helper';
 import { toast } from 'react-toastify';
+import { API_CONFIG } from '../config/api.config';
+import { ADMIN_ROUTES, PUBLIC_ROUTES } from '../config/routes.config';
 
 let isToastShown = false;
 
 // Create an instance of Axios
 const instance = axios.create({
-  // baseURL: process.env.REACT_APP_BASE_URL,
-  baseURL: "https://spartanbots.xyz/borpact/public/api",
-
-  
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-  },
+  baseURL: API_CONFIG.baseURL,
+  timeout: API_CONFIG.timeout,
+  headers: API_CONFIG.headers,
 });
 
 // Add request interceptor
@@ -38,9 +35,18 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response.status === 401 && !isToastShown) {
-      logout();
-      toast.error(error?.response?.data.message);
+    if (error.response && error.response.status === 401 && !isToastShown) {
+      // Auto-detect user type for logout
+      const superAdminToken = getFromLocalStorage("superAdmintoken");
+      removeAllFromLocalStorage();
+      
+      if (superAdminToken) {
+        window.location.replace(ADMIN_ROUTES.LOGIN);
+      } else {
+        window.location.replace(PUBLIC_ROUTES.LOGIN);
+      }
+      
+      toast.error(error?.response?.data?.message || "Session expired. Please login again.");
       isToastShown = true; // Set the flag to true after showing the toast.
     }
     // Handle response error, if needed
@@ -48,9 +54,15 @@ instance.interceptors.response.use(
   }
 );
 
-export const logout = () => {
+export const logout = (isAdmin = false) => {
   removeAllFromLocalStorage();
-  window.location.replace('/orpect/login');
+  
+  // Redirect based on user type
+  if (isAdmin) {
+    window.location.replace(ADMIN_ROUTES.LOGIN);
+  } else {
+    window.location.replace(PUBLIC_ROUTES.LOGIN);
+  }
 };
 
 export default instance;

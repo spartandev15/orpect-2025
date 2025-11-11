@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { getFromLocalStorage } from '../helper';
+import { ADMIN_ROUTES, COMPANY_ROUTES, PUBLIC_ROUTES } from '../config/routes.config';
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
@@ -23,17 +24,17 @@ const ProtectedRoute = ({ children }) => {
   const superAdminToken = getFromLocalStorage("superAdmintoken");
   
   // Check if user is trying to access admin routes
-  const isAdminRoute = location.pathname.startsWith('/super-admin');
+  const isAdminRoute = location.pathname.startsWith(ADMIN_ROUTES.BASE);
   
   // If user has admin token, they should only access admin routes
   // Redirect to admin dashboard if they try to access regular user routes
   if (!isAdminRoute && superAdminToken) {
-    return <Navigate to="/super-admin/dashboard" replace />;
+    return <Navigate to={ADMIN_ROUTES.DASHBOARD} replace />;
   }
 
   // If user only has regular token and trying to access admin routes, redirect to regular dashboard
   if (isAdminRoute && regularToken && !superAdminToken) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={COMPANY_ROUTES.DASHBOARD} replace />;
   }
 
   // Regular users should only access non-admin routes
@@ -43,7 +44,7 @@ const ProtectedRoute = ({ children }) => {
   return isLoggedIn ? (
     children
   ) : (
-   <Navigate to="/" replace />
+   <Navigate to={PUBLIC_ROUTES.HOME} replace />
   );
   };
 

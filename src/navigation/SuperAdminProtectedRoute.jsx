@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { getFromLocalStorage } from '../helper';
+import { ADMIN_ROUTES, COMPANY_ROUTES } from '../config/routes.config';
 
 const SuperAdminProtectedRoute = ({ children }) => {
   useEffect(() => {
@@ -23,12 +24,12 @@ const SuperAdminProtectedRoute = ({ children }) => {
   
   // If user only has regular token (not admin token), redirect to regular dashboard
   if (regularToken && !superAdminToken) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to={COMPANY_ROUTES.DASHBOARD} replace />;
   }
 
   // If no admin token, redirect to admin login
   if (!superAdminToken) {
-    return <Navigate to="/super-admin/login" replace />;
+    return <Navigate to={ADMIN_ROUTES.LOGIN} replace />;
   }
 
   // User has admin token, allow access
