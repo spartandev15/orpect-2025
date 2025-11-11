@@ -4,7 +4,7 @@ import Popup from 'reactjs-popup';
 import { toast } from 'react-toastify';
 import { useDeleteNotificationByIdMutation } from '../../apis/SuperAdmin/notification';
 
-const NotificationDelete= ({ id }) => {
+const NotificationDelete= ({ id, onDeleteSuccess }) => {
   const [loading, setLoading] = useState(false);
   const popupRef = React.createRef();
   const [deleteNotificationById,{isSuccess}] = useDeleteNotificationByIdMutation();
@@ -21,18 +21,24 @@ const NotificationDelete= ({ id }) => {
       await deleteNotificationById(id).unwrap();
       toast.success("Successfully Deleted");
       handleClosePopup();
-      // window.location.reload(); // Optional: better to use state management instead
+      if (onDeleteSuccess) {
+        onDeleteSuccess();
+      }
     } catch (err) {
-      toast.error("Failed to delete employee.");
+      toast.error("Failed to delete notification.");
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 useEffect(()=>{
-  handleClosePopup();
-
-},[isSuccess])
+  if (isSuccess) {
+    handleClosePopup();
+    if (onDeleteSuccess) {
+      onDeleteSuccess();
+    }
+  }
+},[isSuccess, onDeleteSuccess])
   return (
     <>
       <Popup

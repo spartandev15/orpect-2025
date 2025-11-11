@@ -47,7 +47,7 @@ const NotificationList = () => {
     try {
       // Mark all notifications as read (you can customize this logic as needed)
       const notificationIds = notifications.map((notification) => notification.id);
-      await isReadNotification({ notification_ids: notificationIds });
+      await isReadNotification({ notification_ids: notificationIds }).unwrap();
       refetch(); // Refetch notifications after marking them as read
     } catch (error) {
       console.error("Error marking notifications as read:", error);
@@ -112,14 +112,21 @@ const NotificationList = () => {
                       <td>
                         <button
                           className={`btn ${notification.is_read ? "btn-success" : "btn-danger"}`}
-                          onClick={() => isReadNotificationById({ notification_id: notification.id })}
+                          onClick={async () => {
+                            try {
+                              await isReadNotificationById({ notification_id: notification.id }).unwrap();
+                              refetch();
+                            } catch (error) {
+                              console.error("Error marking notification as read:", error);
+                            }
+                          }}
                         >
                           {notification.is_read ? "Read" : "Unread"}
                         </button>
                       </td>
                       <td>{new Date(notification.created_at).toLocaleString()}</td>
                       <td className="sticky-column-last">
-                        <NotificationDelete id={notification?.id} />
+                        <NotificationDelete id={notification?.id} onDeleteSuccess={refetch} />
                       </td>
                     </tr>
                   ))

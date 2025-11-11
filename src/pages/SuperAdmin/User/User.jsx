@@ -22,7 +22,7 @@ const User = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  const { data, isLoading } = useGetAllAdminsQuery({page: currentPage, search: debouncedSearch});
+  const { data, isLoading, refetch } = useGetAllAdminsQuery({page: currentPage, search: debouncedSearch});
 
   const admins = data?.allAdmins?.data || [];
   const totalPages = data?.allAdmins?.last_page || 1;
@@ -114,7 +114,7 @@ const User = () => {
                           </button>
                         </Link>
                         &nbsp;&nbsp;
-                        <DeleteTableUser id={admin?.sid} />
+                        <DeleteTableUser id={admin?.sid} onDeleteSuccess={refetch} />
                       </td>
                     </tr>
                   ))

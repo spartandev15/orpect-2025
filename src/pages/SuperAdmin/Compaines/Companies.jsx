@@ -24,7 +24,7 @@ const Companies = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  const { data, isLoading } = useGetAllCompaniesQuery({ page: currentPage, search: debouncedSearch });
+  const { data, isLoading, refetch } = useGetAllCompaniesQuery({ page: currentPage, search: debouncedSearch });
   const [accountVerified, { isLoading: verifiedLoading, error }] = useAccountVerifiedMutation()
   const companies = data?.allCompanies?.data || [];
   const totalPages = data?.allCompanies?.last_page || 1;
@@ -33,6 +33,7 @@ const Companies = () => {
     try {
       await accountVerified(id).unwrap();
       toast.success("Company has been successfully verified.");
+      refetch();
     } catch (err) {
       console.error("Verification failed:", err);
     }
@@ -140,7 +141,7 @@ const Companies = () => {
                           </button>
                         </Link>
                         &nbsp;&nbsp;
-                        <ComapnyDelete id={company?.id} />
+                        <ComapnyDelete id={company?.id} onDeleteSuccess={refetch} />
                         </span>
                       </td>
                       
