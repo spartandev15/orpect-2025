@@ -43,6 +43,7 @@ const SuperAdmin_login = () => {
       if (response?.status) {
         setToLocalStorage("user", response?.user);
         setToLocalStorage("token", response?.token);
+        setToLocalStorage("superAdmintoken", response?.token); // Store super admin token separately
         navigate("/super-admin/dashboard");
       } else {
         navigate("/super-admin/login");

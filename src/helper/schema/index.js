@@ -331,10 +331,8 @@ export const addCompanySchema = yup.object().shape({
   
 
   companyPhone: yup.string()
-    .matches(/^[0-9]+$/, "Only numbers are allowed")
-    .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number must be at most 15 digits")
-    .required("Company Phone is required"),
+    .required("Company Phone is required")
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
 
   registrationNumber: yup.string()
     .required("Registration Number is required"),

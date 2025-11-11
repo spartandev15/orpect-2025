@@ -12,6 +12,7 @@ import { setEmpType, setSearchValue } from "../../store/DashboardSlice";
 import { toast } from "react-toastify";
 import { logout } from "../../api/logout";
 import NotificationDropdown from "../extras/Notification/NotificationBell";
+import { Navigate } from "react-router-dom";
 
 // Routes configuration array
 const sidebarRoutes = [
@@ -77,6 +78,12 @@ console.log(notifications)
   const user = getFromLocalStorage("user");
   const profileImage = getFromLocalStorage("profileImage");
   const location = useLocation();
+
+  // Check for super admin authentication - additional layer of protection
+  const superAdminToken = getFromLocalStorage("superAdmintoken");
+  const regularToken = getFromLocalStorage("token");
+  
+  
 
   // Check if current route matches submenu items and open submenu accordingly
   useEffect(() => {
@@ -238,7 +245,15 @@ console.log(notifications)
     window.scrollTo(0, 0);
   }, []);
 
+// If user only has regular token (not admin), redirect to dashboard
+if (regularToken && !superAdminToken) {
+  return <Navigate to="/dashboard" replace />;
+}
 
+// If no admin token at all, redirect to admin login
+if (!superAdminToken) {
+  return <Navigate to="/super-admin/login" replace />;
+}
   return (
     <>
       <div className="d-flex" id="wrapper">

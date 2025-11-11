@@ -6,6 +6,7 @@ import LoginWrapper from "../pages/auth-pages/Login";
 import ForgetPassword from "../pages/auth-pages/ForgetPassword";
 import ResetPassword from "../pages/auth-pages/ResetPassword";
 import ProtectedRoute from "./ProtectedRoutes";
+import SuperAdminProtectedRoute from "./SuperAdminProtectedRoute";
 
 import EmployeeList from "../pages/employee/EmployeeList";
 import AddEmployee from "../pages/employee/AddEmployee";
@@ -283,7 +284,11 @@ const Navigation = () => {
             }
           />
                  <Route path="super-admin/login" element={<SuperAdmin_login />} />
-               <Route path="/super-admin" element={<SuperAdminLayout/>}>
+               <Route path="/super-admin" element={
+                 <SuperAdminProtectedRoute>
+                   <SuperAdminLayout/>
+                 </SuperAdminProtectedRoute>
+               }>
                  <Route path="dashboard" element={<Dashboard />} />
                  <Route path="user" element={<User />} />
                  <Route path="profile" element={<SuperAdminProfile/>} />

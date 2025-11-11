@@ -159,12 +159,12 @@ const AddCompany = () => {
               name="companyPhone" 
               value={values.companyPhone} 
               onChange={(e) => {
-                const value = e.target.value.replace(/\D/g, ''); // Only allow digits
+                const value = e.target.value.replace(/\D/g, '').slice(0, 10); // Only allow digits, max 10
                 setFieldValue("companyPhone", value);
               }}
               label="Company Phone"
               star={true} 
-              maxLength="15" 
+              maxLength="10" 
             />
             {errors.companyPhone && touched.companyPhone && <p className="text-danger msg">{errors.companyPhone}</p>}
           </div>
