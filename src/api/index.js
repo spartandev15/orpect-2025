@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getFromLocalStorage ,removeAllFromLocalStorage} from '../helper';
 import { toast } from 'react-toastify';
 import { API_CONFIG } from '../config/api.config';
-import { ADMIN_ROUTES, PUBLIC_ROUTES } from '../config/routes.config';
+import { ADMIN_ROUTES, PUBLIC_ROUTES, getFullRoute } from '../config/routes.config';
 
 let isToastShown = false;
 
@@ -41,9 +41,9 @@ instance.interceptors.response.use(
       removeAllFromLocalStorage();
       
       if (superAdminToken) {
-        window.location.replace(ADMIN_ROUTES.LOGIN);
+        window.location.replace(getFullRoute(ADMIN_ROUTES.LOGIN));
       } else {
-        window.location.replace(PUBLIC_ROUTES.LOGIN);
+        window.location.replace(getFullRoute(PUBLIC_ROUTES.LOGIN));
       }
       
       toast.error(error?.response?.data?.message || "Session expired. Please login again.");
@@ -57,11 +57,11 @@ instance.interceptors.response.use(
 export const logout = (isAdmin = false) => {
   removeAllFromLocalStorage();
   
-  // Redirect based on user type
+  // Redirect based on user type (use getFullRoute to include base path)
   if (isAdmin) {
-    window.location.replace(ADMIN_ROUTES.LOGIN);
+    window.location.replace(getFullRoute(ADMIN_ROUTES.LOGIN));
   } else {
-    window.location.replace(PUBLIC_ROUTES.LOGIN);
+    window.location.replace(getFullRoute(PUBLIC_ROUTES.LOGIN));
   }
 };
 

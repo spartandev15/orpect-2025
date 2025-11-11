@@ -9,7 +9,27 @@
  * - Company Routes: Protected routes for company users
  * - Admin Routes: Protected routes for super admin users
  * - Employee Routes: Routes for employee dashboard
+ * 
+ * Environment Variables:
+ * - REACT_APP_BASE_PATH: Override the default base path (default: '/orpect')
  */
+
+// ============================================
+// BASE PATH CONFIGURATION
+// ============================================
+// Default base path for the application
+const DEFAULT_BASE_PATH = '/orpect';
+
+// Get base path from environment variable or use default
+export const BASE_PATH = process.env.REACT_APP_BASE_PATH || DEFAULT_BASE_PATH;
+
+// Ensure base path starts with '/' and doesn't end with '/'
+export const BASE_PATH_CLEAN = BASE_PATH.startsWith('/') 
+  ? (BASE_PATH.endsWith('/') ? BASE_PATH.slice(0, -1) : BASE_PATH)
+  : `/${BASE_PATH}`;
+
+// Export for use in Router basename
+export const ROUTER_BASENAME = BASE_PATH_CLEAN;
 
 // ============================================
 // PUBLIC ROUTES (No Authentication Required)
@@ -134,6 +154,28 @@ export const replaceRouteParams = (route, params = {}) => {
     result = result.replace(`:${key}`, params[key]);
   });
   return result;
+};
+
+/**
+ * Get full route path with base path prefix
+ * @param {string} route - Route path (e.g., '/dashboard')
+ * @returns {string} - Full route path with base path (e.g., '/orpect/dashboard')
+ * 
+ * @example
+ * getFullRoute(COMPANY_ROUTES.DASHBOARD)
+ * // Returns: '/orpect/dashboard'
+ */
+export const getFullRoute = (route) => {
+  // Don't add base path to routes that already include it or are absolute URLs
+  if (route.startsWith('http://') || route.startsWith('https://')) {
+    return route;
+  }
+  
+  // Ensure route starts with '/'
+  const cleanRoute = route.startsWith('/') ? route : `/${route}`;
+  
+  // Combine base path with route
+  return `${BASE_PATH_CLEAN}${cleanRoute}`;
 };
 
 /**

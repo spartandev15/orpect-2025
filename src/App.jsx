@@ -7,6 +7,7 @@ import { logoutAllTabs } from './api/logout';
 import CookieConsent from './component/Cookies';
 import { messaging, getToken, onMessage } from './firebase';
 import Notification from './Notification';
+import { ROUTER_BASENAME } from './config/routes.config';
 
 
 
@@ -55,7 +56,7 @@ function App() {
     <ToastContainer/>
         <CookieConsent/>
         <Notification />
-    <Router basename="/orpect">
+    <Router basename={ROUTER_BASENAME}>
       <Navigation/>
     </Router>
     </>
