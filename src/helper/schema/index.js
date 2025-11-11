@@ -37,10 +37,10 @@ export const signupSchema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{6,}$/,
-      "Use 6 or more characters with a mix of letters, numbers & symbols"
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/,
+      "Use 8 or more characters with a mix of letters, numbers & symbols"
     ),
   password_confirmation: yup
     .string()
@@ -56,10 +56,10 @@ export const resetPasswordSchema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{6,}$/,
-      "Use 6 or more characters with a mix of letters, numbers & symbols"
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/,
+      "Use 8 or more characters with a mix of letters, numbers & symbols"
     ),
   password_confirmation: yup
     .string()
@@ -267,7 +267,7 @@ export const adduserSchema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
       "Password must contain at least one uppercase letter, one lowercase letter, and one number"
@@ -322,9 +322,9 @@ export const addCompanySchema = yup.object().shape({
     .required("Email is required"),
 
     password: yup.string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
     )
     .required("Password is required"),

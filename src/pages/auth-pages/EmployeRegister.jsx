@@ -2,9 +2,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import LayoutOrpect from "../LandingPage/Index";
+import useToggle from "../../helper/hooks/useToggle";
 
 
 const EmployeeRegister = () => {
+  const [showPassword, toggleShowPassword] = useToggle();
 
     return (
         <>
@@ -52,11 +54,18 @@ const EmployeeRegister = () => {
                                         </div>
                                         <div className="col-lg-6 mb-4 pd-2">
                                             <div className="form-outline">
-                                                <input type="password" className="form-control" required />
+                                                <input 
+                                                  type={showPassword ? "text" : "password"} 
+                                                  className="form-control" 
+                                                  required 
+                                                />
                                                 <label className="form-label" for="typeText" style={{ background: "#fff" }}>Password</label>
-                                                <span className="pwdeye"    >
-                                                    <i className="fa fa-eye icn" id="togglePassword"></i>
-                                                    <i className="fa fa-eye-slash icn" id="togglePassword"></i>
+                                                <span className="pwdeye" onClick={toggleShowPassword} style={{ cursor: "pointer" }}>
+                                                    {showPassword ? (
+                                                        <i className="far fa-eye"></i>
+                                                    ) : (
+                                                        <i className="fa fa-eye-slash"></i>
+                                                    )}
                                                 </span>
                                                 <span style={{ position: "absolute", bottom: "-30px", left: "0" }}> </span>
                                             </div>
