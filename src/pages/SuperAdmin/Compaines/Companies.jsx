@@ -84,8 +84,7 @@ const Companies = () => {
                   <th style={{ background: "#e1e9ed" }}>Phone</th>
                   <th style={{ background: "#e1e9ed" }}>Designation</th>
                   {/* <th style={{ background: "#e1e9ed" }}>Created</th> */}
-                  <th style={{ background: "#e1e9ed" }}>is_account_verified</th>
-
+                  <th style={{ background: "#e1e9ed" }}>Account Status</th>
 
                   <th className="sticky-column-last" style={{ background: "#e1e9ed" }}>Action</th>
                 </tr>

@@ -44,6 +44,16 @@ export const companiesApi = api.injectEndpoints({
         },
         invalidatesTags: ['Companies'],
       }),
+      updateCompany: builder.mutation({
+        query: ({ id, formData }) => {
+          return {
+            url: `admin/updateCompany/${id}`,
+            method: "PUT",
+            body: formData,
+          };
+        },
+        invalidatesTags: ['Companies'],
+      }),
   
   }),
   overrideExisting: false,
@@ -54,5 +64,6 @@ export const {
  useGetCompaniesByIdQuery,
  useDeleteCompanyByIdMutation,
  useAccountVerifiedMutation,
- useAddCompanyMutation
+ useAddCompanyMutation,
+ useUpdateCompanyMutation
 } = companiesApi;

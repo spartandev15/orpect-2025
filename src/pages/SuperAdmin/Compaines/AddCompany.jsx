@@ -162,7 +162,7 @@ const AddCompany = () => {
                 const value = e.target.value.replace(/\D/g, ''); // Only allow digits
                 setFieldValue("companyPhone", value);
               }}
-              label="Company Phone" 
+              label="Company Phone"
               star={true} 
               maxLength="15" 
             />

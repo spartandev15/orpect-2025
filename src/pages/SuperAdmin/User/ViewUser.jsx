@@ -356,7 +356,6 @@ console.log(data)
                     <div className="row">
                       <SingleField
                         title="Address"
-                        style={{ textAlign: "left" }}
                         answer={renderValue(profile?.address)}
                       />
                     </div>
