@@ -39,7 +39,9 @@ const AddPosition = () => {
       } else if (res?.message === "Successfully added" || res?.status) {
         toast.success("Successfully added");
         resetForm(); // clear input
-        refetch(); // refresh table
+        setCurrentPage(1); // Reset to first page to see newly added position
+        // RTK Query will automatically refetch due to invalidatesTags, but we can also call refetch explicitly
+        await refetch(); // refresh table
       } else {
         toast.error(res?.message || "Something went wrong");
       }

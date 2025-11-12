@@ -540,7 +540,9 @@ const ViewEmployee = () => {
                                 label="Increment Date"
                                 // star={true}
                               />
-                           
+                              {errors.increment_date && touched.increment_date ? (
+                                <p className="text-danger msg">{errors.increment_date}</p>
+                              ) : null}
                             </div>
                           </div>
                         </div>
@@ -555,8 +557,9 @@ const ViewEmployee = () => {
                                 label="Last Increment Date"
                                 // star={true}
                               />
-
-                              
+                              {errors.last_increment_date && touched.last_increment_date ? (
+                                <p className="text-danger msg">{errors.last_increment_date}</p>
+                              ) : null}
                             </div>
                           </div>
                           <div className="col-lg-6 col-md-6 col-sm-12">
@@ -841,7 +844,7 @@ const ViewEmployee = () => {
                     <div className="row">
                       <SingleField
                         title="Address"
-                        style={{ textAlign: "left" }}
+                        style={{ textAlign: "right" }}
                         answer={renderValue(employee?.permanent_address)}
                       />
                     </div>

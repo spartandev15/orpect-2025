@@ -761,7 +761,7 @@ const ViewExEmployee = () => {
                     <div className="row">
                       <SingleField
                         title="Address"
-                        style={{ textAlign: "left" }}
+                        style={{ textAlign: "right" }}
                         answer={renderValue(employee?.permanent_address)}
                       />
                     </div>

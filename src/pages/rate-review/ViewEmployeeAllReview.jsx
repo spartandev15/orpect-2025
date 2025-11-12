@@ -26,8 +26,24 @@ const ViewEmployeeAllReview = () => {
   }
 
   return (
-    <Layout>
-      <section id="view-review">
+    <>
+      <style>
+        {`
+          #view-review .companynamereview,
+          #view-review .product-thumbnail1 img,
+          #view-review .product-thumbnail1 h6,
+          #view-review .companynamereview * {
+            filter: none !important;
+            -webkit-filter: none !important;
+            color: inherit !important;
+            text-shadow: none !important;
+            user-select: auto !important;
+            -webkit-user-select: auto !important;
+          }
+        `}
+      </style>
+      <Layout>
+        <section id="view-review">
         <div className="container">
           <div className="row view-rw">
             <div className="col-lg-12">
@@ -190,6 +206,7 @@ const ViewEmployeeAllReview = () => {
         </div>
       </section>
     </Layout>
+    </>
   );
 };
 

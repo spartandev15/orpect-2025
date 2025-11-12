@@ -50,7 +50,23 @@ const   SearchEmployeeTable = () => {
   };
 
   return (
-    <div className="container-fluid viewemployee searchemploye">
+    <>
+      <style>
+        {`
+          .searchemploye .companynamereview,
+          .searchemploye .product-thumbnail1 img,
+          .searchemploye .product-thumbnail1 h6,
+          .searchemploye .companynamereview * {
+            filter: none !important;
+            -webkit-filter: none !important;
+            color: inherit !important;
+            text-shadow: none !important;
+            user-select: auto !important;
+            -webkit-user-select: auto !important;
+          }
+        `}
+      </style>
+      <div className="container-fluid viewemployee searchemploye">
       <IsCurrentEmployeeTable />
 
       <div className="row">
@@ -284,7 +300,8 @@ const   SearchEmployeeTable = () => {
           />
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 export default SearchEmployeeTable;

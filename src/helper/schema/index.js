@@ -89,7 +89,28 @@ export const addEmployeeSchema = yup.object().shape({
   dateOfJoining: yup
     .date()
     .max(new Date(), "Date of Joining must be a past date")
-    .required("Date of Joining is required"),
+    .required("Date of Joining is required")
+    .test(
+      "age-validation",
+      "Employee must be at least 18 years old at the time of joining",
+      function (value) {
+        const { dateOfBirth } = this.parent;
+        if (!dateOfBirth || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(dateOfBirth);
+        const joiningDate = new Date(value);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 18;
+      }
+    ),
 
     linkedIn: yup.string().matches(
       /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\b/,
@@ -102,10 +123,72 @@ export const addEmployeeSchema = yup.object().shape({
   dateOfBirth: yup
     .date()
     .max(new Date(), "Date of Birth must be a past date")
-    .required("Date of Birth is required"),
+    .required("Date of Birth is required")
+    .test(
+      "age-validation",
+      "Employee must be at least 18 years old at the time of joining",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!dateOfJoining || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 18;
+      }
+    ),
     postalCode: yup.number()
     .typeError('Postal code must be a number')
+    .nullable(),
+  increment_date: yup
+    .date()
     .nullable()
+    .max(new Date(), "Increment date must not be a future date")
+    .test(
+      "increment-after-joining",
+      "Increment date must be after the joining date",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!value || !dateOfJoining) return true; // Skip if either date is missing
+        const incrementDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        return incrementDate >= joiningDate;
+      }
+    ),
+  last_increment_date: yup
+    .date()
+    .nullable()
+    .max(new Date(), "Last increment date must not be a future date")
+    .test(
+      "last-increment-after-joining",
+      "Last increment date must be after the joining date",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!value || !dateOfJoining) return true; // Skip if either date is missing
+        const lastIncrementDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        return lastIncrementDate >= joiningDate;
+      }
+    )
+    .test(
+      "last-increment-after-increment",
+      "Last increment date must be after or equal to increment date",
+      function (value) {
+        const { increment_date } = this.parent;
+        if (!value || !increment_date) return true; // Skip if either date is missing
+        const lastIncrementDate = new Date(value);
+        const incrementDate = new Date(increment_date);
+        return lastIncrementDate >= incrementDate;
+      }
+    ),
 });
 
 export const RateReviewSchema = yup.object().shape({
@@ -216,11 +299,53 @@ export const editCurrentEmployeeSchema = yup.object().shape({
   dateOfBirth: yup
     .date()
     .max(new Date(), "Date of Birth must be a past date")
-    .required("Date of Birth is required"),
+    .required("Date of Birth is required")
+    .test(
+      "age-validation",
+      "Employee must be at least 18 years old at the time of joining",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!dateOfJoining || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 18;
+      }
+    ),
   dateOfJoining: yup
     .date()
     .max(new Date(), "Date of Joining must be a past date")
-    .required("Date of Joining is required"),
+    .required("Date of Joining is required")
+    .test(
+      "age-validation",
+      "Employee must be at least 18 years old at the time of joining",
+      function (value) {
+        const { dateOfBirth } = this.parent;
+        if (!dateOfBirth || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(dateOfBirth);
+        const joiningDate = new Date(value);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 18;
+      }
+    ),
     linkedIn: yup.string().matches(
       /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\b/,
       'Invalid LinkedIn URL format'
@@ -228,7 +353,48 @@ export const editCurrentEmployeeSchema = yup.object().shape({
     
   postalCode: yup.number()
   .typeError('Postal code must be a number')
-  .nullable()
+  .nullable(),
+  increment_date: yup
+    .date()
+    .nullable()
+    .max(new Date(), "Increment date must not be a future date")
+    .test(
+      "increment-after-joining",
+      "Increment date must be after the joining date",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!value || !dateOfJoining) return true; // Skip if either date is missing
+        const incrementDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        return incrementDate >= joiningDate;
+      }
+    ),
+  last_increment_date: yup
+    .date()
+    .nullable()
+    .max(new Date(), "Last increment date must not be a future date")
+    .test(
+      "last-increment-after-joining",
+      "Last increment date must be after the joining date",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!value || !dateOfJoining) return true; // Skip if either date is missing
+        const lastIncrementDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        return lastIncrementDate >= joiningDate;
+      }
+    )
+    .test(
+      "last-increment-after-increment",
+      "Last increment date must be after or equal to increment date",
+      function (value) {
+        const { increment_date } = this.parent;
+        if (!value || !increment_date) return true; // Skip if either date is missing
+        const lastIncrementDate = new Date(value);
+        const incrementDate = new Date(increment_date);
+        return lastIncrementDate >= incrementDate;
+      }
+    ),
 });
 
 export const updateProfilSchema = yup.object().shape({
