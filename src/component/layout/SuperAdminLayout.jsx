@@ -37,23 +37,27 @@ const sidebarRoutes = [
     ],
   },
   {
-    type: "link",
-    path: "/super-admin/companies",
-    label: "Companies",
-    icon: "fa fa-list",
-  },
-  {
-    type: "link",
-    path: "/super-admin/addcompany",
-    label: "Add Company",
+    id: "submenu2",
+    type: "submenu",
+    label: "Company",
     icon: "fa fa-building",
+    submenu: [
+
+      {
+        path: "/super-admin/addcompany",
+        label: "Add Company",
+        icon: "fa fa-plus",
+        className: "logouticon curentemploye2",
+      },
+      {
+        path: "/super-admin/companies",
+        label: "Company List",
+        icon: "fa fa-list",
+      },
+      
+    ],
   },
-  {
-    type: "link",
-    path: "/super-admin/profile",
-    label: "Profile",
-    icon: "fa fa-user",
-  },
+ 
   {
     type: "link",
     path: "/super-admin/notification-list",
@@ -65,6 +69,12 @@ const sidebarRoutes = [
     path: "/super-admin/data-request",
     label: "Data Request",
     icon: "fa fa-book",
+  },
+  {
+    type: "link",
+    path: "/super-admin/profile",
+    label: "Profile",
+    icon: "fa fa-user",
   },
 ];
 
