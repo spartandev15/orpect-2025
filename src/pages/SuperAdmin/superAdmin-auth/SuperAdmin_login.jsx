@@ -40,21 +40,24 @@ const SuperAdmin_login = () => {
       dispatch(saveFormData(null));
       const response = await loginSuperAdmin(values).unwrap();
       console.log(response)
-      navigate(ADMIN_ROUTES.DASHBOARD);
-      if (response?.status) {
+      if (response?.status === "error") {
+        toast.error(response?.message || "Login failed");
+      } else if (response?.status) {
         setToLocalStorage("user", response?.user);
         setToLocalStorage("token", response?.token);
         setToLocalStorage("superAdmintoken", response?.token); // Store super admin token separately
         navigate(ADMIN_ROUTES.DASHBOARD);
       } else {
         navigate(ADMIN_ROUTES.LOGIN);
+        toast.error(response?.message || "Login failed");
       }
     } catch (error) {
-      const errorMessage = error?.data?.message || "Invalid Credentials";
+      const errorMessage = error?.data?.message || error?.message || "Invalid Credentials";
       // if (errorMessage === "Account not verified.") {
       //   navigate("/verification");
       // }
       toast.error(errorMessage);
+      console.error("Login failed:", error);
     }
   };
 

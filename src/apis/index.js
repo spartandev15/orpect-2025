@@ -73,16 +73,33 @@ const baseQuery = fetchBaseQuery({
 const customBaseQuery = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
+  // Handle API error format: {status:"error",message:""}
+  if (result.data && result.data.status === "error") {
+    // Transform success response with error status to error format
+    result = {
+      error: {
+        status: "CUSTOM_ERROR",
+        data: {
+          status: "error",
+          message: result.data.message || "An error occurred"
+        }
+      }
+    };
+  }
+
   if (result.error) {
+    // Handle HTTP errors (401, 404, 500, etc.)
     if (result.error.status === 401) {
       toast.error(result.error.data?.message || "Unauthorized");
       // removeAllFromLocalStorage();
       // window.location.replace('/orpect');
+    } else if (result.error.data?.status === "error") {
+      // Handle custom error format from API
+      toast.error(result.error.data?.message || "Something went wrong");
+    } else if (result.error.data?.message) {
+      // Handle other error messages
+      toast.error(result.error.data.message || "Something went wrong");
     }
-    //  else if (result.error.data?.message) {
-    //   // Optional global toast for non-401 errors
-    //   toast.error(result?.error?.data?.message || "Something Went Wrong");
-    // }
   }
 
   return result;

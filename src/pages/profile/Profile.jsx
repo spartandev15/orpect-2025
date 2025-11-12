@@ -879,22 +879,34 @@ const Profile = () => {
 
         try {
           const response = await updateProfile({ formData }).unwrap();
-          setLoading(false);
-          removeFromLocalStorage("user");
-          setToLocalStorage("user", response?.user);
-          toast.success("Successfully saved");
-          // Close forms after successful submission
-          setShowInfoForm(false);
-          setShowAddressForm(false);
-          setSubmitting(false);
+          if (response?.status === "error") {
+            toast.error(response?.message || "Failed to update profile");
+            setLoading(false);
+            setSubmitting(false);
+          } else {
+            setLoading(false);
+            removeFromLocalStorage("user");
+            setToLocalStorage("user", response?.user);
+            toast.success("Successfully saved");
+            // Close forms after successful submission
+            setShowInfoForm(false);
+            setShowAddressForm(false);
+            setSubmitting(false);
+          }
         } catch (error) {
+          const errorMessage = error?.data?.message || error?.response?.data?.message || error?.message;
           if (error?.response?.data?.errors?.logoImage) {
             toast.error("logo image field must not be greater than 2048 kilobytes");
-          } else {
+          } else if (error?.response?.data?.errors?.companySocialLink) {
             toast.error(error?.response?.data?.errors.companySocialLink);
+          } else if (errorMessage) {
+            toast.error(errorMessage);
+          } else {
+            toast.error("Failed to update profile");
           }
           setLoading(false);
           setSubmitting(false);
+          console.error("Update profile failed:", error);
         }
       },
     });

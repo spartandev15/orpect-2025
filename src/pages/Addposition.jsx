@@ -34,7 +34,9 @@ const AddPosition = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
       const res = await addPosition(values).unwrap();
-      if (res.message === "Successfully added") {
+      if (res?.status === "error") {
+        toast.error(res?.message || "Failed to add position");
+      } else if (res?.message === "Successfully added" || res?.status) {
         toast.success("Successfully added");
         resetForm(); // clear input
         refetch(); // refresh table
@@ -42,7 +44,8 @@ const AddPosition = () => {
         toast.error(res?.message || "Something went wrong");
       }
     } catch (error) {
-      toast.error(error?.data?.message || "An error occurred");
+      const errorMessage = error?.data?.message || error?.message || "An error occurred";
+      toast.error(errorMessage);
       console.error("Add position error:", error);
     }
   };

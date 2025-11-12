@@ -87,15 +87,20 @@ const ComapnyDelete= ({ id, onDeleteSuccess }) => {
 
     setLoading(true);
     try {
-      await deleteCompanyById(id).unwrap();
-      toast.success("Successfully Deleted");
-      handleClosePopup();
-      if (onDeleteSuccess) {
-        onDeleteSuccess();
+      const response = await deleteCompanyById(id).unwrap();
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to delete company");
+      } else {
+        toast.success("Successfully Deleted");
+        handleClosePopup();
+        if (onDeleteSuccess) {
+          onDeleteSuccess();
+        }
       }
     } catch (err) {
-      toast.error("Failed to delete company.");
-      console.error(err);
+      const errorMessage = err?.data?.message || err?.message || "Failed to delete company.";
+      toast.error(errorMessage);
+      console.error("Delete company failed:", err);
     } finally {
       setLoading(false);
     }

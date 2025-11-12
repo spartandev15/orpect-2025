@@ -87,15 +87,20 @@ const DeleteTableUser= ({ id, onDeleteSuccess }) => {
 
     setLoading(true);
     try {
-      await deleteUserById(id).unwrap();
-      toast.success("Successfully Deleted");
-      handleClosePopup();
-      if (onDeleteSuccess) {
-        onDeleteSuccess();
+      const response = await deleteUserById(id).unwrap();
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to delete user");
+      } else {
+        toast.success("Successfully Deleted");
+        handleClosePopup();
+        if (onDeleteSuccess) {
+          onDeleteSuccess();
+        }
       }
     } catch (err) {
-      toast.error("Failed to delete user.");
-      console.error(err);
+      const errorMessage = err?.data?.message || err?.message || "Failed to delete user.";
+      toast.error(errorMessage);
+      console.error("Delete user failed:", err);
     } finally {
       setLoading(false);
     }

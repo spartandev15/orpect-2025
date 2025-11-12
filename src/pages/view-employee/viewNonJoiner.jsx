@@ -131,19 +131,22 @@ const ViewNonJoiner = () => {
 
           const response = await updateEmployeeById({ id, formData }).unwrap();
           console.log(response)
-            if (response.status) {
+            if (response?.status === "error") {
+            toast.error(response?.message || "Failed to update employee");
+          } else if (response?.status) {
             toast.success("Successfully saved");
             navigate("/dashboard")
 
             // setLoading(false);
             // window.location.reload();
           } else {
-            const errorData = await response.json();
-            throw new Error(errorData.message);
+            toast.error(response?.message || "Something went wrong");
           }
         } catch (error) {
           // setLoading(false);
-          toast.error(error.message);
+          const errorMessage = error?.data?.message || error?.message || "Failed to update employee";
+          toast.error(errorMessage);
+          console.error("Update employee failed:", error);
         }
       },
     });

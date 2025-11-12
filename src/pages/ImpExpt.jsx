@@ -33,6 +33,11 @@ const ImportExportComponent = () => {
     try {
       const response = await excelExport(data).unwrap();
 
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to export file");
+        return;
+      }
+
       const fileUrl = response?.file_url;
       if (!fileUrl) {
         toast.error("File URL not found.");
@@ -42,8 +47,9 @@ const ImportExportComponent = () => {
       // Open PDF or CSV in new tab
       window.open(fileUrl, "_blank");
     } catch (error) {
+      const errorMessage = error?.data?.message || error?.message || "Failed to open file.";
+      toast.error(errorMessage);
       console.error("Error opening file:", error);
-      toast.error("Failed to open file.");
     }
   };
 
@@ -57,12 +63,8 @@ const ImportExportComponent = () => {
       const response = await importCSV(formData).unwrap();
       console.log("Response:", response);
   
-      if (response.status) {
-        toast.success(response.message || "File imported successfully");
-      } else {
-        // Main error message
-        toast.error(response.message || "Some entries failed to import.");
-  
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to import file");
         // Optional: Show details of the first error
         if (response.errorList?.length > 0) {
           const firstError = response.errorList[0];
@@ -70,12 +72,15 @@ const ImportExportComponent = () => {
             `Error for ${firstError.emp_name} (${firstError.emp_id}): ${firstError.message}`
           );
         }
-  
-        // Optional: You could render a modal or side panel with full errorList if needed
+      } else if (response?.status) {
+        toast.success(response.message || "File imported successfully");
+      } else {
+        toast.error(response?.message || "Some entries failed to import.");
       }
     } catch (error) {
+      const errorMessage = error?.data?.message || error?.message || "An error occurred during import. Please try again.";
+      toast.error(errorMessage);
       console.error("File import failed:", error);
-      toast.error("An error occurred during import. Please try again.");
     }
   };
   

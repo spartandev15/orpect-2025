@@ -102,16 +102,19 @@ const AddExEmployeeReview = () => {
           // });
           const response =  await addExEmployeeReview({ formData }).unwrap();
           
-          if (response?.status) {
+          if (response?.status === "error") {
+            toast.error(response?.message || "Failed to add review");
+          } else if (response?.status) {
             //  await response.json();
             toast.success("Successfully added");
             navigate("/ex-employee");
           } else {
-            const errorData = await response.json();
-            throw new Error(errorData?.message);
+            toast.error(response?.message || "Something went wrong");
           }
         } catch (error) {
-          toast.error(error.message);
+          const errorMessage = error?.data?.message || error?.message || "Failed to add review";
+          toast.error(errorMessage);
+          console.error("Add review failed:", error);
         } finally {
           // setLoading(false);
         }

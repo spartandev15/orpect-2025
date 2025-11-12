@@ -40,21 +40,26 @@ const LoginWrapper = () => {
       dispatch(saveFormData(null));
       const response = await loginUser(values).unwrap();
       console.log(response)
-      if (response?.is_verified === 1) {
+      if (response?.status === "error") {
+        toast.error(response?.message || "Login failed");
+        if (response?.message === "Account not verified.") {
+          navigate(PUBLIC_ROUTES.VERIFICATION);
+        }
+      } else if (response?.is_verified === 1) {
         setToLocalStorage("user", response?.user);
         setToLocalStorage("token", response?.token);
         navigate(COMPANY_ROUTES.DASHBOARD);
         dispatch(fetchPosition());
-
       } else {
         navigate(PUBLIC_ROUTES.VERIFICATION);
       }
     } catch (error) {
-      const errorMessage = error?.data?.message || "Invalid Credentials";
+      const errorMessage = error?.data?.message || error?.message || "Invalid Credentials";
       if (errorMessage === "Account not verified.") {
         navigate(PUBLIC_ROUTES.VERIFICATION);
       }
       toast.error(errorMessage);
+      console.error("Login failed:", error);
     }
   };
   // useEffect(() => {

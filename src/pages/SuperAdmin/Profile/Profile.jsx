@@ -86,19 +86,29 @@ const SuperAdminProfile = () => {
           const response = await updateProfileById({ id: 1, formData }).unwrap();
 
           console.log(response)
-          setLoading(false);
-          removeFromLocalStorage("user");
-          setToLocalStorage("user", response?.superadmin_data);
-          toast.success("Successfully saved");
-          setShowInfoForm(false);
-          setShowAddressForm(false);
-          setSubmitting(false);
+          if (response?.status === "error") {
+            toast.error(response?.message || "Failed to update profile");
+            setLoading(false);
+            setSubmitting(false);
+          } else {
+            setLoading(false);
+            removeFromLocalStorage("user");
+            setToLocalStorage("user", response?.superadmin_data);
+            toast.success("Successfully saved");
+            setShowInfoForm(false);
+            setShowAddressForm(false);
+            setSubmitting(false);
+          }
         } catch (error) {
+          const errorMessage = error?.data?.message || error?.response?.data?.message || error?.message;
           if (error?.response?.data?.errors?.image) {
             toast.error("Image size must not be greater than 2048 kilobytes");
+          } else if (errorMessage) {
+            toast.error(errorMessage);
           } else {
-            toast.error(error?.response?.data?.message || "An error occurred");
+            toast.error("An error occurred");
           }
+          console.error("Update profile failed:", error);
           setLoading(false);
           setSubmitting(false);
         }

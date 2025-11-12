@@ -47,8 +47,8 @@ export const companiesApi = api.injectEndpoints({
       updateCompany: builder.mutation({
         query: ({ id, formData }) => {
           return {
-            url: `admin/updateCompany/${id}`,
-            method: "PUT",
+            url: `admin/Companyupdate/${id}`,
+            method: "POST",
             body: formData,
           };
         },

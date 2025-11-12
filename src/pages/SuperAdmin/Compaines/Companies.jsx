@@ -31,10 +31,16 @@ const Companies = () => {
 
   const handleVerify = async (id) => {
     try {
-      await accountVerified(id).unwrap();
-      toast.success("Company has been successfully verified.");
-      refetch();
+      const response = await accountVerified(id).unwrap();
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to verify company");
+      } else {
+        toast.success("Company has been successfully verified.");
+        refetch();
+      }
     } catch (err) {
+      const errorMessage = err?.data?.message || err?.message || "Failed to verify company";
+      toast.error(errorMessage);
       console.error("Verification failed:", err);
     }
   };

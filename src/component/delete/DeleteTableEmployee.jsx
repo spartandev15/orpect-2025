@@ -87,13 +87,18 @@ const DeleteTableEmployee = ({ id }) => {
 
     setLoading(true);
     try {
-      await deleteEmployeeById(id).unwrap();
-      toast.success("Successfully Deleted");
-      handleClosePopup();
-      // window.location.reload(); // Optional: better to use state management instead
+      const response = await deleteEmployeeById(id).unwrap();
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to delete employee");
+      } else {
+        toast.success("Successfully Deleted");
+        handleClosePopup();
+        // window.location.reload(); // Optional: better to use state management instead
+      }
     } catch (err) {
-      toast.error("Failed to delete employee.");
-      console.error(err);
+      const errorMessage = err?.data?.message || err?.message || "Failed to delete employee.";
+      toast.error(errorMessage);
+      console.error("Delete employee failed:", err);
     } finally {
       setLoading(false);
     }

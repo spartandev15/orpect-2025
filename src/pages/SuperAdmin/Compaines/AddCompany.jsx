@@ -53,14 +53,18 @@ const AddCompany = () => {
 
         const response = await addCompany({ formData }).unwrap();
 
-        if (response.status) {
+        if (response?.status === "error") {
+          toast.error(response?.message || "Failed to add company");
+        } else if (response?.status) {
           toast.success("Successfully added");
           navigate("/super-admin/companies");
         } else {
-          throw new Error(response?.message);
+          toast.error(response?.message || "Something went wrong");
         }
       } catch (error) {
-        toast.error(error?.message || "Something went wrong");
+        const errorMessage = error?.data?.message || error?.message || "Something went wrong";
+        toast.error(errorMessage);
+        console.error("Add company failed:", error);
       }
     }
   });
