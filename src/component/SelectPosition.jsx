@@ -3,7 +3,7 @@
 
 // const SelectPostion = ({ nameValue, value, handleChange }) => {
 //   const { data } = useSelector((state) => state.data);
-  
+
 
 //   return (
 //     <select
@@ -26,18 +26,23 @@
 
 // export default SelectPostion;
 
-import React from "react";
+import React, {useEffect} from "react";
 import Select from "react-select";
 import { useSelector } from "react-redux";
-
+import {fetchPosition} from "../store/positionSlice";
+import { useDispatch } from "react-redux";
 const SelectPostion = ({ nameValue, value, handleChange }) => {
   const { data } = useSelector((state) => state.data);
-
+const dispatch = useDispatch();
   // Map your positions to options for react-select
   const options = data?.positions?.map((i) => ({
     value: i.position,
     label: i.position,
   }));
+
+  useEffect(() => {
+    dispatch(fetchPosition());
+  }, [dispatch,fetchPosition]);
 
   return (
     <Select
@@ -52,8 +57,8 @@ const SelectPostion = ({ nameValue, value, handleChange }) => {
       isSearchable
       className="react-select-container"
       classNamePrefix="react-select"
-      placeholder={<span>Search and select position <span style={{color: 'red'}}>*</span></span>}
-      />
+      placeholder={<span>Search and select position <span style={{ color: 'red' }}>*</span></span>}
+    />
   );
 };
 
