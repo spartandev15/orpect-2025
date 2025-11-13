@@ -148,6 +148,18 @@ export const addEmployeeSchema = yup.object().shape({
     postalCode: yup.number()
     .typeError('Postal code must be a number')
     .nullable(),
+  current_salaray: yup
+    .string()
+    .nullable()
+    .test(
+      "is-valid-salary",
+      "Current salary must be a valid positive number",
+      function (value) {
+        if (!value || (typeof value === 'string' && value.trim() === "")) return true; // Optional field
+        const numValue = parseFloat(value);
+        return !isNaN(numValue) && isFinite(numValue) && numValue > 0;
+      }
+    ),
   increment_date: yup
     .date()
     .nullable()

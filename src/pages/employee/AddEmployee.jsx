@@ -431,15 +431,15 @@ const AddEmployee = () => {
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
+                  type="number"
+                  inputMode="numeric"
                   name="current_salaray"
                   value={values.current_salaray}
                   onChange={handleChange}
-                  label="Current Salary" 
-                  // star={true}
-                />
-                {/* {errors.current_salaray && touched.current_salaray ? (
+                  label="Current Salary"                 />
+                {errors.current_salaray && touched.current_salaray ? (
                   <p className="text-danger msg">{errors.current_salaray}</p>
-                ) : null} */}
+                ) : null}
               </div>
             </div>
             <div className="col-lg-6 col-sm-12 pb-4">

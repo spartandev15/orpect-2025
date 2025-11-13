@@ -1,7 +1,7 @@
 import React from "react";
 import useToggle from "../helper/hooks/useToggle";
 
-export const InputAdd = ({ label, name, value, onChange, type, star }) => {
+export const InputAdd = ({ label, name, value, onChange, type, star,inputMode,pattern }) => {
   const [showPassword, toggleShowPassword] = useToggle();
   const isPassword = type === "password";
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
@@ -15,6 +15,8 @@ export const InputAdd = ({ label, name, value, onChange, type, star }) => {
         value={value}
         onChange={onChange}
         required
+        inputMode={inputMode}
+        pattern={pattern}
       />
       <label
         className="form-label"
