@@ -11,7 +11,7 @@ import * as yup from "yup";
 //     phone: yup
 //       .string()
 //       .required("Mobile number is required")
-//       .matches(/^[0-9]{10}$/, "Invalid mobile number"),
+//       .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
 //     dateOfJoining: yup.string().required("Date of Joining is required"),
 //     position: yup.string().required("position is required"),
 //   });
@@ -24,7 +24,7 @@ import * as yup from "yup";
     company_phone: yup
       .string()
       .required("Phone number is required")
-      .matches(/^[0-9]{10}$/, "Invalid Phone number"),
+      .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
       company_social_link: yup.string().url('Invalid URL').nullable(false),
       webmaster_email: yup.string().email('Invalid email format').nullable(false)
     // logoImage: yup.string().required("Designation is required"),
@@ -42,7 +42,7 @@ import * as yup from "yup";
     phone: yup
       .string()
       .required("Mobile number is required")
-      .matches(/^[0-9]{10}$/, "Invalid mobile number"),
+      .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
     position: yup.string().required("position is required"),
     linkedIn: yup.string().matches(
       /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\b/,
@@ -66,9 +66,9 @@ import * as yup from "yup";
     phone: yup
       .string()
       .required("Mobile number is required")
-      .matches(/^[0-9]{10}$/, "Invalid mobile number"),
+      .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
     position: yup.string().required("position is required"),
-    pan_number: yup.string().required("Tax Number is required"),
+    tax_number: yup.string().required("Tax Number is required"),
     linkedIn: yup.string().matches(
       /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\b/,
       'Invalid LinkedIn URL format'

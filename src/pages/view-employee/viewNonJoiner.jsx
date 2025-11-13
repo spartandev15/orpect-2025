@@ -33,7 +33,7 @@ const initialValues = {
   dateOfJoining: "",
   image: null,
   oldImageName: null,
-  pan_number: "",
+  tax_number: "",
   dateOfBirth: "",
   permanentAddress: "",
   city: null,
@@ -159,7 +159,7 @@ const ViewNonJoiner = () => {
     values.position = data?.position;
     values.dateOfJoining = data?.date_of_joining;
     values.oldImageName = data?.profile_image;
-    values.pan_number = data?.emp_pan;
+    values.tax_number = data?.tax_number || data?.emp_pan;
     values.email = data?.email;
     values.phone = data?.phone;
     values.linkedIn = data?.linked_in;

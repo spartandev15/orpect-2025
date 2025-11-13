@@ -20,7 +20,7 @@ const initialValues = {
   email: "",
   phone: "",
   position: "",
-  pan_number: "",
+  tax_number: "",
   dateOfBirth: "",
   permanentAddress: "",
   city: "",
@@ -87,7 +87,7 @@ const AddNonEmployeeReview = () => {
           formData.append("phone", values.phone);
           formData.append("position", values.position);
           formData.append("image", values.image?.blob || ""); // Use default value if no image
-          formData.append("pan_number", "");
+          formData.append("tax_number", "");
           formData.append("dateOfBirth", values.dateOfBirth);
           formData.append("linkedIn", values.linkedIn);
           formData.append("permanentAddress", values.permanentAddress);

@@ -32,7 +32,7 @@ const initialValues = {
   dateOfJoining: "",
   image: null,
   oldImageName: null,
-  pan_number: "",
+  tax_number: "",
   dateOfBirth: "",
   permanentAddress: "",
   city: null,
@@ -93,7 +93,7 @@ const ViewExEmployee = () => {
           if (values.dateOfBirth) {
             formData.append("dateOfBirth", values.dateOfBirth);
           }
-          formData.append("pan_number", values.pan_number);
+          formData.append("tax_number", values.tax_number);
           if (values.linkedIn) {
             formData.append("linkedIn", values.linkedIn);
           }
@@ -154,7 +154,7 @@ const ViewExEmployee = () => {
     values.position = data?.position;
     values.dateOfJoining = data?.date_of_joining;
     values.oldImageName = data?.profile_image;
-    values.pan_number = data?.emp_pan;
+    values.tax_number = data?.tax_number || data?.emp_pan;
     values.email = data?.email;
     values.phone = data?.phone;
     values.linkedIn = data?.linked_in;
@@ -433,20 +433,20 @@ const ViewExEmployee = () => {
                           <div className="col-lg-6 col-md-6 col-sm-12">
                             <div className="form-outline">
                               <Input
-                                name="pan_number"
-                                value={values.pan_number}
+                                name="tax_number"
+                                value={values.tax_number}
                                 onChange={(event) =>
                                   setFieldValue(
-                                    "pan_number",
+                                    "tax_number",
                                     event.target.value.toUpperCase()
                                   )
                                 }
                                 label="Tax Number"
                                 star={true}
                               />
-                              {errors.pan_number && touched.pan_number ? (
+                              {errors.tax_number && touched.tax_number ? (
                                 <p className="text-danger msg">
-                                  {errors.pan_number}
+                                  {errors.tax_number}
                                 </p>
                               ) : null}
                             </div>
@@ -572,7 +572,7 @@ const ViewExEmployee = () => {
                       <div className="row">
                         <SingleField
                           title="Tax Number"
-                          answer={employee?.emp_pan}
+                          answer={employee?.tax_number || employee?.emp_pan}
                         />
                         <SingleField
                           title="Date of Birth"

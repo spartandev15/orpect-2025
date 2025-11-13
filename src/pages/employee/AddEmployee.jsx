@@ -22,7 +22,7 @@ const initialValues = {
   phone: "",
   position: "",
   dateOfJoining: "", 
-  pan_number: "",
+  tax_number: "",
   dateOfBirth: "",
   permanentAddress: "",
   city: "",
@@ -32,7 +32,6 @@ const initialValues = {
   postalCode: "",
   current_salaray: "",
 increment_date: "",
-last_increment_date: "",
 tax_number: "",
 };
 
@@ -63,7 +62,7 @@ const AddEmployee = () => {
           if (values.image) {
             formData.append("image", values?.image.blob);
           }
-          formData.append("pan_number", values.pan_number);
+          formData.append("tax_number", values.tax_number);
           formData.append("dateOfBirth", values.dateOfBirth);
           formData.append("permanentAddress", values.permanentAddress);
           formData.append("city", values.city);
@@ -74,7 +73,6 @@ const AddEmployee = () => {
       
           formData.append("current_salaray", values.current_salaray);
           formData.append("increment_date", values.increment_date);
-          formData.append("last_increment_date", values.last_increment_date);
           formData.append("tax_number", values.tax_number);
 
 
@@ -305,19 +303,19 @@ const AddEmployee = () => {
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
-                  name="pan_number"
-                  value={values.pan_number}
+                  name="tax_number"
+                  value={values.tax_number}
                   onChange={(event) =>
                     setFieldValue(
-                      "pan_number",
+                      "tax_number",
                       event.target.value.toUpperCase()
                     )
                   }
-                  label="Pan Number"
+                  label="Tax Number"
                   star={true}
                 />
-                {errors.pan_number && touched.pan_number ? (
-                  <p className="text-danger msg">{errors.pan_number}</p>
+                {errors.tax_number && touched.tax_number ? (
+                  <p className="text-danger msg">{errors.tax_number}</p>
                 ) : null}
               </div>
             </div>
@@ -457,36 +455,6 @@ const AddEmployee = () => {
                 {errors.increment_date && touched.increment_date ? (
                   <p className="text-danger msg">{errors.increment_date}</p>
                 ) : null}
-              </div>
-            </div>
-            <div className="col-lg-6 col-sm-12 pb-4">
-              <div className="form-outline">
-                <InputAdd
-                                type="date"
-
-                  name="last_increment_date"
-                  value={values.last_increment_date}
-                  onChange={handleChange}
-                  label="Last Increment Date" 
-                  // star={true}
-                />
-                {errors.last_increment_date && touched.last_increment_date ? (
-                  <p className="text-danger msg">{errors.last_increment_date}</p>
-                ) : null}
-              </div>
-            </div>
-            <div className="col-lg-6 col-sm-12 pb-4">
-              <div className="form-outline">
-                <InputAdd
-                  name="tax_number"
-                  value={values.tax_number}
-                  onChange={handleChange}
-                  label="Tax Number" 
-                  // star={true}
-                />
-                {/* {errors.tax_number && touched.tax_number ? (
-                  <p className="text-danger msg">{errors.tax_number}</p>
-                ) : null} */}
               </div>
             </div>
             

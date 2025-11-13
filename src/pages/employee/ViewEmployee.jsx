@@ -33,7 +33,7 @@ const initialValues = {
   dateOfJoining: "",
   image: null,
   oldImageName: null,
-  pan_number: "",
+  tax_number: "",
   dateOfBirth: "",
   permanentAddress: "",
   city: "",
@@ -44,7 +44,6 @@ const initialValues = {
 
   current_salaray: "",
   increment_date: "",
-  last_increment_date: "",
   tax_number: "",
 };
 
@@ -100,11 +99,9 @@ const ViewEmployee = () => {
             "position",
             "dateOfJoining",
             "dateOfBirth",
-            "pan_number",
+            "tax_number",
             "current_salaray",
-            "increment_date",
-            "last_increment_date",
-            "tax_number"
+            "increment_date"
           ];
 
           fieldsToAppend.forEach((field) => {
@@ -166,7 +163,7 @@ const ViewEmployee = () => {
     values.position = data?.position;
     values.dateOfJoining = data?.date_of_joining;
     values.oldImageName = data?.profile_image;
-    values.pan_number = data?.emp_pan;
+    values.tax_number = data?.tax_number || data?.emp_pan;
     values.email = data?.email;
     values.phone = data?.phone;
     values.linkedIn = data?.linked_in;
@@ -181,7 +178,6 @@ const ViewEmployee = () => {
  
     values.current_salaray = data?.current_salaray;
     values.increment_date = data?.increment_date;
-    values.last_increment_date = data?.last_increment_date;
     values.tax_number = data?.tax_number;
 
 
@@ -437,20 +433,20 @@ const ViewEmployee = () => {
                           <div className="col-lg-6 col-md-6 col-sm-12">
                             <div className="form-outline">
                               <Input
-                                name="pan_number"
-                                value={values.pan_number}
+                                name="tax_number"
+                                value={values.tax_number}
                                 onChange={(event) =>
                                   setFieldValue(
-                                    "pan_number",
+                                    "tax_number",
                                     event.target.value.toUpperCase()
                                   )
                                 }
-                                label="Pan Number"
+                                label="Tax Number"
                                 star={true}
                               />
-                              {errors.pan_number && touched.pan_number ? (
+                              {errors.tax_number && touched.tax_number ? (
                                 <p className="text-danger msg">
-                                  {errors.pan_number}
+                                  {errors.tax_number}
                                 </p>
                               ) : null}
                             </div>
@@ -546,36 +542,6 @@ const ViewEmployee = () => {
                             </div>
                           </div>
                         </div>
-                        <div className="row">  
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                               type="date"
-                                name="last_increment_date"
-                                value={values.last_increment_date}
-                                onChange={handleChange}
-                                label="Last Increment Date"
-                                // star={true}
-                              />
-                              {errors.last_increment_date && touched.last_increment_date ? (
-                                <p className="text-danger msg">{errors.last_increment_date}</p>
-                              ) : null}
-                            </div>
-                          </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                             
-                                name="tax_number"
-                                value={values.tax_number}
-                                onChange={handleChange}
-                                label="Tax Number"
-                                // star={true}
-                              />
-                           
-                            </div>
-                          </div>
-                        </div>
                         {/* end */}
                         <div className="row">
                           <div className="col-lg-6 col-md-6 col-sm-12">
@@ -637,7 +603,7 @@ const ViewEmployee = () => {
                       <div className="row">
                         <SingleField
                           title="Tax Number"
-                          answer={employee?.emp_pan}
+                          answer={employee?.tax_number || employee?.emp_pan}
                         />
                         <SingleField
                           title="Date of Birth"
@@ -666,16 +632,6 @@ const ViewEmployee = () => {
                         <SingleField
                           title=" Increment Date"
                           answer={employee?.increment_date}
-                        />
-                      </div>  
-                      <div className="row">
-                        <SingleField
-                          title="Last Increment Date"
-                          answer={employee?.last_increment_date}
-                        />
-                        <SingleField
-                          title=" Tax Number"
-                          answer={employee?.tax_number}
                         />
                       </div>
                       <div className="row">
