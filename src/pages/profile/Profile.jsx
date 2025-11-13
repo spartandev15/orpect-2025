@@ -1357,7 +1357,6 @@ const Profile = () => {
                       <div className="row">
                         <SingleField
                           title="Address"
-                          style={{ textAlign: "left" }}
                           answer={renderValue(profile?.company_address)}
                         />
                       </div>
