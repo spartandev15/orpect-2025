@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployeeBySearch } from "../../api/employee";
 import { emptyData, linkedin, uploadProfile } from "../../asset";
+import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
 import { Link } from "react-router-dom";
 import IsCurrentEmployeeTable from "./IsCurrentEmployeeTable";
 import Stars from "../extras/Stars";
@@ -127,7 +128,7 @@ const   SearchEmployeeTable = () => {
                           className="pic"
                           src={
                             i?.profile_image
-                              ? `https://spartanbots.xyz/opt_lv/${i.profile_image}`
+                              ? `${IMAGE_BASE_URL_WITH_SLASH}${i.profile_image}`
                               : uploadProfile
                           }
                           alt="profile"

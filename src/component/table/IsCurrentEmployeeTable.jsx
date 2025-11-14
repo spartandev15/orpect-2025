@@ -6,7 +6,7 @@ import { getFromLocalStorage } from "../../helper";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { linkedin, uploadProfile } from "../../asset";
-import { BASE_URL } from "../../api/baseUrl";
+import { BASE_URL, IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
 
 const IsCurrentEmployeeTable = () => {
   const [Currentemployees, setCurrentEmployees] = useState([]);
@@ -92,7 +92,7 @@ const IsCurrentEmployeeTable = () => {
                               className="pic"
                               src={
                                 i?.profile_image
-                                  ? `https://spartanbots.xyz/opt_lv/${i.profile_image}`
+                                  ? `${IMAGE_BASE_URL_WITH_SLASH}${i.profile_image}`
                                   : uploadProfile
                               }
                               alt="profile"

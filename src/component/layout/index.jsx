@@ -11,6 +11,7 @@ import { getFromLocalStorage } from "../../helper";
 import { setEmpType, setSearchValue } from "../../store/DashboardSlice";
 import { toast } from "react-toastify";
 import { logout } from "../../api/logout";
+import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
 
 const Layout = ({ children }) => {
   const [search, setSearch] = useState("");
@@ -106,9 +107,9 @@ const Layout = ({ children }) => {
                   <img
                     src={
                       profileImage
-                        ? `https://spartanbots.xyz/opt_lv/${profileImage}`
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
                         : user && user.image
-                        ? `https://spartanbots.xyz/opt_lv/${user.image}`
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
                         : uploadProfile
                     }
                     alt=""
@@ -279,9 +280,9 @@ const Layout = ({ children }) => {
                   <img
                     src={
                       profileImage
-                        ? `https://spartanbots.xyz/opt_lv/${profileImage}`
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
                         : user && user.image
-                        ? `https://spartanbots.xyz/opt_lv/${user.image}`
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
                         : uploadProfile
                     }
                     alt=""
@@ -475,9 +476,9 @@ const Layout = ({ children }) => {
                           <img
                             src={
                               profileImage
-                                ? `https://spartanbots.xyz/opt_lv/${profileImage}`
+                                ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
                                 : user && user.image
-                                ? `https://spartanbots.xyz/opt_lv/${user.image}`
+                                ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
                                 : uploadProfile
                             }
                             alt="profile"

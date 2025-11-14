@@ -437,6 +437,7 @@ const AddExEmployeeReview = () => {
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
+                  type="number"
                   name="lastCTC"
                   value={values.lastCTC}
                   onChange={handleChange}

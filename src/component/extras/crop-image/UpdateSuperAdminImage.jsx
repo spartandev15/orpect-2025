@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import Button from "../../Button";
 import "../../../asset/css/cropImage.css";
 import { uploadProfile } from "../../../asset";
-import { BASE_URL } from "../../../api/baseUrl";
+import { BASE_URL, IMAGE_BASE_URL_WITH_SLASH } from "../../../api/baseUrl";
 import { useUpdateAdminImageMutation } from "../../../apis/SuperAdmin/profile";
 const UpdateSuperAdminImage = ({ oldImage,empId }) => {
   const [image, setImage] = useState(null);
@@ -129,7 +129,7 @@ const [updateAdminImage]=useUpdateAdminImageMutation()
           className="pic"
           src={
             oldImage?
-            `https://spartanbots.xyz/borpact/public/${oldImage}`
+            `${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`
             :uploadProfile
           }
           alt="profile" 

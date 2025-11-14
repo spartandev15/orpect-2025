@@ -146,6 +146,10 @@ const AddEmployee = () => {
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
+  // Calculate maximum date of birth (14 years ago from today) to ensure minimum age of 14
+  const maxDateOfBirth = new Date();
+  maxDateOfBirth.setFullYear(maxDateOfBirth.getFullYear() - 14);
+  const maxDateOfBirthString = maxDateOfBirth.toISOString().split("T")[0];
   return (
     <>
       <Layout>
@@ -327,7 +331,7 @@ const AddEmployee = () => {
                   placeholder=" "
                   name="dateOfBirth"
                   value={values.dateOfBirth}
-                  max={currentDate}
+                  max={maxDateOfBirthString}
                   onChange={handleChange}
                   required
                 />

@@ -6,6 +6,7 @@ import LoadingSpinner from "../../component/LoadingSpinner";
 import { viewGlobalSearchedEmpById } from "../../api/rate&review";
 import Stars from "../../component/extras/Stars";
 import { linkedin, orpect1, uploadProfile } from "../../asset";
+import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
 
 const ViewEmployeeAllReview = () => {
   const [loading, setLoading] = useState(true);
@@ -62,7 +63,7 @@ const ViewEmployeeAllReview = () => {
                           className="pic"
                           src={
                             i?.profile_image
-                              ? `https://spartanbots.xyz/opt_lv/${i?.profile_image}`
+                              ? `${IMAGE_BASE_URL_WITH_SLASH}${i?.profile_image}`
                               : uploadProfile
                           }
                           alt="profile"
@@ -134,7 +135,7 @@ const ViewEmployeeAllReview = () => {
                           className="pic"
                           src={
                             i?.company_logo
-                              ? `https://spartanbots.xyz/opt_lv/${i?.company_logo}`
+                              ? `${IMAGE_BASE_URL_WITH_SLASH}${i?.company_logo}`
                               : orpect1
                           }
                           alt="profile"

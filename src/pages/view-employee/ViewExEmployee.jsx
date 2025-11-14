@@ -141,7 +141,6 @@ const ViewExEmployee = () => {
           const errorMessage = error?.data?.message || error?.message || "Failed to update employee";
           toast.error(errorMessage);
           console.error("Update employee failed:", error);
-          // setLoading(false);
         }
       },
     });
@@ -572,7 +571,7 @@ const ViewExEmployee = () => {
                       <div className="row">
                         <SingleField
                           title="Tax Number"
-                          answer={employee?.tax_number || employee?.emp_pan}
+                          answer={employee?.tax_number || "---"}
                         />
                         <SingleField
                           title="Date of Birth"

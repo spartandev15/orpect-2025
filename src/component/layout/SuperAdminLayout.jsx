@@ -14,6 +14,7 @@ import { logout } from "../../api/logout";
 import NotificationDropdown from "../extras/Notification/NotificationBell";
 import { Navigate } from "react-router-dom";
 import { ADMIN_ROUTES, COMPANY_ROUTES } from "../../config/routes.config";
+import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
 
 // Routes configuration array
 const sidebarRoutes = [
@@ -301,9 +302,9 @@ if (!superAdminToken) {
                   <img
                     src={
                       profileImage
-                        ? `https://spartanbots.xyz/borpact/public/${profileImage}`
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
                         : user && user.image
-                          ? `https://spartanbots.xyz/borpact/public/${user.image}`
+                          ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
                           : uploadProfile
                     }
                     alt=""
@@ -378,9 +379,9 @@ if (!superAdminToken) {
                   <img
                     src={
                       profileImage
-                        ? `https://spartanbots.xyz/borpact/public/${profileImage}`
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
                         : user && user.image
-                          ? `https://spartanbots.xyz/borpact/public/${user.image}`
+                          ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
                           : uploadProfile
                     }
                     alt=""

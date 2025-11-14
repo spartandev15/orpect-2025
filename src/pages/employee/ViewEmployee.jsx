@@ -603,7 +603,7 @@ const ViewEmployee = () => {
                       <div className="row">
                         <SingleField
                           title="Tax Number"
-                          answer={employee?.tax_number || employee?.emp_pan}
+                          answer={employee?.tax_number || "---"}
                         />
                         <SingleField
                           title="Date of Birth"
@@ -631,7 +631,11 @@ const ViewEmployee = () => {
                         />
                         <SingleField
                           title=" Increment Date"
-                          answer={employee?.increment_date}
+                          answer={
+                            employee?.increment_date
+                              ? formatDate(employee?.increment_date)
+                              : "---"
+                          }
                         />
                       </div>
                       <div className="row">

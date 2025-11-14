@@ -92,7 +92,7 @@ export const addEmployeeSchema = yup.object().shape({
     .required("Date of Joining is required")
     .test(
       "age-validation",
-      "Employee must be at least 10 years old at the time of joining",
+      "Employee must be at least 14 years old at the time of joining",
       function (value) {
         const { dateOfBirth } = this.parent;
         if (!dateOfBirth || !value) return true;
@@ -108,7 +108,7 @@ export const addEmployeeSchema = yup.object().shape({
           exactAge--;
         }
         
-        return exactAge >= 10;
+        return exactAge >= 14;
       }
     ),
 
@@ -125,8 +125,28 @@ export const addEmployeeSchema = yup.object().shape({
     .max(new Date(), "Date of Birth must be a past date")
     .required("Date of Birth is required")
     .test(
+      "min-age-validation",
+      "Employee must be at least 14 years old",
+      function (value) {
+        if (!value) return true;
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = age;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    )
+    .test(
       "age-validation",
-      "Employee must be at least 10 years old at the time of joining",
+      "Employee must be at least 14 years old at the time of joining",
       function (value) {
         const { dateOfJoining } = this.parent;
         if (!dateOfJoining || !value) return true; // Skip if either date is missing
@@ -142,7 +162,7 @@ export const addEmployeeSchema = yup.object().shape({
           exactAge--;
         }
         
-        return exactAge >= 10;
+        return exactAge >= 14;
       }
     ),
     postalCode: yup.number()
@@ -247,10 +267,10 @@ export const AddExEmployeeReviewSchema = yup.object().shape({
   review: yup.string().required("Review is required"),
   tax_number: yup.string().required("Tax Number is required"),
   lastCTC: yup
-    .string()
+    .number()
     .nullable()
-    .matches(/^\d+$/, "Last CTC must contain only numbers")
-    .typeError("Last CTC must be a string"),
+    .typeError("Last CTC must be a number")
+    .min(0, "Last CTC must be a positive number"),
 });
 
 export const CsvvalidationSchema = yup.object().shape({

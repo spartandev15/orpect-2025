@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 import Button from "../../Button";
 import "../../../asset/css/cropImage.css";
 import { uploadProfile } from "../../../asset";
-import { BASE_URL } from "../../../api/baseUrl";
+import { BASE_URL, IMAGE_BASE_URL_WITH_SLASH } from "../../../api/baseUrl";
+
 const CropImage = ({ oldImage }) => {
   const [image, setImage] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -122,7 +123,7 @@ const handleImageUpload = (event) => {
         {oldImage?
         <img
         className="pic"
-      src={`https://spartanbots.xyz/borpact/${oldImage}`}
+      src={`${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`}
         alt="profile"
         />:
         <img
@@ -227,9 +228,9 @@ const handleImageUpload = (event) => {
                         onClick={handleSaveImage}
                         className="btn mybtn"
                       />
-                      {/* <button className="btn mybtn" onClick={handleCloseModal}>
+                      <button className="btn mybtn" onClick={handleReset}>
                         Cancel
-                      </button> */}
+                      </button>
                     </div>
                   )}
                 </section>

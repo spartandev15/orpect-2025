@@ -193,7 +193,7 @@ const EditExEmployeeReview = ({ employee, dateOfJoining }) => {
 
                 <div className="form-outline">
                   <input
-                    type="text"
+                    type="number"
                     name="lastCTC"
                     className="form-control"
                     value={values.lastCTC || ""}
