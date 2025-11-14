@@ -179,6 +179,10 @@ const AddExEmployeeReview = () => {
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
+  // Calculate maximum date of birth (14 years ago from today) to ensure minimum age of 14
+  const maxDateOfBirth = new Date();
+  maxDateOfBirth.setFullYear(maxDateOfBirth.getFullYear() - 14);
+  const maxDateOfBirthString = maxDateOfBirth.toISOString().split("T")[0];
 
   return (
     <>
@@ -336,13 +340,16 @@ const AddExEmployeeReview = () => {
                   placeholder=" "
                   name="dateOfBirth"
                   value={values.dateOfBirth}
-                  max={currentDate}
+                  max={maxDateOfBirthString}
                   onChange={handleChange}
                   required
                 />
                 <label className="form-label" for="typeText">
                   Date of Birth
                 </label>
+                {errors.dateOfBirth && touched.dateOfBirth ? (
+                  <p className="text-danger msg">{errors.dateOfBirth}</p>
+                ) : null}
               </div>
             </div>
             <div className="col-lg-6 col-sm-12 pb-4">

@@ -234,9 +234,9 @@ const   SearchEmployeeTable = () => {
                           <span className="companynamereview hoverable__main">
                             {i?.company_name}
                           </span>
-                          <span className="hoverable__tooltip1">
+                          {/* <span className="hoverable__tooltip1">
                             Available to Plus Members
-                          </span>
+                          </span> */}
                         </span>
                       </div>
                       <div className="search_mail">

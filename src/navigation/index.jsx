@@ -309,9 +309,6 @@ const Navigation = () => {
                  <Route path="notification-list" element={<NotificationList/>} />
                  <Route path="data-request" element={<DataRequest/>} />
                  <Route path="company-reviews" element={<CompanyReviews/>} />
-
-
-
                </Route>
         </Routes>
        

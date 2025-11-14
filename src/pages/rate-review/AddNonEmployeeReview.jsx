@@ -58,7 +58,28 @@ const NonJoinerValidatinon = yup.object().shape({
   review: yup.string().required("Review is required"),
   dateOfBirth: yup
     .date()
-    .max(new Date(), "Date of Birth must not be a future date"),
+    .max(new Date(), "Date of Birth must be a past date")
+    .required("Date of Birth is required")
+    .test(
+      "min-age-validation",
+      "Employee must be at least 14 years old",
+      function (value) {
+        if (!value) return true;
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = age;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
     postalCode: yup.number()
     .typeError('Postal code must be a number')
     .nullable()
@@ -168,6 +189,10 @@ const AddNonEmployeeReview = () => {
     setSelectedState(state);
   };
   const currentDate = new Date().toISOString().split("T")[0];
+  // Calculate maximum date of birth (14 years ago from today) to ensure minimum age of 14
+  const maxDateOfBirth = new Date();
+  maxDateOfBirth.setFullYear(maxDateOfBirth.getFullYear() - 14);
+  const maxDateOfBirthString = maxDateOfBirth.toISOString().split("T")[0];
 
   return (
     <>
@@ -268,7 +293,7 @@ const AddNonEmployeeReview = () => {
                   placeholder=" "
                   name="dateOfBirth"
                   value={values.dateOfBirth}
-                  max={currentDate}
+                  max={maxDateOfBirthString}
                   onChange={handleChange}
                   required
                 />

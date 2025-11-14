@@ -92,7 +92,7 @@ const AddPosition = () => {
                 <div className="col-lg-12 col-sm-12 pb-4" style={{ textAlign: "center" }}>
                   <Button
                     className="btn positionSubmit"
-                    text="Submit"
+                    text="Add"
                     loading={isAddLoading}
                   />
                 </div>

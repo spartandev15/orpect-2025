@@ -420,6 +420,7 @@ const ViewEmployee = () => {
                                 onChange={handleChange}
                                 label="Date of Joining"
                                 star={true}
+                                max={currentDate}
                               />
                               {errors.dateOfJoining && touched.dateOfJoining ? (
                                 <p className="text-danger msg">
@@ -473,6 +474,7 @@ const ViewEmployee = () => {
                           <div className="col-lg-6 col-md-6 col-sm-12">
                             <div className="form-outline">
                               <Input
+                                type="number"
                                 name="phone"
                                 value={values.phone}
                                 onChange={handleChange}
@@ -516,12 +518,17 @@ const ViewEmployee = () => {
                           <div className="col-lg-6 col-md-6 col-sm-12">
                             <div className="form-outline">
                               <Input
+                                type="number"
+                                inputMode="numeric"
                                 name="current_salaray"
                                 value={values.current_salaray}
                                 onChange={handleChange}
-                                label="Current Salaray"
+                                label="Current Salary"
                                 // star={true}
                               />
+                              {errors.current_salaray && touched.current_salaray ? (
+                                <p className="text-danger msg">{errors.current_salaray}</p>
+                              ) : null}
 
                               
                             </div>
@@ -534,6 +541,7 @@ const ViewEmployee = () => {
                                 value={values.increment_date}
                                 onChange={handleChange}
                                 label="Increment Date"
+                                max={currentDate}
                                 // star={true}
                               />
                               {errors.increment_date && touched.increment_date ? (

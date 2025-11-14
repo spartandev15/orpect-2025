@@ -126,7 +126,7 @@ export const addEmployeeSchema = yup.object().shape({
     .required("Date of Birth is required")
     .test(
       "min-age-validation",
-      "Employee must be at least 14 years old",
+      "Date of Birth must be at least 14 years old",
       function (value) {
         if (!value) return true;
         const birthDate = new Date(value);
@@ -240,10 +240,76 @@ export const AddExEmployeeReviewSchema = yup.object().shape({
     .string()
     .required("Phone number is required")
     .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
+  dateOfBirth: yup
+    .date()
+    .max(new Date(), "Date of Birth must be a past date")
+    .required("Date of Birth is required")
+    .test(
+      "min-age-validation",
+      "Date of Birth must be at least 14 years old",
+      function (value) {
+        if (!value) return true;
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = age;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    )
+    .test(
+      "age-validation",
+      "Employee must be at least 14 years old at the time of joining",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!dateOfJoining || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
   dateOfJoining: yup
     .date()
     .max(new Date(), "Date of Joining must not be a future date")
-    .required("Date of Joining is required"),
+    .required("Date of Joining is required")
+    .test(
+      "age-validation",
+      "Employee must be at least 14 years old at the time of joining",
+      function (value) {
+        const { dateOfBirth } = this.parent;
+        if (!dateOfBirth || !value) return true;
+        const birthDate = new Date(dateOfBirth);
+        const joiningDate = new Date(value);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
   dateOfLeaving: yup
     .date()
     .max(new Date(), "Date of Leaving must not be a future date")
@@ -307,8 +373,28 @@ export const editCurrentEmployeeSchema = yup.object().shape({
     .max(new Date(), "Date of Birth must be a past date")
     .required("Date of Birth is required")
     .test(
+      "min-age-validation",
+      "Employee must be at least 14 years old",
+      function (value) {
+        if (!value) return true;
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = age;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    )
+    .test(
       "age-validation",
-      "Employee must be at least 10 years old at the time of joining",
+      "Employee must be at least 14 years old at the time of joining",
       function (value) {
         const { dateOfJoining } = this.parent;
         if (!dateOfJoining || !value) return true; // Skip if either date is missing
@@ -324,7 +410,7 @@ export const editCurrentEmployeeSchema = yup.object().shape({
           exactAge--;
         }
         
-        return exactAge >= 10;
+        return exactAge >= 14;
       }
     ),
   dateOfJoining: yup
@@ -333,7 +419,7 @@ export const editCurrentEmployeeSchema = yup.object().shape({
     .required("Date of Joining is required")
     .test(
       "age-validation",
-      "Employee must be at least 10 years old at the time of joining",
+      "Employee must be at least 14 years old at the time of joining",
       function (value) {
         const { dateOfBirth } = this.parent;
         if (!dateOfBirth || !value) return true; // Skip if either date is missing
@@ -349,7 +435,7 @@ export const editCurrentEmployeeSchema = yup.object().shape({
           exactAge--;
         }
         
-        return exactAge >= 10;
+        return exactAge >= 14;
       }
     ),
     linkedIn: yup.string().matches(
