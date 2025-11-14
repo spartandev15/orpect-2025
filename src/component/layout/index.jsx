@@ -13,8 +13,84 @@ import { toast } from "react-toastify";
 import { logout } from "../../api/logout";
 import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
 
+// Routes configuration array for company sidebar
+const sidebarRoutes = [
+  {
+    id: "submenu1",
+    type: "submenu",
+    label: "Employees",
+    icon: "fas fa-users",
+    submenu: [
+      {
+        path: "/employee",
+        label: "Current Employees",
+        icon: "fa fa-users",
+        useSvg: true,
+        svgPath: "M211.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM32 256c0 17.7 14.3 32 32 32h85.6c10.1-39.4 38.6-71.5 75.8-86.6c-9.7-6-21.2-9.4-33.4-9.4H96c-35.3 0-64 28.7-64 64zm461.6 32H576c17.7 0 32-14.3 32-32c0-35.3-28.7-64-64-64H448c-11.7 0-22.7 3.1-32.1 8.6c38.1 14.8 67.4 47.3 77.7 87.4zM391.2 226.4c-6.9-1.6-14.2-2.4-21.6-2.4h-96c-8.5 0-16.7 1.1-24.5 3.1c-30.8 8.1-55.6 31.1-66.1 60.9c-3.5 10-5.5 20.8-5.5 32c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32c0-11.2-1.9-22-5.5-32c-10.8-30.7-36.8-54.2-68.9-61.6zM563.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM321.6 192a80 80 0 1 0 0-160 80 80 0 1 0 0 160zM32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z",
+      },
+      {
+        path: "/ex-employee",
+        label: "Ex Employees",
+        icon: "fa fa-users-slash",
+        className: "logouticon curentemploye2",
+      },
+    ],
+  },
+  {
+    type: "link",
+    path: "/add-position",
+    label: "Add Position",
+    icon: "fa fa-plus-circle",
+    useSvg: true,
+    svgPath: "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z",
+  },
+  {
+    type: "link",
+    path: "/add-employee",
+    label: "Add Employee",
+    icon: "fa fa-user-plus",
+  },
+  {
+    type: "link",
+    path: "/non-joiner",
+    label: "Non Joiners",
+    icon: "fa fa-user-slash",
+  },
+  {
+    type: "link",
+    path: "/add-review",
+    label: "Add Review",
+    icon: "fa fa-edit",
+  },
+  {
+    type: "link",
+    path: "/previous-review",
+    label: "Previous Reviews",
+    icon: "fa fa-star",
+  },
+  {
+    type: "link",
+    path: "/search-employee",
+    label: "Search Employees",
+    icon: "fa fa-search",
+  },
+  {
+    type: "link",
+    path: "/upload-csv",
+    label: "Upload CSV",
+    icon: "fa fa-upload",
+  },
+  {
+    type: "link",
+    path: "/profile",
+    label: "Profile",
+    icon: "fa fa-user",
+  },
+];
+
 const Layout = ({ children }) => {
   const [search, setSearch] = useState("");
+  const [openSubmenus, setOpenSubmenus] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -68,6 +144,140 @@ const Layout = ({ children }) => {
   };
   const location = useLocation();
 
+  // Check if current route matches submenu items and open submenu accordingly
+  useEffect(() => {
+    const path = location.pathname;
+    sidebarRoutes.forEach((route) => {
+      if (route.type === "submenu" && route.submenu) {
+        const hasActiveChild = route.submenu.some(
+          (subItem) => subItem.path === path
+        );
+        if (hasActiveChild) {
+          setOpenSubmenus((prev) => ({ ...prev, [route.id]: true }));
+        }
+      }
+    });
+  }, [location.pathname]);
+
+  const toggleSubmenu = (submenuId, e) => {
+    e.preventDefault();
+    setOpenSubmenus(prev => ({
+      ...prev,
+      [submenuId]: !prev[submenuId]
+    }));
+  };
+
+  // Helper function to check if a submenu has active child
+  const isSubmenuActive = (route) => {
+    if (route.type === "submenu" && route.submenu) {
+      return route.submenu.some((subItem) => subItem.path === location.pathname);
+    }
+    return false;
+  };
+
+  // Render menu items
+  const renderMenuItem = (route, isMobile = false) => {
+    if (route.type === "submenu") {
+      const isActive = isSubmenuActive(route);
+      const isOpen = openSubmenus[route.id] || false;
+      
+      return (
+        <li key={route.id}>
+          <a
+            href="#"
+            onClick={(e) => toggleSubmenu(route.id, e)}
+            className={isActive ? "active" : ""}
+          >
+            <i className={route.icon}></i> &nbsp;
+            <span className="iconmenu">
+              {route.label} &nbsp;
+              <i
+                className="fa fa-caret-down"
+                style={{
+                  transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.3s ease",
+                  display: "inline-block",
+                }}
+              ></i>
+            </span>
+          </a>
+          <ul
+            className={`navi nav-list curentemploye1 ${isOpen ? "show" : "collapse"}`}
+            id={route.id}
+            style={{
+              display: isOpen ? "block" : "none",
+            }}
+          >
+            {route.submenu.map((subItem, index) => (
+              <li
+                key={index}
+                className={`dropdown-item curentemployepadding curentemploye1 ${
+                  subItem.className || ""
+                }`}
+              >
+                {isMobile ? (
+                  <span onClick={handleSidebarToggle}>
+                    <NavLink activeClassName="active" to={subItem.path}>
+                      {subItem.useSvg ? (
+                        <svg height="1em" viewBox={subItem.path === "/employee" ? "0 0 640 512" : "0 0 512 512"}>
+                          <path d={subItem.svgPath} />
+                        </svg>
+                      ) : (
+                        <i className={subItem.icon}></i>
+                      )} &nbsp;
+                      <span className="iconmenu">{subItem.label}</span>
+                    </NavLink>
+                  </span>
+                ) : (
+                  <NavLink activeClassName="active" to={subItem.path}>
+                    {subItem.useSvg ? (
+                      <svg height="1em" viewBox={subItem.path === "/employee" ? "0 0 640 512" : "0 0 512 512"}>
+                        <path d={subItem.svgPath} />
+                      </svg>
+                    ) : (
+                      <i className={subItem.icon}></i>
+                    )} &nbsp;
+                    <span className="iconmenu">{subItem.label}</span>
+                  </NavLink>
+                )}
+              </li>
+            ))}
+          </ul>
+        </li>
+      );
+    } else {
+      return (
+        <li key={route.path}>
+          {isMobile ? (
+            <span onClick={handleSidebarToggle}>
+              <NavLink activeClassName="active" to={route.path}>
+                {route.useSvg ? (
+                  <svg height="1em" viewBox="0 0 512 512">
+                    <path d={route.svgPath} />
+                  </svg>
+                ) : (
+                  <i className={route.icon}></i>
+                )} &nbsp;
+                <span className="iconmenu">{route.label}</span>
+              </NavLink>
+            </span>
+          ) : (
+            <NavLink activeClassName="active" to={route.path}>
+              {route.useSvg ? (
+                <svg height="1em" viewBox="0 0 512 512">
+                  <path d={route.svgPath} />
+                </svg>
+              ) : (
+                <i className={route.icon}></i>
+              )} &nbsp;
+              <span className="iconmenu">{route.label}</span>
+            </NavLink>
+          )}
+        </li>
+      );
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -120,98 +330,7 @@ const Layout = ({ children }) => {
             </div>
             <nav className="sb-sidenav-menu-nested nav  ">
               <ul className="list-unstyled">
-                <li>
-                  <NavLink
-                    exact
-                    activeClassName="active"
-                    to=" "
-                    data-toggle="collapse"
-                    data-target="#submenu1"
-                  >
-                    {" "}
-                    <i className="fas fa-users"></i> &nbsp;
-                    <span className="iconmenu">
-                      {" "}
-                      Employees &nbsp;
-                      <i className="fa fa-caret-down"></i>
-                    </span>
-                  </NavLink>
-                  <ul
-                    className="navi nav-list collapse curentemploye1"
-                    id="submenu1"
-                  >
-                    <li className="dropdown-item curentemployepadding curentemploye1">
-                      <NavLink to="/employee"> 
-                      <svg height="1em" viewBox="0 0 640 512">      
-                      <path d="M211.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM32 256c0 17.7 14.3 32 32 32h85.6c10.1-39.4 38.6-71.5 75.8-86.6c-9.7-6-21.2-9.4-33.4-9.4H96c-35.3 0-64 28.7-64 64zm461.6 32H576c17.7 0 32-14.3 32-32c0-35.3-28.7-64-64-64H448c-11.7 0-22.7 3.1-32.1 8.6c38.1 14.8 67.4 47.3 77.7 87.4zM391.2 226.4c-6.9-1.6-14.2-2.4-21.6-2.4h-96c-8.5 0-16.7 1.1-24.5 3.1c-30.8 8.1-55.6 31.1-66.1 60.9c-3.5 10-5.5 20.8-5.5 32c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32c0-11.2-1.9-22-5.5-32c-10.8-30.7-36.8-54.2-68.9-61.6zM563.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM321.6 192a80 80 0 1 0 0-160 80 80 0 1 0 0 160zM32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>                 
-                        <span className="iconmenu"> &nbsp; Current Employees</span>
-                      </NavLink>
-                    </li>
-                    <li className="dropdown-item logouticon curentemployepadding curentemploye1 curentemploye2">
-                      <NavLink to="/ex-employee">
-                      <i className="fa  fa-users-slash"></i>
-                        <span className="iconmenu">  &nbsp; Ex Employees</span>
-                      </NavLink>{" "}
-                    </li>
-                  </ul>
-                </li>
-                <li className="position">
-                  <NavLink activeClassName="active" to="/add-position">
-                     <svg height="1em" viewBox="0 0 512 512">
-                      {" "}
-                      <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
-                    </svg>   
-                    &nbsp;  {" "}
-                    <span className="iconmenu"> &nbsp; Add Position</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink activeClassName="active" to="/add-employee">
-                    <i className="fa fa-user-plus"></i> &nbsp;{" "}
-                    <span className="iconmenu"> Add Employee</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink activeClassName="active" to="/non-joiner">
-                    <i className="fa fa-user-slash "></i>&nbsp;{" "}
-                    <span className="iconmenu">Non Joiners</span>
-                  </NavLink>{" "}
-                </li>
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/add-review"
-                  >
-                    <i className="fa fa-edit"></i> &nbsp;{" "}
-                    <span className="iconmenu">Add Review</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink activeClassName="active" to="/previous-review">
-                    <i className="fa fa-star"></i> &nbsp;
-                    <span className="iconmenu"> Previous Reviews</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink activeClassName="active" to="/search-employee">
-                    <i className="fa fa-search"></i> &nbsp;{" "}
-                    <span className="iconmenu">Search Employees</span>
-                  </NavLink>
-                </li>
-
-                <li>
-                  <NavLink activeClassName="active" to="/upload-csv">
-                    <i className="fa fa-upload"></i> &nbsp;{" "}
-                    <span className="iconmenu">Upload CSV</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink activeClassName="active" to="/profile">
-                    <i className="fa fa-user"></i> &nbsp;{" "}
-                    <span className="iconmenu">Profile</span>{" "}
-                  </NavLink>
-                </li>
+                {sidebarRoutes.map((route) => renderMenuItem(route, false))}
                 <li className="logouticon">
                   <a onClick={logoutUser}>
                     <svg height="1em" viewBox="0 0 512 512">
@@ -292,117 +411,8 @@ const Layout = ({ children }) => {
               </div>
             </div>
             <nav className="sb-sidenav-menu-nested nav  ">
-         
-                 <ul className="list-unstyled">
-                <li>
-                  <NavLink
-                    exact
-                    activeClassName="active"
-                    to=" "
-                    data-toggle="collapse"
-                    data-target="#submenu1"
-                  >
-                    {" "}
-                    <i className="fas fa-users"></i> &nbsp;
-                    <span className="iconmenu">
-                      {" "}
-                      Employees &nbsp;
-                      <i className="fa fa-caret-down"></i>
-                    </span>
-                  </NavLink>
-                  <ul
-                    className="navi nav-list collapse curentemploye1"
-                    id="submenu1"
-                  >
-                    <li className="dropdown-item curentemployepadding curentemploye1">
-                    <span  onClick={handleSidebarToggle}>
-                      <NavLink to="/employee"> 
-                      <svg height="1em" viewBox="0 0 640 512">      
-                      <path d="M211.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM32 256c0 17.7 14.3 32 32 32h85.6c10.1-39.4 38.6-71.5 75.8-86.6c-9.7-6-21.2-9.4-33.4-9.4H96c-35.3 0-64 28.7-64 64zm461.6 32H576c17.7 0 32-14.3 32-32c0-35.3-28.7-64-64-64H448c-11.7 0-22.7 3.1-32.1 8.6c38.1 14.8 67.4 47.3 77.7 87.4zM391.2 226.4c-6.9-1.6-14.2-2.4-21.6-2.4h-96c-8.5 0-16.7 1.1-24.5 3.1c-30.8 8.1-55.6 31.1-66.1 60.9c-3.5 10-5.5 20.8-5.5 32c0 17.7 14.3 32 32 32h224c17.7 0 32-14.3 32-32c0-11.2-1.9-22-5.5-32c-10.8-30.7-36.8-54.2-68.9-61.6zM563.2 96a64 64 0 1 0 -128 0 64 64 0 1 0 128 0zM321.6 192a80 80 0 1 0 0-160 80 80 0 1 0 0 160zM32 416c-17.7 0-32 14.3-32 32s14.3 32 32 32H608c17.7 0 32-14.3 32-32s-14.3-32-32-32H32z"/></svg>                 
-                        <span className="iconmenu"> &nbsp; Current Employees</span>
-                      </NavLink></span>
-                    </li>
-                    <li className="dropdown-item logouticon curentemployepadding curentemploye1 curentemploye2">
-                    <span  onClick={handleSidebarToggle}>
-                      <NavLink to="/ex-employee">
-                      <i className="fa  fa-users-slash"></i>
-                        <span className="iconmenu">  &nbsp; Ex Employees</span>
-                      </NavLink>{" "}</span>
-                    </li>
-                  </ul>
-                </li>
-                <li className="position">
-                  <span  onClick={handleSidebarToggle}>
-                  <NavLink activeClassName="active" to="/add-position">
-                     <svg height="1em" viewBox="0 0 512 512">
-                      {" "}
-                      <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM232 344V280H168c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H280v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z" />
-                    </svg>   
-                    &nbsp;  {" "}
-                    <span className="iconmenu"> &nbsp; Add Position</span>
-                  </NavLink></span>
-                </li>
-                <li>
-                  <span  onClick={handleSidebarToggle}>
-                  <NavLink activeClassName="active" to="/add-employee">
-                    <i className="fa fa-user-plus"></i> &nbsp;{" "}
-                    <span className="iconmenu"> Add Employee</span>
-                  </NavLink>
-                            </span>
-                </li>
-                <li >
-                <span  onClick={handleSidebarToggle}>
-                  <NavLink activeClassName="active" to="/non-joiner"   >
-                    <i className="fa fa-user-slash "  ></i>&nbsp;{" "}
-                    <span className="iconmenu">Non Joiners</span>
-                  </NavLink>{" "}
-                  </span  >
-                </li>
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/add-review"
-                  >
-                    <i className="fa fa-edit"></i> &nbsp;{" "}
-                    <span className="iconmenu">Add Review</span>
-                  </NavLink></span>
-                </li>
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink activeClassName="active" to="/previous-review">
-                    <i className="fa fa-star"></i> &nbsp;
-                    <span className="iconmenu"> Previous Reviews</span>
-                  </NavLink></span>
-                </li>
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink activeClassName="active" to="/search-employee">
-                    <i className="fa fa-search"></i> &nbsp;{" "}
-                    <span className="iconmenu">Search Employees</span>
-                  </NavLink></span>
-                </li>
-
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink activeClassName="active" to="/upload-csv">
-                    <i className="fa fa-upload"></i> &nbsp;{" "}
-                    <span className="iconmenu">Upload CSV</span>
-                  </NavLink></span>
-                </li>
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink activeClassName="active" to="/profile">
-                    <i className="fa fa-user"></i> &nbsp;{" "}
-                    <span className="iconmenu">Profile</span>{" "}
-                  </NavLink></span>
-                </li>
+              <ul className="list-unstyled">
+                {sidebarRoutes.map((route) => renderMenuItem(route, true))}
                 <li className="logouticon">
                   <a onClick={logoutUser}>
                     <svg height="1em" viewBox="0 0 512 512">
