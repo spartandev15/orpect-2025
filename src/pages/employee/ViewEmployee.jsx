@@ -497,14 +497,14 @@ const ViewEmployee = () => {
                                 value={values.position}
                                 required
                               />
-                              <label
+                              {/* <label
                                 className="form-label"
                                 for="typeText"
                                 style={{ background: "#fff" }}
                               >
                                 Position &nbsp;
                                 <span className=" required">*</span>
-                              </label>
+                              </label> */}
                               {errors.position && touched.position ? (
                                 <p className="text-danger msg">
                                   {errors.position}

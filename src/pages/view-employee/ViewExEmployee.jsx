@@ -145,13 +145,35 @@ const ViewExEmployee = () => {
       },
     });
 
+  // Helper function to convert date to YYYY-MM-DD format for date inputs
+  const formatDateForInput = (dateString) => {
+    if (!dateString) return "";
+    // If already in YYYY-MM-DD format, return as is
+    if (typeof dateString === "string" && /^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+      return dateString;
+    }
+    // Try to parse and format the date
+    try {
+      const date = new Date(dateString);
+      if (!isNaN(date.getTime())) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+    } catch (error) {
+      console.error("Error formatting date:", error);
+    }
+    return "";
+  };
+
   const setValues = (data) => {
     values.empId = data?.emp_id;
     values.email = data?.email;
     values.empName = data?.emp_name;
     values.phone = data?.phone;
     values.position = data?.position;
-    values.dateOfJoining = data?.date_of_joining;
+    values.dateOfJoining = formatDateForInput(data?.date_of_joining);
     values.oldImageName = data?.profile_image;
     values.tax_number = data?.tax_number || data?.emp_pan;
     values.email = data?.email;
@@ -161,7 +183,7 @@ const ViewExEmployee = () => {
     values.city = data?.city;
     values.state = data?.state;
     values.country = data?.country;
-    values.dateOfBirth = data?.date_of_birth;
+    values.dateOfBirth = formatDateForInput(data?.date_of_birth);
     values.lastCTC = data?.last_CTC;
     values.postalCode = data?.postal_code;
   };
@@ -416,6 +438,7 @@ const ViewExEmployee = () => {
                                 type="date"
                                 name="dateOfJoining"
                                 value={values.dateOfJoining}
+                                max={currentDate}
                                 onChange={handleChange}
                                 label="Date of Joining"
                                 star={true}
@@ -453,14 +476,14 @@ const ViewExEmployee = () => {
 
                           <div className="col-lg-6 col-md-6 col-sm-12">
                             <div className="form-outline">
-                             <input
+                              <Input
                                 type="date"
-                                className="form-control"
                                 name="dateOfBirth"
                                 value={values.dateOfBirth}
                                 max={currentDate}
                                 onChange={handleChange}
-                                required
+                                label="Date of Birth"
+                                star={true}
                               />
                               {errors.dateOfBirth && touched.dateOfBirth ? (
                                 <p className="text-danger msg">
@@ -495,14 +518,14 @@ const ViewExEmployee = () => {
                                 value={values.position}
                                 required
                               />
-                              <label
+                              {/* <label
                                 className="form-label"
                                 for="typeText"
                                 style={{ background: "#fff" }}
                               >
                                 Position &nbsp;
                                 <span className="required">*</span>
-                              </label>
+                              </label> */}
                               {errors.position && touched.position ? (
                                 <p className="text-danger msg">
                                   {errors.position}

@@ -74,12 +74,101 @@ import * as yup from "yup";
       'Invalid LinkedIn URL format'
     ).nullable(),
     
-  dateOfJoining: yup
-  .date()
-  .max(new Date(), 'Date of Joining must be a past date')
-  .required('Date of Joining is required'),
-  postalCode: yup.number()
-  .typeError('Postal code must be a number')
-  .nullable()
+    dateOfBirth: yup
+      .date()
+      .max(new Date(), "Date of Birth must be a past date")
+      .required("Date of Birth is required")
+      .test(
+        "min-age-validation",
+        "Employee must be at least 14 years old",
+        function (value) {
+          if (!value) return true;
+          const birthDate = new Date(value);
+          const today = new Date();
+          const age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          const dayDiff = today.getDate() - birthDate.getDate();
+          
+          // Calculate exact age
+          let exactAge = age;
+          if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            exactAge--;
+          }
+          
+          return exactAge >= 14;
+        }
+      )
+      .test(
+        "age-validation",
+        "Employee must be at least 14 years old at the time of joining",
+        function (value) {
+          const { dateOfJoining } = this.parent;
+          if (!dateOfJoining || !value) return true; // Skip if either date is missing
+          const birthDate = new Date(value);
+          const joiningDate = new Date(dateOfJoining);
+          const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+          const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+          const dayDiff = joiningDate.getDate() - birthDate.getDate();
+          
+          // Calculate exact age
+          let exactAge = ageAtJoining;
+          if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            exactAge--;
+          }
+          
+          return exactAge >= 14;
+        }
+      )
+      .test(
+        "birth-before-joining",
+        "Date of Birth must be before Date of Joining",
+        function (value) {
+          const { dateOfJoining } = this.parent;
+          if (!dateOfJoining || !value) return true; // Skip if either date is missing
+          const birthDate = new Date(value);
+          const joiningDate = new Date(dateOfJoining);
+          return birthDate < joiningDate;
+        }
+      ),
+    
+    dateOfJoining: yup
+      .date()
+      .max(new Date(), "Date of Joining must be a past date")
+      .required("Date of Joining is required")
+      .test(
+        "age-validation",
+        "Employee must be at least 14 years old at the time of joining",
+        function (value) {
+          const { dateOfBirth } = this.parent;
+          if (!dateOfBirth || !value) return true; // Skip if either date is missing
+          const birthDate = new Date(dateOfBirth);
+          const joiningDate = new Date(value);
+          const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+          const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+          const dayDiff = joiningDate.getDate() - birthDate.getDate();
+          
+          // Calculate exact age
+          let exactAge = ageAtJoining;
+          if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            exactAge--;
+          }
+          
+          return exactAge >= 14;
+        }
+      )
+      .test(
+        "joining-after-birth",
+        "Date of Joining must be after Date of Birth",
+        function (value) {
+          const { dateOfBirth } = this.parent;
+          if (!dateOfBirth || !value) return true; // Skip if either date is missing
+          const birthDate = new Date(dateOfBirth);
+          const joiningDate = new Date(value);
+          return joiningDate > birthDate;
+        }
+      ),
+    postalCode: yup.number()
+      .typeError('Postal code must be a number')
+      .nullable()
   });
   
