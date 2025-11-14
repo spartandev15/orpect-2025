@@ -49,9 +49,34 @@ import * as yup from "yup";
       'Invalid LinkedIn URL format'
     ).nullable(),
     
+    dateOfBirth: yup
+      .date()
+      .max(new Date(), "Date of Birth must be a past date")
+      .required("Date of Birth is required")
+      .test(
+        "min-age-validation",
+        "Employee must be at least 14 years old",
+        function (value) {
+          if (!value) return true;
+          const birthDate = new Date(value);
+          const today = new Date();
+          const age = today.getFullYear() - birthDate.getFullYear();
+          const monthDiff = today.getMonth() - birthDate.getMonth();
+          const dayDiff = today.getDate() - birthDate.getDate();
+          
+          // Calculate exact age
+          let exactAge = age;
+          if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            exactAge--;
+          }
+          
+          return exactAge >= 14;
+        }
+      ),
+    
     postalCode: yup.number()
-  .typeError('Postal code must be a number')
-  .nullable()
+      .typeError('Postal code must be a number')
+      .nullable()
   });
   
 
