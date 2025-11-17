@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Layout from "../component/layout";
 import Button from "../component/Button";
 import { useExcelExportMutation, useImportCSVMutation, useLazyGetExcelEmployeeQuery } from "../apis/importExportEmployee";
 import { toast } from "react-toastify";
+import DownloadCsvExel from "../component/downLoadCsvExel";
 
 const ImportExportComponent = () => {
   const [activeTab, setActiveTab] = useState("export");
@@ -14,6 +15,7 @@ const ImportExportComponent = () => {
   const [exportDateTo, setExportDateTo] = useState("");
   const [excelExport, { isLoading: loading }] =useExcelExportMutation();
   const [importCSV, { isLoading: importloading }]=useImportCSVMutation()
+  const fileInputRef = useRef(null);
 
   //   const handleExport = () => {
   //     console.log("Exporting:", {
@@ -53,7 +55,35 @@ const ImportExportComponent = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImportFile(file);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const file = e.dataTransfer.files[0];
+    if (file && (file.name.endsWith('.csv') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx'))) {
+      setImportFile(file);
+    } else {
+      toast.error("Please select a valid CSV or Excel file");
+    }
+  };
+
   const handleImport = async () => {
+    if (!importFile) {
+      toast.error("Please select a file to import");
+      return;
+    }
+    
     try {
       console.log("Importing:", { file: importFile });
   
@@ -74,6 +104,10 @@ const ImportExportComponent = () => {
         }
       } else if (response?.status) {
         toast.success(response.message || "File imported successfully");
+        setImportFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
       } else {
         toast.error(response?.message || "Some entries failed to import.");
       }
@@ -187,27 +221,82 @@ const ImportExportComponent = () => {
 
           {/* Import Tab */}
           {activeTab === "import" && (
-            <div>
-              <h5>Import Data</h5>
-         
-              <div className="mb-3">
-                <label className="form-label">Choose CSV File</label>
-                <input
-                  type="file"
-                  className="form-control"
-                  accept=".csv"
-                  onChange={(e) => setImportFile(e.target.files[0])}
-                />
+            <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+              <h4 className="text-center mb-4" style={{ color: '#333', fontWeight: '500' }}>
+                Import Data (Excel / CSV)
+              </h4>
+
+              <div 
+                className="border rounded p-4" 
+                style={{ 
+                  backgroundColor: '#f8f9fa', 
+                  borderColor: '#0066cc',
+                  borderWidth: '1px',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}
+              >
+                {/* Download Demo File Section */}
+                <div className="text-center mb-4">
+                  {/* <h6 className="mb-3" style={{ color: '#333', fontWeight: '500' }}>
+                    Download Demo File
+                  </h6> */}
+                  <DownloadCsvExel />
+                </div>
+
+                {/* File Upload Dropzone */}
+                <div 
+                  className="border rounded p-5 text-center"
+                  style={{
+                    borderColor: '#0066cc',
+                    borderWidth: '2px',
+                    borderStyle: 'dashed',
+                    backgroundColor: '#fff',
+                    minHeight: '200px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    cursor: 'pointer'
+                  }}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    name="csv_file"
+                    onChange={handleFileChange}
+                    id="csvUpload"
+                    style={{ display: "none" }}
+                    accept=".xls,.xlsx,.csv"
+                  />
+                  <Button
+                    className="btn mybtn"
+                     text="Select CSV file"
+                     loading={importloading}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      fileInputRef.current?.click();
+                    }}
+                  >
+                    {importFile ? importFile.name : "Select CSV file"}
+                  </Button>
+                  <p style={{ color: '#666', marginTop: '10px', marginBottom: '0' }}>
+                    {importloading ? "Uploading..." : "or Drag and Drop Here"}
+                  </p>
+                </div>
+
+                {/* Import Button */}
+                {/* <div className="text-center mt-4">
+                  <Button
+                    loading={importloading}
+                    className="btn mybtn"
+                    text="Import CSV"
+                    onClick={handleImport}
+                  />
+                </div> */}
               </div>
-              <Button
-                   loading={importloading}
-                className="btn mybtn"
-                text="Import CSV"
-                onClick={handleImport}
-              />
-              {/* <button className="btn btn-success" onClick={handleImport}>
-            Import CSV
-          </button> */}
             </div>
           )}
         </div>

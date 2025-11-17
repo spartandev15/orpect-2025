@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 
 function DownloadCsvExel() {
   const handleDownload = () => {
@@ -15,9 +16,12 @@ function DownloadCsvExel() {
   };
 
   return (
-    <p className="btn mybtn1" onClick={handleDownload}>
-     Download CSV Format
-    </p>
+    <Button
+      className="btn mybtn"
+      onClick={handleDownload}
+      text="Download Demo File"
+    >
+    </Button>
   );
 }
 
