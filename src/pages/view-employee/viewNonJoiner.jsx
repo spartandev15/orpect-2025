@@ -384,17 +384,17 @@ const ViewNonJoiner = () => {
                                 value={values.position}
                                 required
                               />
-                              <label
+                              {/* <label
                                 className="form-label"
                                 for="typeText"
                                 style={{ background: "#fff" }}
                               >
                                 Position &nbsp;
                                 <span className=" required">*</span>
-                              </label>
+                              </label> */}
 
                               {/* <input
-                                type="text"
+                                type="text" 
                                 className="form-control"
                                 name="position"
                                 value={values.position}

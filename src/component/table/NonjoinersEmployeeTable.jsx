@@ -11,10 +11,25 @@ import { useGetNonJoinerEmployeeQuery } from "../../apis/employee";
 const CurrentEmployeeTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
+  const [debouncedSearchText, setDebouncedSearchText] = useState("");
   const [position, setPosition] = useState("");
   const [dataIndex, setDataIndex] = useState(1);
 
   const dispatch = useDispatch();
+
+  // Debounce search input to avoid too many API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchText(searchText);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  // Reset to page 1 when search text or position changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchText, position]);
 
   const {
     data,
@@ -23,7 +38,7 @@ const CurrentEmployeeTable = () => {
     refetch,
   } = useGetNonJoinerEmployeeQuery({
     page: currentPage,
-    searchText,
+    searchText: debouncedSearchText,
     position,
   });
 

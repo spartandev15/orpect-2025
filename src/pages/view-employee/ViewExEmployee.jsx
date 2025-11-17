@@ -186,6 +186,23 @@ const ViewExEmployee = () => {
     values.dateOfBirth = formatDateForInput(data?.date_of_birth);
     values.lastCTC = data?.last_CTC;
     values.postalCode = data?.postal_code;
+    
+    // Initialize selectedCountry and selectedState for address form
+    if (data?.country) {
+      const countries = Country.getAllCountries();
+      const country = countries.find((c) => c.name === data.country);
+      if (country) {
+        setSelectedCountry(country);
+        // Initialize selectedState if state exists
+        if (data?.state) {
+          const states = State.getStatesOfCountry(country.isoCode);
+          const state = states.find((s) => s.name === data.state);
+          if (state) {
+            setSelectedState(state);
+          }
+        }
+      }
+    }
   };
 
   // // Event Listner function for form
@@ -302,6 +319,144 @@ const ViewExEmployee = () => {
     setSelectedState(state);
   };
 
+  // Information section update handler
+  const handleInformationUpdate = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const formData = new FormData();
+      // Information fields only
+      formData.append("empId", values.empId);
+      formData.append("empName", values.empName);
+      formData.append("email", values.email);
+      formData.append("phone", values.phone);
+      formData.append("position", values.position);
+      formData.append("dateOfJoining", values.dateOfJoining);
+      if (values.dateOfBirth) {
+        formData.append("dateOfBirth", values.dateOfBirth);
+      }
+      formData.append("tax_number", values.tax_number);
+      if (values.linkedIn) {
+        formData.append("linkedIn", values.linkedIn);
+      }
+      
+      // Keep existing address fields
+      if (values.permanentAddress) {
+        formData.append("permanentAddress", values.permanentAddress);
+      }
+      if (values.city) {
+        formData.append("city", values.city);
+      }
+      if (values.state) {
+        formData.append("state", values.state);
+      }
+      if (values.country) {
+        formData.append("country", values.country);
+      }
+      if (values.postalCode) {
+        formData.append("postalCode", values.postalCode);
+      }
+      if (values.image) {
+        formData.append("image", values.image);
+      }
+      formData.append("nonjoiner", 0);
+      formData.append("exEmp", 1);
+
+      const response = await updateEmployeeById({ id, formData }).unwrap();
+      
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to update information");
+      } else if (response?.status) {
+        toast.success("Information updated successfully");
+        // Hide edit form and show readonly form
+        $(".editable-form1").hide();
+        $(".readonly-form1").show();
+        $("#editButton1").show();
+        $("#cancelButton1").hide();
+        // Refresh employee data
+        if (isSuccess && data?.employee) {
+          setEmployee(data.employee);
+          setValues(data.employee);
+        }
+      } else {
+        toast.error(response?.message || "Something went wrong");
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message || error?.message || "Failed to update information";
+      toast.error(errorMessage);
+      console.error("Update information failed:", error);
+    }
+  };
+
+  // Address section update handler
+  const handleAddressUpdate = async (e) => {
+    e.preventDefault();
+    
+    try {
+      const formData = new FormData();
+      // Keep existing information fields
+      formData.append("empId", values.empId);
+      formData.append("empName", values.empName);
+      formData.append("email", values.email);
+      formData.append("phone", values.phone);
+      formData.append("position", values.position);
+      formData.append("dateOfJoining", values.dateOfJoining);
+      if (values.dateOfBirth) {
+        formData.append("dateOfBirth", values.dateOfBirth);
+      }
+      formData.append("tax_number", values.tax_number);
+      if (values.linkedIn) {
+        formData.append("linkedIn", values.linkedIn);
+      }
+      
+      // Address fields only
+      if (values.permanentAddress) {
+        formData.append("permanentAddress", values.permanentAddress);
+      }
+      if (values.city) {
+        formData.append("city", values.city);
+      }
+      if (values.state) {
+        formData.append("state", values.state);
+      }
+      if (values.country) {
+        formData.append("country", values.country);
+      }
+      if (values.postalCode) {
+        formData.append("postalCode", values.postalCode);
+      }
+      if (values.image) {
+        formData.append("image", values.image);
+      }
+      formData.append("nonjoiner", 0);
+      formData.append("exEmp", 1);
+
+      const response = await updateEmployeeById({ id, formData }).unwrap();
+      
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to update address");
+      } else if (response?.status) {
+        toast.success("Address updated successfully");
+        // Hide edit form and show readonly form
+        $(".editable-form2").hide();
+        $(".readonly-form2").show();
+        $("#editButton2").show();
+        $("#cancelButton2").hide();
+        // Refresh employee data
+        if (isSuccess && data?.employee) {
+          setEmployee(data.employee);
+          setValues(data.employee);
+        }
+      } else {
+        toast.error(response?.message || "Something went wrong");
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message || error?.message || "Failed to update address";
+      toast.error(errorMessage);
+      console.error("Update address failed:", error);
+    }
+  };
+
   return (
     <>
       <Layout>
@@ -379,7 +534,7 @@ const ViewExEmployee = () => {
                       </div>
                     </div>
                     <div className="editable-form1" style={{ display: "none" }}>
-                      <form noValidate="noValidate" onSubmit={handleSubmit}>
+                      <form noValidate="noValidate" onSubmit={handleInformationUpdate}>
                         <div className="row">
                           <div className="col-lg-6 col-md-6 col-sm-12">
                             <div className="form-outline">
@@ -555,8 +710,7 @@ const ViewExEmployee = () => {
                         <div className="row mt-4">
                           <div className="col-lg-12">
                             <Button
-                              text="Save"
-                              id="cancelButton1"
+                              text="Save Information"
                               className="btn infoedit3"
                               loading={loading}
                             />
@@ -652,7 +806,7 @@ const ViewExEmployee = () => {
                       </div>
                     </div>
                     <div className="editable-form2" style={{ display: "none" }}>
-                      <form noValidate="noValidate" onSubmit={handleSubmit}>
+                      <form noValidate="noValidate" onSubmit={handleAddressUpdate}>
                         <div className="row">
                           <div className="col-lg-12 col-md-12 col-sm-12">
                             <div className="form-outline">
@@ -708,12 +862,11 @@ const ViewExEmployee = () => {
                                 name="state"
                                 id="state"
                                 options={stateOptions}
-                                defaultValue={
+                                value={
                                   values.state
-                                    ? {
-                                        label: values.state,
-                                        value: values.state,
-                                      }
+                                    ? stateOptions.find(
+                                        (option) => option.label === values.state
+                                      ) || null
                                     : null
                                 }
                                 onChange={handleStateChange}
@@ -761,8 +914,7 @@ const ViewExEmployee = () => {
                         <div className="row mt-4">
                           <div className="col-lg-12">
                             <Button
-                              text="Save"
-                              id="cancelButton1"
+                              text="Save Address"
                               className="btn infoedit3"
                               loading={loading}
                             />

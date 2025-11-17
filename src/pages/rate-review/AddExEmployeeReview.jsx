@@ -15,6 +15,7 @@ import EmployeeCropImage from "../../component/extras/crop-image/EmployeeCropIma
 import { BASE_URL } from "../../api/baseUrl";
 import { InputAdd } from "../../component/InputAdd";
 import { useAddExEmployeeReviewMutation } from "../../apis/employee";
+import SelectPostion from "../../component/SelectPosition";
 
 const initialValues = {
   empId: "",
@@ -265,26 +266,13 @@ const AddExEmployeeReview = () => {
               </div>
             </div>
             <div className="col-lg-6 col-sm-12  pb-4">
-              <div className="form-outline datalist">
-                <input
-                  type="text"
-                  list="cars"
-                  className="form-control"
-                  name="position"
+              <div className="form-outline">
+                <SelectPostion
+                  nameValue="position"
+                  handleChange={handleChange}
                   value={values.position}
-                  onChange={handleChange}
                   required
                 />
-                <label className="form-label" for="typeText">
-                  Position &nbsp;<span className="required">*</span>
-                </label>
-                <datalist className="datalist-ul" id="cars">
-                  {data?.positions?.map((i) => (
-                    <option key={i.id} value={i.position}>
-                      {i.position}
-                    </option>
-                  ))}
-                </datalist>
                 {errors.position && touched.position ? (
                   <p className="text-danger msg">{errors.position}</p>
                 ) : null}
