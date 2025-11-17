@@ -710,7 +710,7 @@ const ViewExEmployee = () => {
                         <div className="row mt-4">
                           <div className="col-lg-12">
                             <Button
-                              text="Save Information"
+                              text="Save"
                               className="btn infoedit3"
                               loading={loading}
                             />
@@ -914,7 +914,7 @@ const ViewExEmployee = () => {
                         <div className="row mt-4">
                           <div className="col-lg-12">
                             <Button
-                              text="Save Address"
+                              text="Save"
                               className="btn infoedit3"
                               loading={loading}
                             />
