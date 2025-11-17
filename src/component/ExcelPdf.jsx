@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useLazyGetExcelEmployeeQuery } from '../apis/importExportEmployee'
 import { toast } from 'react-toastify'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 const ExcelPdf = () => {
-    const [startDate, setStartDate] = useState('')
-    const [endDate, setEndDate] = useState('')
+    const [startDate, setStartDate] = useState(null)
+    const [endDate, setEndDate] = useState(null)
     const [getExcelEmployee,{isLoading}] = useLazyGetExcelEmployeeQuery()
 
     // const handleImport = async (format) => {
@@ -31,11 +33,19 @@ const ExcelPdf = () => {
     //         toast.error("Failed to download file.")
     //     }
     // }
+    const formatDate = (date) => {
+        if (!date) return ''
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        return `${year}-${month}-${day}`
+    }
+
     const handleImport = async (format) => {
         try {
             const response = await getExcelEmployee({
-                start_date: startDate,
-                end_date: endDate,
+                start_date: formatDate(startDate),
+                end_date: formatDate(endDate),
                 status: format
             }).unwrap()
     
@@ -61,31 +71,31 @@ const ExcelPdf = () => {
 
     return (
         <>
-            <div className="col-lg-2 col-md-6 pb-4">
+            <div className="col-lg-2 col-md-6 px-1">
                 <div className="search_button">
-                    <input
-                        type="date"
+                    <DatePicker
+                        selected={startDate}
+                        onChange={(date) => setStartDate(date)}
+                        placeholderText="Start Date"
                         className="form-control inner_search_icon"
-                        placeholder="Start Date"
+                        dateFormat="yyyy-MM-dd"
                         name="start_date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
                     />
                 </div>
             </div>
-            <div className="col-lg-2 col-md-6 pb-4">
+            <div className="col-lg-2 col-md-6 px-1">
                 <div className="search_button">
-                    <input
-                        type="date"
+                    <DatePicker
+                        selected={endDate}
+                        onChange={(date) => setEndDate(date)}
+                        placeholderText="End Date"
                         className="form-control inner_search_icon"
-                        placeholder="End Date"
+                        dateFormat="yyyy-MM-dd"
                         name="end_date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
                     />
                 </div>
             </div>
-            <div className="col-lg-1 col-md-6 pb-4">
+            <div className="col-lg-1 col-md-6 p-0">
                 <div className="search_button">
                     <select
                         className="form-control main_inner_dropdown"
