@@ -45,14 +45,14 @@ const ExEmployeeTable = () => {
 
   return (
     <div className="container-fluid viewemployee main_inner_padding">
-      <div className="row">
-        <div className="col-lg-3">
+      <div className="row mb-3">
+        <div className="col-lg-3 px-1">
           <h3>Ex Employees</h3>
         </div>
-        <div className="col-lg-2 col-md-6 pb-4">
+        <div className="col-lg-2 col-md-6 px-1">
           <SelectDefaultPosition changePostion={setPosition} />
         </div>
-        <div className="col-lg-2 col-md-6 pb-4">
+        <div className="col-lg-2 col-md-6 px-1">
           <div className="search_button">
             <input
               type="search"

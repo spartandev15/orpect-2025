@@ -72,7 +72,7 @@ const ExcelPdf = () => {
     return (
         <>
             <div className="col-lg-2 col-md-6 px-1">
-                <div className="search_button">
+                <div className="search_button" style={{ position: 'relative' }}>
                     <DatePicker
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
@@ -81,10 +81,22 @@ const ExcelPdf = () => {
                         dateFormat="yyyy-MM-dd"
                         name="start_date"
                     />
+                    <i 
+                        className="fas fa-calendar-alt" 
+                        style={{
+                            position: 'absolute',
+                            right: '12px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            pointerEvents: 'none',
+                            color: '#6c757d',
+                            zIndex: 1
+                        }}
+                    />
                 </div>
             </div>
             <div className="col-lg-2 col-md-6 px-1">
-                <div className="search_button">
+                <div className="search_button" style={{ position: 'relative' }}>
                     <DatePicker
                         selected={endDate}
                         onChange={(date) => setEndDate(date)}
@@ -93,10 +105,22 @@ const ExcelPdf = () => {
                         dateFormat="yyyy-MM-dd"
                         name="end_date"
                     />
+                    <i 
+                        className="fas fa-calendar-alt" 
+                        style={{
+                            position: 'absolute',
+                            right: '12px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            pointerEvents: 'none',
+                            color: '#6c757d',
+                            zIndex: 1
+                        }}
+                    />
                 </div>
             </div>
             <div className="col-lg-1 col-md-6 p-0">
-                <div className="search_button">
+                <div className="" style={{ position: 'relative' }}>
                     <select
                         className="form-control main_inner_dropdown"
                         defaultValue=""
@@ -108,6 +132,19 @@ const ExcelPdf = () => {
                         <option value="pdf">PDF</option>
                         <option value="csv">CSV</option>
                     </select>
+                    <i 
+                        className="fas fa-chevron-down" 
+                        style={{
+                            position: 'absolute',
+                            right: '10px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            pointerEvents: 'none',
+                            color: '#6c757d',
+                            zIndex: 1,
+                            fontSize: '11px'
+                        }}
+                    />
                 </div>
             </div>
         </>
