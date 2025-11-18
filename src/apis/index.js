@@ -95,10 +95,10 @@ const customBaseQuery = async (args, api, extraOptions) => {
       // window.location.replace('/orpect');
     } else if (result.error.data?.status === "error") {
       // Handle custom error format from API
-      toast.error(result.error.data?.message || "Something went wrong");
+      // toast.error(result.error.data?.message || "Something went wrong");
     } else if (result.error.data?.message) {
       // Handle other error messages
-      toast.error(result.error.data.message || "Something went wrong");
+      // toast.error(result.error.data.message || "Something went wrong");
     }
   }
 

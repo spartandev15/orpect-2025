@@ -55,40 +55,17 @@ const ImportExportComponent = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImportFile(file);
-    }
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const file = e.dataTransfer.files[0];
-    if (file && (file.name.endsWith('.csv') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx'))) {
-      setImportFile(file);
-    } else {
-      toast.error("Please select a valid CSV or Excel file");
-    }
-  };
-
-  const handleImport = async () => {
-    if (!importFile) {
+  const handleImport = async (file) => {
+    if (!file) {
       toast.error("Please select a file to import");
       return;
     }
     
     try {
-      console.log("Importing:", { file: importFile });
+      console.log("Importing:", { file });
   
       const formData = new FormData();
-      formData.append("csv_file", importFile);
+      formData.append("csv_file", file);
   
       const response = await importCSV(formData).unwrap();
       console.log("Response:", response);
@@ -115,6 +92,33 @@ const ImportExportComponent = () => {
       const errorMessage = error?.data?.message || error?.message || "An error occurred during import. Please try again.";
       toast.error(errorMessage);
       console.error("File import failed:", error);
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImportFile(file);
+      // Automatically upload the file when selected
+      handleImport(file);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const file = e.dataTransfer.files[0];
+    if (file && (file.name.endsWith('.csv') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx'))) {
+      setImportFile(file);
+      // Automatically upload the file when dropped
+      handleImport(file);
+    } else {
+      toast.error("Please select a valid CSV or Excel file");
     }
   };
   
@@ -273,15 +277,13 @@ const ImportExportComponent = () => {
                   />
                   <Button
                     className="btn mybtn"
-                     text="Select CSV file"
-                     loading={importloading}
+                    text={importFile ? importFile.name : "Select CSV file"}
+                    loading={importloading}
                     onClick={(e) => {
                       e.stopPropagation();
                       fileInputRef.current?.click();
                     }}
-                  >
-                    {importFile ? importFile.name : "Select CSV file"}
-                  </Button>
+                  />
                   <p style={{ color: '#666', marginTop: '10px', marginBottom: '0' }}>
                     {importloading ? "Uploading..." : "or Drag and Drop Here"}
                   </p>

@@ -16,12 +16,11 @@ function DownloadCsvExel() {
   };
 
   return (
-    <Button
-      className="btn mybtn"
+    <p
       onClick={handleDownload}
-      text="Download Demo File"
     >
-    </Button>
+      <a href="#" onClick={handleDownload} className="link-warning">Download CSV Format</a>
+    </p>
   );
 }
 
