@@ -81,18 +81,26 @@ const ExcelPdf = () => {
                         dateFormat="yyyy-MM-dd"
                         name="start_date"
                     />
-                    <i 
-                        className="fas fa-calendar-alt" 
+                    <svg 
+                        width="20" 
+                        height="20" 
+                        viewBox="0 0 20 20" 
+                        fill="none" 
+                        xmlns="http://www.w3.org/2000/svg"
                         style={{
                             position: 'absolute',
                             right: '12px',
                             top: '50%',
                             transform: 'translateY(-50%)',
                             pointerEvents: 'none',
-                            color: '#6c757d',
                             zIndex: 1
                         }}
-                    />
+                    >
+                        <rect x="3" y="4" width="14" height="13" rx="2" stroke="#000000" strokeWidth="1.4"/>
+                        <path d="M7 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round"/>
+                        <path d="M13 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round"/>
+                        <path d="M3 8H17" stroke="#000000" strokeWidth="1.4"/>
+                    </svg>
                 </div>
             </div>
             <div className="col-lg-2 col-md-6 px-1">
@@ -105,18 +113,26 @@ const ExcelPdf = () => {
                         dateFormat="yyyy-MM-dd"
                         name="end_date"
                     />
-                    <i 
-                        className="fas fa-calendar-alt" 
+                    <svg 
+                        width="20" 
+                        height="20" 
+                        viewBox="0 0 20 20" 
+                        fill="none" 
+                        xmlns="http://www.w3.org/2000/svg"
                         style={{
                             position: 'absolute',
                             right: '12px',
                             top: '50%',
                             transform: 'translateY(-50%)',
                             pointerEvents: 'none',
-                            color: '#6c757d',
                             zIndex: 1
                         }}
-                    />
+                    >
+                        <rect x="3" y="4" width="14" height="13" rx="2" stroke="#000000" strokeWidth="1.4"/>
+                        <path d="M7 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round"/>
+                        <path d="M13 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round"/>
+                        <path d="M3 8H17" stroke="#000000" strokeWidth="1.4"/>
+                    </svg>
                 </div>
             </div>
             <div className="col-lg-1 col-md-6 p-0">
