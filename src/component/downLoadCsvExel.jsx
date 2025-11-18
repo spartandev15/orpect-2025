@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "./Button";
-
+import employeeFile from "../asset/csv/employee-file.csv";
 function DownloadCsvExel() {
   const handleDownload = () => {
     const fileName = "CSVFormat.csv";
@@ -16,10 +16,8 @@ function DownloadCsvExel() {
   };
 
   return (
-    <p
-      // onClick={handleDownload}
-    >
-      <a target="_blank" download className="link-warning" href="/assets/upload/employee-file.csv">Download CSV Format</a>
+    <p>
+      <a target="_blank" download className="link-warning" href={employeeFile}>Download CSV Format</a>
     </p>
   );
 }
