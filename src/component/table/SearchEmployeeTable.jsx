@@ -21,24 +21,22 @@ const   SearchEmployeeTable = () => {
   const dispatch = useDispatch();
   const searchValue = useSelector((state) => state?.dashboardData?.searchValue);
   const empType = useSelector((state) => state?.dashboardData?.empType);
+  const fetchEmployees = async () => {
+    setLoading(true);
+    try {
+      const response = await dispatch(
+        getEmployeeBySearch(searchValue || "", empType || " ")
+      );
+      const employeesData = response?.data?.employees?.data;
+      setEmployees(employeesData);
+      setTotalPages(response?.data?.employees?.last_page);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      if (searchValue) {
-        setLoading(true);
-        try {
-          const response = await dispatch(
-            getEmployeeBySearch(searchValue, empType)
-          );
-          const employeesData = response?.data?.employees?.data;
-          setEmployees(employeesData);
-          setTotalPages(employeesData?.data?.employees.last_page);
-        } catch (error) {
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
 
     fetchEmployees();
   }, [dispatch, searchValue, empType]);
@@ -72,19 +70,39 @@ const   SearchEmployeeTable = () => {
 
       <div className="row">
         <div className="col-lg-6">
-          <h3>List of Ex and Non Joiner Employees</h3>
+          <h3>List of All Employees</h3>
         </div>
         <div className="col-lg-3 searchexemployeetable">
-          <select defaultValue="All-Employees"
-            className="form-control slect-color main_inner_dropdown "
-            name="employees type"
-            value={empType}
-            onChange={(e) => dispatch(setEmpType(e.target.value))}
-          >
-            <option value=" ">All Employees</option>
-            <option value="ex">Ex- Employees</option>
-            <option value="nonJoiner">Non Joiners</option>
-          </select>
+          <div style={{ position: 'relative' }}>
+            <select defaultValue="All-Employees"
+              className="form-control slect-color main_inner_dropdown "
+              name="employees type"
+              value={empType}
+              onChange={(e) => dispatch(setEmpType(e.target.value))}
+              style={{ 
+                appearance: 'none',
+                paddingRight: '30px'
+              }}
+            >
+              <option value=" ">All Employees</option>
+              <option value="ex">Ex- Employees</option>
+              <option value="nonJoiner">Non Joiners</option>
+              <option value="current">Current Employees</option>
+
+            </select>
+            <i 
+              className="fa fa-chevron-down" 
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                pointerEvents: 'none',
+                color: '#666',
+                fontSize: '11px'
+              }}
+            ></i>
+          </div>
         </div>
         <div className="col-lg-3 searchexemployeetable">
           <div className="search_button">

@@ -83,31 +83,67 @@ const PreviousReviewTable = () => {
       </div>
       <div className="row">
         <div className="col-lg-4 pd-4">
-          <select defaultValue="All-Employees"
-            className="form-control slect-color main_inner_dropdown"
-            name="employees type"
-            value={empType}
-            onChange={(e) => setEmpType(e.target.value)}
-          >
-            <option value="All-Employees">All Employees</option>
-            <option value="ex">Ex- Employees</option>
-            <option value="nonJoiner">Non Joiners</option>
-          </select>
+          <div style={{ position: 'relative' }}>
+            <select defaultValue="All-Employees"
+              className="form-control slect-color main_inner_dropdown"
+              name="employees type"
+              value={empType}
+              onChange={(e) => setEmpType(e.target.value)}
+              style={{ 
+                appearance: 'none',
+                paddingRight: '30px'
+              }}
+            >
+              <option value="All-Employees">All Employees</option>
+              <option value="ex">Ex- Employees</option>
+              <option value="nonJoiner">Non Joiners</option>
+            </select>
+            <i 
+              className="fa fa-chevron-down" 
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                pointerEvents: 'none',
+                color: '#666',
+                fontSize: '11px'
+              }}
+            ></i>
+          </div>
         </div>
 
         <div className="col-lg-4 col-md-6 pb-4">
-          <select
-            className="form-control main_inner_dropdown"
-            value={position}
-            onChange={(e) => setPosition(e.target.value)}
-          >
-            <option value="">Select Position</option>
-            {getAllPosition?.map((i) => (
-              <option key={i.id} value={i.position} selected={i.position}>
-                {i.position}
-              </option>
-            ))}
-          </select>
+          <div style={{ position: 'relative' }}>
+            <select
+              className="form-control main_inner_dropdown"
+              value={position}
+              onChange={(e) => setPosition(e.target.value)}
+              style={{ 
+                appearance: 'none',
+                paddingRight: '30px'
+              }}
+            >
+              <option value="">Select Position</option>
+              {getAllPosition?.map((i) => (
+                <option key={i.id} value={i.position} selected={i.position}>
+                  {i.position}
+                </option>
+              ))}
+            </select>
+            <i 
+              className="fa fa-chevron-down" 
+              style={{
+                position: 'absolute',
+                right: '10px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                pointerEvents: 'none',
+                color: '#666',
+                fontSize: '11px'
+              }}
+            ></i>
+          </div>
         </div>
         <div className="col-lg-4  col-md-6 pb-4">
           <div className="search_button">
