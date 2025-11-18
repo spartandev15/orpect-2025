@@ -78,8 +78,9 @@ const ExcelPdf = () => {
                         onChange={(date) => setStartDate(date)}
                         placeholderText="Start Date"
                         className="form-control inner_search_icon"
-                        dateFormat="yyyy-MM-dd"
+                        dateFormat="yyyy-MM-d"
                         name="start_date"
+                        autoComplete="off"
                     />
                     <svg 
                         width="20" 
@@ -87,7 +88,7 @@ const ExcelPdf = () => {
                         viewBox="0 0 20 20" 
                         fill="none" 
                         xmlns="http://www.w3.org/2000/svg"
-                        style={{
+                        style={{    
                             position: 'absolute',
                             right: '12px',
                             top: '50%',
@@ -112,6 +113,8 @@ const ExcelPdf = () => {
                         className="form-control inner_search_icon"
                         dateFormat="yyyy-MM-dd"
                         name="end_date"
+                        autoComplete="off"
+                        zIndex={1000}
                     />
                     <svg 
                         width="20" 

@@ -92,6 +92,9 @@ const ImportExportComponent = () => {
       const errorMessage = error?.data?.message || error?.message || "An error occurred during import. Please try again.";
       toast.error(errorMessage);
       console.error("File import failed:", error);
+    }finally{
+      fileInputRef.current.value = '';
+      setImportFile(null);
     }
   };
 

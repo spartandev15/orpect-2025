@@ -17,9 +17,9 @@ function DownloadCsvExel() {
 
   return (
     <p
-      onClick={handleDownload}
+      // onClick={handleDownload}
     >
-      <a href="#" onClick={handleDownload} className="link-warning">Download CSV Format</a>
+      <a target="_blank" download className="link-warning" href="/assets/upload/employee-file.csv">Download CSV Format</a>
     </p>
   );
 }
