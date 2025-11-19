@@ -20,7 +20,7 @@ const addRateReview = (id,data) => (dispatch) => {
          console.log(error);
         reject(error?.response);
         // if(error){
-        //   window.location.href="/404"
+        //   
         // }
       }
     });

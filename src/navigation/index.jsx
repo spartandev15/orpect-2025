@@ -18,6 +18,7 @@ import ViewEmployee from "../pages/employee/ViewEmployee";
 import NonJoinersList from "../pages/employee/NonJoinersList";
 import ExEmployeeList from "../pages/employee/ExEmployeeList";
 import SearchEmployeeList from "../pages/employee/SearchEmployee";
+import ViewSearchEmployee from "../pages/employee/ViewSearchEmployee";
 import AddReview from "../pages/rate-review/AddReview";
 import AddExEmployeeReview from "../pages/rate-review/AddExEmployeeReview";
 import UpdatePassword from "../pages/auth-pages/UpdatePassword";
@@ -72,7 +73,7 @@ import CompanyReviews from "../pages/SuperAdmin/Compaines/CompanyReviews";
 
 const Navigation = () => {
   const location = useLocation();
- 
+
   return (
     <>
       <Helmet>
@@ -80,238 +81,247 @@ const Navigation = () => {
         <meta name="description" content={getDescription(location.pathname)} />
         <meta name="keywords" content={getKeywords(location.pathname)} />
       </Helmet>
-     
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginWrapper />} />
-          <Route path="*" element={<ErrorPage404 />} />
-          <Route path="404" element={<ErrorPage404 />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/contact-us" element={<ContactUs />} />
-          <Route path="/faqs" element={<Faqs />} />
-          <Route path="/community-guidlines" element={<Community />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/join-orpect-plus" element={<Joinorpect />} />
-          <Route path="/introducing-ORPECT" element={<Blog1 />} />
-          <Route path="/art-of-feedback" element={<Blog2 />} />
-          <Route path="/new-era-recruitment" element={<Blog3 />} />
-          <Route path="/revolutionizing-employee" element={<Blog4 />} />
-          <Route path="/embrace-transparency" element={<Blog5 />} />
-          <Route path="/terms-of-use" element={<TermsofUse />} />
-          <Route path="/signup" element={<RegisterWrapper />} />
-          <Route path="/forget-password" element={<ForgetPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/verification" element={<VerificationPage />} />
-          <Route path="/data-request-form" element={<DataRequestFrom />} />
+
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<LoginWrapper />} />
+        <Route path="*" element={<ErrorPage404 />} />
+        <Route path="404" element={<ErrorPage404 />} />
+        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/faqs" element={<Faqs />} />
+        <Route path="/community-guidlines" element={<Community />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/join-orpect-plus" element={<Joinorpect />} />
+        <Route path="/introducing-ORPECT" element={<Blog1 />} />
+        <Route path="/art-of-feedback" element={<Blog2 />} />
+        <Route path="/new-era-recruitment" element={<Blog3 />} />
+        <Route path="/revolutionizing-employee" element={<Blog4 />} />
+        <Route path="/embrace-transparency" element={<Blog5 />} />
+        <Route path="/terms-of-use" element={<TermsofUse />} />
+        <Route path="/signup" element={<RegisterWrapper />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/verification" element={<VerificationPage />} />
+        <Route path="/data-request-form" element={<DataRequestFrom />} />
 
 
-          {/* Employee Dashboard */}
-     <Route path="/employee-signup" element={<EmployeeRegister />}/>
-        <Route path="/employee-dashboard" element={<EmployeeDashboard/>} />
+        {/* Employee Dashboard */}
+        <Route path="/employee-signup" element={<EmployeeRegister />} />
+        <Route path="/employee-dashboard" element={<EmployeeDashboard />} />
         <Route path="/total-reviews" element={<TotalReview />} />
         <Route path="/company-detail" element={<Viewcompany />} />
         <Route path="/company-review" element={<AddCompanyReview />} />
 
-          {/* Click here to go to Login Page */}
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/update-password"
-            element={
-              <ProtectedRoute>
-                <UpdatePassword />
-              </ProtectedRoute>
-            }
-          />
+        {/* Click here to go to Login Page */}
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/update-password"
+          element={
+            <ProtectedRoute>
+              <UpdatePassword />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dasboard />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dasboard />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/employee"
-            element={
-              <ProtectedRoute>
-                <EmployeeList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/add-employee"
-            element={
-              <ProtectedRoute>
-                <AddEmployee />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/employee"
+          element={
+            <ProtectedRoute>
+              <EmployeeList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-employee"
+          element={
+            <ProtectedRoute>
+              <AddEmployee />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/view-employee/:id"
-            element={
-              <ProtectedRoute>
-                <ViewEmployee />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/view-exemployee/:id"
-            element={
-              <ProtectedRoute>
-                <ViewExEmployee />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/view-nonjoiner/:id"
-            element={
-              <ProtectedRoute>
-                <ViewNonJoiner />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/view-employee/:id"
+          element={
+            <ProtectedRoute>
+              <ViewEmployee />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-exemployee/:id"
+          element={
+            <ProtectedRoute>
+              <ViewExEmployee />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/view-nonjoiner/:id"
+          element={
+            <ProtectedRoute>
+              <ViewNonJoiner />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/upload-csv"
-            element={
-              <ProtectedRoute>
-                {/* <UploadCsv /> */}
-                <ImportExportComponent />
+        <Route
+          path="/upload-csv"
+          element={
+            <ProtectedRoute>
+              {/* <UploadCsv /> */}
+              <ImportExportComponent />
 
-              </ProtectedRoute>
-            }
-          />
- <Route
-            path="/import-export"
-            element={
-              <ProtectedRoute>
-                <ImportExportComponent />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/add-position"
-            element={
-              <ProtectedRoute>
-                <Addposition />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/current-employee"
-            element={
-              <ProtectedRoute>
-                <EmployeeList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ex-employee"
-            element={
-              <ProtectedRoute>
-                <ExEmployeeList />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/previous-review"
-            element={
-              <ProtectedRoute>
-                <RateReviewList />
-              </ProtectedRoute>
-            }
-          />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/import-export"
+          element={
+            <ProtectedRoute>
+              <ImportExportComponent />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-position"
+          element={
+            <ProtectedRoute>
+              <Addposition />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/current-employee"
+          element={
+            <ProtectedRoute>
+              <EmployeeList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/ex-employee"
+          element={
+            <ProtectedRoute>
+              <ExEmployeeList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/previous-review"
+          element={
+            <ProtectedRoute>
+              <RateReviewList />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/non-joiner"
-            element={
-              <ProtectedRoute>
-                <NonJoinersList />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/non-joiner"
+          element={
+            <ProtectedRoute>
+              <NonJoinersList />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/search-employee"
-            element={
-              <ProtectedRoute>
-                <SearchEmployeeList />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/search-employee"
+          element={
+            <ProtectedRoute>
+              <SearchEmployeeList />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/add-review"
-            element={
-              <ProtectedRoute>
-                <AddReview />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/employee-review/:id"
-            element={
-              <ProtectedRoute>
-                <ViewEmployeeAllReview />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/add-exemployee-review"
-            element={
-              <ProtectedRoute>
-                <AddExEmployeeReview />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/add-nonjoiner-review"
-            element={
-              <ProtectedRoute>
-                <AddNonEmployeeReview />
-              </ProtectedRoute>
-            }
-          />
-                 <Route path="super-admin/login" element={<SuperAdmin_login />} />
-               <Route path="/super-admin" element={
-                 <SuperAdminProtectedRoute>
-                   <SuperAdminLayout/>
-                 </SuperAdminProtectedRoute>
-               }>
-                 <Route path="dashboard" element={<Dashboard />} />
-                 <Route path="user" element={<User />} />
-                 <Route path="profile" element={<SuperAdminProfile/>} />
-                 <Route path="updatepassword" element={<UpdateAdminPassword/>} />
+        <Route
+          path="/view-search-employee/:id"
+          element={
+            <ProtectedRoute>
+              <ViewSearchEmployee />
+            </ProtectedRoute>
+          }
+        />
 
-                 <Route path="adduser" element={<AddUser/>} />
-                 <Route path="viewuser/:id" element={<ViewUser/>} />
+        <Route
+          path="/add-review"
+          element={
+            <ProtectedRoute>
+              <AddReview />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/employee-review/:id"
+          element={
+            <ProtectedRoute>
+              <ViewEmployeeAllReview />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-exemployee-review"
+          element={
+            <ProtectedRoute>
+              <AddExEmployeeReview />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/add-nonjoiner-review"
+          element={
+            <ProtectedRoute>
+              <AddNonEmployeeReview />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="super-admin/login" element={<SuperAdmin_login />} />
+        <Route path="/super-admin" element={
+          <SuperAdminProtectedRoute>
+            <SuperAdminLayout />
+          </SuperAdminProtectedRoute>
+        }>
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="user" element={<User />} />
+          <Route path="profile" element={<SuperAdminProfile />} />
+          <Route path="updatepassword" element={<UpdateAdminPassword />} />
+
+          <Route path="adduser" element={<AddUser />} />
+          <Route path="viewuser/:id" element={<ViewUser />} />
 
 
-                 <Route path="companies" element={<Companies/>} />
-                 <Route path="viewcompany/:id" element={<ViewCompany/>} />
-                 <Route path="addcompany" element={<AddCompany/>} />
+          <Route path="companies" element={<Companies />} />
+          <Route path="viewcompany/:id" element={<ViewCompany />} />
+          <Route path="addcompany" element={<AddCompany />} />
 
-                 <Route path="currentEmployee/:id" element={<CurrentEmployee/>} />
-                 <Route path="exEmployee/:id" element={<ExEmployee/>} />
-                 <Route path="nonJoiner/:id" element={<NonJoiner/>} />
+          <Route path="currentEmployee/:id" element={<CurrentEmployee />} />
+          <Route path="exEmployee/:id" element={<ExEmployee />} />
+          <Route path="nonJoiner/:id" element={<NonJoiner />} />
 
-                 <Route path="notification-list" element={<NotificationList/>} />
-                 <Route path="data-request" element={<DataRequest/>} />
-                 <Route path="company-reviews" element={<CompanyReviews/>} />
-               </Route>
-        </Routes>
-       
+          <Route path="notification-list" element={<NotificationList />} />
+          <Route path="data-request" element={<DataRequest />} />
+          <Route path="company-reviews" element={<CompanyReviews />} />
+        </Route>
+      </Routes>
+
       {/* Conditionally render the script tag based on the current route */}
     </>
   );
