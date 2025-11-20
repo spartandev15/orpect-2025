@@ -12,6 +12,15 @@ const DeleteEmployee = ({ id }) => {
   const navigate =useNavigate()
   const handleClosePopup = () => {
     setDeletePopup(false);
+    // Remove Bootstrap modal backdrop if it exists
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+      backdrop.remove();
+    }
+    // Remove modal-open class from body
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
   };
   const [deleteEmployeeById,{isSuccess,isLoading:loading}] = useDeleteEmployeeByIdMutation();
 
@@ -42,12 +51,40 @@ const DeleteEmployee = ({ id }) => {
       toast.error("Failed to delete employee.");
       console.error(err);
     } finally {
+      handleClosePopup()
     }
   };
 useEffect(()=>{
-  handleClosePopup();
-
+  if(isSuccess){
+    handleClosePopup();
+  }
 },[isSuccess])
+
+// Cleanup backdrop when modal closes
+useEffect(() => {
+  if (!DeletePopup) {
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+      backdrop.remove();
+    }
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+}, [DeletePopup]);
+
+// Cleanup on component unmount
+useEffect(() => {
+  return () => {
+    const backdrop = document.querySelector('.modal-backdrop');
+    if (backdrop) {
+      backdrop.remove();
+    }
+    document.body.classList.remove('modal-open');
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  };
+}, []);
   return (
     <>
       <p
@@ -70,7 +107,7 @@ useEffect(()=>{
                 <button
                   type="button"
                   className="close"
-                  data-dismiss="modal"
+                  onClick={handleClosePopup}
                   aria-hidden="true"
                 >
                   &times;
@@ -83,7 +120,7 @@ useEffect(()=>{
                 <button
                   type="button"
                   className="btn btn-secondary"
-                  data-dismiss="modal"
+                  onClick={handleClosePopup}
                 >
                   Cancel
                 </button>

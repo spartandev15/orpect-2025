@@ -155,7 +155,7 @@ const ViewSearchEmployee = () => {
                         </div>
                         <div className="employe_factor1 mt-2">
                           <h6>4. Attitude and Behavior</h6>
-                          <span className="star ">
+                          <span className="star">
                             <Stars rating={employee?.attitude_behaviour_rating} />
                           </span>
                         </div>
