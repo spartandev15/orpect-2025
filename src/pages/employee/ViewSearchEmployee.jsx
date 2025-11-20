@@ -238,11 +238,12 @@ const ViewSearchEmployee = () => {
                 <div className="viewreviewbtn">
                   <Link to={`/employee-review/${employee?.sid || employee?.id}`}>
                     <button className="btn mybtn" style={{ marginTop: "1rem" }}>
-                      View Reviews ({employee?.total_reviews || 0})
+                      View Reviews
                     </button>
                   </Link>
                 </div>
               )}
+
             </div>
           </div>
         </div>
