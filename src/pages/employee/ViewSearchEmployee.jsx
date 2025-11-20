@@ -234,13 +234,15 @@ const ViewSearchEmployee = () => {
                   </div>
                 </div>
               </div>
-              <div className="viewreviewbtn">
-                <Link to={`/employee-review/${employee?.sid || employee?.id}`}>
-                  <button className="btn mybtn" style={{ marginTop: "1rem" }}>
-                    View Reviews ({employee?.total_reviews || 0})
-                  </button>
-                </Link>
-              </div>
+              {employee?.employee_type?.toLowerCase() !== "current employee" && (
+                <div className="viewreviewbtn">
+                  <Link to={`/employee-review/${employee?.sid || employee?.id}`}>
+                    <button className="btn mybtn" style={{ marginTop: "1rem" }}>
+                      View Reviews ({employee?.total_reviews || 0})
+                    </button>
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

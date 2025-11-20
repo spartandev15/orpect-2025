@@ -367,7 +367,7 @@ const ViewExEmployee = () => {
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to update information");
       } else if (response?.status) {
-        toast.success("Information updated successfully");
+        toast.success("Successfully saved");
         // Hide edit form and show readonly form
         $(".editable-form1").hide();
         $(".readonly-form1").show();
