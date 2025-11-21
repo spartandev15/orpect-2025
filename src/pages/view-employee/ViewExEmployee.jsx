@@ -130,8 +130,16 @@ const ViewExEmployee = () => {
             toast.error(response?.message || "Failed to update employee");
           } else if (response?.status) {
             toast.success("Successfully saved");
-            navigate("/dashboard")
-
+            // Exit edit mode - hide editable form and show readonly form
+            $(".editable-form").hide();
+            $(".readonly-form").show();
+            $("#editButton").show();
+            $("#cancelButton").hide();
+            // Refresh employee data
+            if (isSuccess && data?.employee) {
+              setEmployee(data.employee);
+              setValues(data.employee);
+            }
             // setLoading(false);
             // window.location.reload();
           } else {

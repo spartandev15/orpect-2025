@@ -85,4 +85,15 @@ const getEmployeeById = (id) => (dispatch) => {
     });
   };
 
-  export {getEmployeeById,getExEmployee,getNonJoinerEmployee,getCurrentEmployee,deleteEmployeeById,getEmployeeBySearch,getEmployee}
+  const getEmployeesRecord = (id, page = 1) => (dispatch) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const res = await api.get(`getEmployeesRecord/${id}?page=${page}`);
+        resolve(res);
+      } catch (error) {
+        reject(error?.response);
+      }
+    });
+  };
+
+  export {getEmployeeById,getExEmployee,getNonJoinerEmployee,getCurrentEmployee,deleteEmployeeById,getEmployeeBySearch,getEmployee,getEmployeesRecord}

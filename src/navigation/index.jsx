@@ -19,6 +19,7 @@ import NonJoinersList from "../pages/employee/NonJoinersList";
 import ExEmployeeList from "../pages/employee/ExEmployeeList";
 import SearchEmployeeList from "../pages/employee/SearchEmployee";
 import ViewSearchEmployee from "../pages/employee/ViewSearchEmployee";
+import ViewCurrentEmployeeDetails from "../pages/employee/ViewCurrentEmployeeDetails";
 import AddReview from "../pages/rate-review/AddReview";
 import AddExEmployeeReview from "../pages/rate-review/AddExEmployeeReview";
 import UpdatePassword from "../pages/auth-pages/UpdatePassword";
@@ -248,6 +249,15 @@ const Navigation = () => {
           element={
             <ProtectedRoute>
               <SearchEmployeeList />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/view-search-employee/current-employee/:id"
+          element={
+            <ProtectedRoute>
+              <ViewCurrentEmployeeDetails />
             </ProtectedRoute>
           }
         />
