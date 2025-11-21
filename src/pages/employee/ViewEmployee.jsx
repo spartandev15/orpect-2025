@@ -23,7 +23,7 @@ import { linkedin } from "../../asset";
 import { SingleField } from "../../component/SingleField";
 import { Input } from "../../component/Input";
 import { useGetEmployeeByIdQuery, useUpdateEmployeeByIdMutation } from "../../apis/employee";
-
+import RenderIf from "../../component/RenderIf";
 const initialValues = {
   empId: "",
   empName: "",
@@ -64,6 +64,10 @@ const ViewEmployee = () => {
     isError,
     error,
   } = useGetEmployeeByIdQuery(id);
+
+  const [isInfoEditable, setIsInfoEditable] = useState(false);
+  const [isAddressEditable, setIsAddressEditable] = useState(false);
+
   useEffect(() => {
     if (isSuccess) {
       setEmployee(data?.employee);
@@ -141,10 +145,10 @@ const ViewEmployee = () => {
           } else if (response?.status) {
             toast.success("Successfully saved");
             // Exit edit mode - hide editable form and show readonly form
-            $(".editable-form").hide();
-            $(".readonly-form").show();
-            $("#editButton").show();
-            $("#cancelButton").hide();
+            // $(".editable-form").hide();
+            // $(".readonly-form").show();
+            // $("#editButton").show();
+            // $("#cancelButton").hide();
             // Refresh employee data
             if (isSuccess && data?.employee) {
               setEmployee(data.employee);
@@ -160,6 +164,10 @@ const ViewEmployee = () => {
           const errorMessage = error?.data?.message || error?.message || "Failed to update employee";
           toast.error(errorMessage);
           console.error("Update employee failed:", error);
+        }
+        finally{
+          setIsInfoEditable(false);
+          setIsAddressEditable(false);
         }
       },
     });
@@ -360,12 +368,13 @@ const ViewEmployee = () => {
                         &nbsp; Information
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton1" className="infoedit3">
+                        <button id="editButton1" className="infoedit3" onClick={() => setIsInfoEditable(true)}>
                           Edit
                         </button>
                       </div>
                     </div>
-                    <div className="editable-form1" style={{ display: "none" }}>
+                    <RenderIf condition={isInfoEditable}>
+                    <div className="editable-form1">
                       <form noValidate="noValidate" onSubmit={handleSubmit}>
                         <div className="row">
                           <div className="col-lg-6 col-md-6 col-sm-12">
@@ -588,6 +597,7 @@ const ViewEmployee = () => {
                             />
                             &nbsp;
                             <p
+                            onClick={() => setIsInfoEditable(false)}
                               id="cancelButton1"
                               className="btn infoedit4"
                               style={{ margin: "0" }}
@@ -598,7 +608,8 @@ const ViewEmployee = () => {
                         </div>
                       </form>
                     </div>
-                    <div className="readonly-form1">
+                    </RenderIf>
+                    <RenderIf condition={!isInfoEditable}><div className="readonly-form1">
                       <div className="row">
                         <SingleField
                           title="Full Name"
@@ -672,6 +683,8 @@ const ViewEmployee = () => {
                         </div>
                       </div>
                     </div>
+                    </RenderIf>
+                    
                   </div>
                 </div>
 
@@ -685,12 +698,13 @@ const ViewEmployee = () => {
                         &nbsp; Address
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton2" className="infoedit3">
+                        <button id="editButton2" className="infoedit3" onClick={() => setIsAddressEditable(true)}>
                           Edit
                         </button>
                       </div>
                     </div>
-                    <div className="editable-form2" style={{ display: "none" }}>
+                    <RenderIf condition={isAddressEditable}>
+                    <div className="editable-form2">
                       <form noValidate="noValidate" onSubmit={handleSubmit}>
                         <div className="row">
                           <div className="col-lg-12 col-md-12 col-sm-12">
@@ -806,6 +820,7 @@ const ViewEmployee = () => {
                             />
                             &nbsp;
                             <p
+                            onClick={() => setIsAddressEditable(false)}
                               id="cancelButton2"
                               className="btn infoedit4"
                               style={{ margin: "0" }}
@@ -816,7 +831,10 @@ const ViewEmployee = () => {
                         </div>
                       </form>
                     </div>
+                    </RenderIf>
+                    
                   </div>
+                  <RenderIf condition={!isAddressEditable}>
                   <div className="readonly-form2">
                     <div className="row">
                       <SingleField
@@ -849,6 +867,7 @@ const ViewEmployee = () => {
                       />
                     </div>
                   </div>
+                  </RenderIf>
                 </div>
 
                 <div className="collapse" id="collapserate">
