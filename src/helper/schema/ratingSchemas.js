@@ -36,14 +36,17 @@ import * as yup from "yup";
     empName: yup
       .string()
       .matches(/^[a-zA-Z ]+$/, "Employee name must contains alphabets only")
-      .required("Employee name is required")
+      .nullable()
       .typeError("Employee name must be a string"),
-    email: yup.string().required("Email is required").email("Invalid email"),
+    email: yup.string().nullable().email("Invalid email"),
     phone: yup
       .string()
-      .required("Mobile number is required")
-      .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
-    position: yup.string().required("position is required"),
+      .nullable()
+      .test('phone-format', 'Phone number must be exactly 10 digits', function(value) {
+        if (!value || value.length === 0) return true;
+        return /^[0-9]{10}$/.test(value);
+      }),
+    position: yup.string().nullable(),
     linkedIn: yup.string().matches(
       /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\b/,
       'Invalid LinkedIn URL format'
@@ -51,8 +54,8 @@ import * as yup from "yup";
     
     dateOfBirth: yup
       .date()
+      .nullable()
       .max(new Date(), "Date of Birth must be a past date")
-      .required("Date of Birth is required")
       .test(
         "min-age-validation",
         "Employee must be at least 14 years old",

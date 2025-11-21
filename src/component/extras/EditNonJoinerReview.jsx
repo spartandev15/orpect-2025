@@ -3,9 +3,9 @@ import { useFormik } from "formik";
 import { addRateReview } from "../../api/rate&review";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import $ from "jquery";
 import Button from "../Button";
 import * as yup from "yup";
+import RenderIf from "../RenderIf";
 
 const initialValues = {
   exEmployee: 0,
@@ -20,7 +20,7 @@ const initialValues = {
 const Validation = yup.object().shape({
   review: yup.string().required("Review is required"),
 });
-const EditNonJoinerReview = ({ employee }) => {
+const EditNonJoinerReview = ({ employee, isEditable, setIsEditable, onSave }) => {
   const [loading, setLoading] = useState(false);
   const [exEmployeeReview, setExployeeReview] = useState(null);
   const dispatch = useDispatch();
@@ -34,7 +34,13 @@ const EditNonJoinerReview = ({ employee }) => {
         dispatch(addRateReview(employee?.sid, values)).then((res) => {
           toast.success("Successfully added");
           setLoading(false);
-          window.location.reload();
+          if (setIsEditable) {
+            setIsEditable(false);
+          }
+          // Call onSave callback to refetch employee data
+          if (onSave) {
+            onSave();
+          }
         });
       } catch (error) {
         setLoading(false);
@@ -52,23 +58,7 @@ const EditNonJoinerReview = ({ employee }) => {
       setValues(employee);
       setExployeeReview(employee);
     }
-  }, []);
-
-  $(document).ready(function () {
-    $("#editButton").click(function () {
-      $(".editable-form").show();
-      $(".readonly-form").hide();
-      $("#editButton").hide();
-      $("#cancelButton").show();
-    });
-
-    $("#cancelButton").click(function () {
-      $(".editable-form").hide();
-      $(".readonly-form").show();
-      $("#editButton").show();
-      $("#cancelButton").hide();
-    });
-  });
+  }, [employee]);
 
   // const attitudeRating = values.attitudeBehaviourRating || 0;
   // const performanceRating = values.performanceRating || 0;
@@ -82,6 +72,7 @@ const EditNonJoinerReview = ({ employee }) => {
 
   return (
     <>
+      <RenderIf condition={!isEditable}>
       <div className="row">
         <div className="readonly-form3">
           <div className="row">
@@ -112,8 +103,11 @@ const EditNonJoinerReview = ({ employee }) => {
             </div>
           </div>
         </div>
+      </div>
+      </RenderIf>
         <form noValidate="noValidate" onSubmit={handleSubmit}>
-          <div className="editable-form3" style={{ display: "none" }}>
+          <RenderIf condition={isEditable}>
+          <div className="editable-form3">
             {/* ///////// */}
             <div className="starrate form-outline">
               <textarea
@@ -146,17 +140,18 @@ const EditNonJoinerReview = ({ employee }) => {
                 {/* <SaveRatingPopup /> */}
                 &nbsp;
                 <p
+                  onClick={() => setIsEditable && setIsEditable(false)}
                   id="cancelButton3"
                   className="btn infoedit4"
-                  style={{ marginTop: "1rem" }}
+                  style={{ marginTop: "1rem", cursor: "pointer" }}
                 >
                   Cancel
                 </p>
               </div>
             </div>
           </div>
+          </RenderIf>
         </form>
-      </div>
     </>
   );
 };

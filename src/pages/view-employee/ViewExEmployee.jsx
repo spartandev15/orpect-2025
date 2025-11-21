@@ -571,6 +571,7 @@ const ViewExEmployee = () => {
                             <div className="col-lg-6 col-md-6 col-sm-12">
                               <div className="form-outline">
                                 <Input
+                                  name="email"
                                   value={values.email}
                                   onChange={handleChange}
                                   label="E-Mail"

@@ -6,7 +6,6 @@ import { useNavigate, useParams } from "react-router";
 import { getFromLocalStorage } from "../../helper";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import $ from "jquery";
 import Button from "../../component/Button";
 import LoadingSpinner from "../../component/LoadingSpinner";
 import UpdateEmployeeCropImage from "../../component/extras/crop-image/UpdateEmployeeCropImage";
@@ -24,6 +23,7 @@ import { linkedin } from "../../asset";
 import { SingleField } from "../../component/SingleField";
 import { Input } from "../../component/Input";
 import { useGetEmployeeByIdQuery, useUpdateEmployeeByIdMutation } from "../../apis/employee";
+import RenderIf from "../../component/RenderIf";
 
 const initialValues = {
   empName: "",
@@ -55,19 +55,32 @@ const ViewNonJoiner = () => {
   const bearerToken = getFromLocalStorage("token");
     const [updateEmployeeById,{isLoading:loading,}] = useUpdateEmployeeByIdMutation();
   
- const {
+  const {
     data,
     // isLoading:loading,
     isSuccess,
     isError,
     error,
+    refetch: refetchEmployee,
   } = useGetEmployeeByIdQuery(id);
-  useEffect(() => {
-    if (isSuccess) {
-      setEmployee(data?.employee);
-      setValues(data?.employee);
+
+  const [isInfoEditable, setIsInfoEditable] = useState(false);
+  const [isAddressEditable, setIsAddressEditable] = useState(false);
+  const [isReviewEditable, setIsReviewEditable] = useState(false);
+
+
+  // Function to refetch employee data
+  const handleRefetchEmployee = async () => {
+    try {
+      const result = await refetchEmployee();
+      if (result?.data?.employee) {
+        setEmployee(result.data.employee);
+        setValues(result.data.employee);
+      }
+    } catch (error) {
+      console.error("Error refetching employee:", error);
     }
-  }, [isSuccess, data]);
+  };
   // useEffect(() => {
   //   dispatch(getEmployeeById(id)).then((res) => {
   //     setEmployee(res?.data?.employee);
@@ -135,11 +148,10 @@ const ViewNonJoiner = () => {
             toast.error(response?.message || "Failed to update employee");
           } else if (response?.status) {
             toast.success("Successfully saved");
-            // Exit edit mode - hide editable form and show readonly form
-            $(".editable-form").hide();
-            $(".readonly-form").show();
-            $("#editButton").show();
-            $("#cancelButton").hide();
+            // Exit edit mode
+            setIsInfoEditable(false);
+            setIsAddressEditable(false);
+            setIsReviewEditable(false);
             // Refresh employee data
             if (isSuccess && data?.employee) {
               setEmployee(data.employee);
@@ -179,84 +191,7 @@ const ViewNonJoiner = () => {
     values.postalCode = data?.postal_code;
   };
 
-  // // Event Listner function for form
-  $(document).ready(function () {
-    $("#editButton").click(function () {
-      $(".editable-form").show();
-      $(".readonly-form").hide();
-      $("#editButton").hide();
-      $("#cancelButton").show();
-    });
 
-    $("#cancelButton").click(function () {
-      $(".editable-form").hide();
-      $(".readonly-form").show();
-      $("#editButton").show();
-      $("#cancelButton").hide();
-    });
-  });
-
-  // // to here
-
-  //  // Event Listner function for form
-  $(document).ready(function () {
-    $("#editButton1").click(function () {
-      $(".editable-form1").show();
-      $(".readonly-form1").hide();
-      $("#editButton1").hide();
-      $("#cancelButton1").show();
-    });
-
-    $("#cancelButton1").click(function () {
-      $(".editable-form1").hide();
-      $(".readonly-form1").show();
-      $("#editButton1").show();
-      $("#cancelButton1").hide();
-    });
-  });
-
-  // // to here
-
-  //    // Event Listner function for form
-  $(document).ready(function () {
-    $("#editButton2").click(function () {
-      $(".editable-form2").show();
-      $(".readonly-form2").hide();
-      $("#editButton2").hide();
-      $("#cancelButton2").show();
-    });
-
-    $("#cancelButton2").click(function () {
-      $(".editable-form2").hide();
-      $(".readonly-form2").show();
-      $("#editButton2").show();
-      $("#cancelButton2").hide();
-    });
-  });
-
-  // to here
-
-  //    // Event Listner function for form
-  $(document).ready(function () {
-    $("#editButton3").click(function () {
-      $(".editable-form3").show();
-      $(".readonly-form3").hide();
-      $("#editButton3").hide();
-      $("#cancelButton3").show();
-    });
-
-    $("#cancelButton3").click(function () {
-      $(".editable-form3").hide();
-      $(".readonly-form3").show();
-      $("#editButton3").show();
-      $("#cancelButton3").hide();
-    });
-  });
-
-  // to here
-  if (!employee) {
-    return <LoadingSpinner />;
-  }
   const renderValue = (value, fallback = "---") => (value ? value : fallback);
 
   const currentDate = new Date().toISOString().split("T")[0];
@@ -292,6 +227,19 @@ const ViewNonJoiner = () => {
     const state = states.find((s) => s.isoCode === stateId);
     setSelectedState(state);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setEmployee(data?.employee);
+      setValues(data?.employee);
+    }
+  }, [isSuccess, data]);
+
+  
+  if (!employee) {
+    return <LoadingSpinner />;
+  }
+
   return (
     <>
       <Layout>
@@ -343,12 +291,13 @@ const ViewNonJoiner = () => {
                         &nbsp; Information
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton1" className="infoedit3">
+                        <button id="editButton1" className="infoedit3" onClick={() => setIsInfoEditable(true)}>
                           Edit
                         </button>
                       </div>
                     </div>
-                    <div className="editable-form1" style={{ display: "none" }}>
+                    <RenderIf condition={isInfoEditable}>
+                    <div className="editable-form1">
                       <form noValidate="noValidate" onSubmit={handleSubmit}>
                         <div className="row">
                           <div className="col-lg-6 col-md-6 col-sm-12">
@@ -358,7 +307,6 @@ const ViewNonJoiner = () => {
                                 value={values.empName}
                                 onChange={handleChange}
                                 label="Full Name"
-                                star={true}
                               />
                               {errors.empName && touched.empName ? (
                                 <p className="text-danger msg">
@@ -370,10 +318,10 @@ const ViewNonJoiner = () => {
                           <div className="col-lg-6 col-md-6 col-sm-12">
                             <div className="form-outline">
                             <Input
+                                name="email"
                                 value={values.email}
                                 onChange={handleChange}
                                 label="E-Mail"
-                                star={true}
                               />
                               {errors.email && touched.email ? (
                                 <p className="text-danger msg">
@@ -390,7 +338,6 @@ const ViewNonJoiner = () => {
                                 nameValue="position"
                                 handleChange={handleChange}
                                 value={values.position}
-                                required
                               />
                               {/* <label
                                 className="form-label"
@@ -425,7 +372,6 @@ const ViewNonJoiner = () => {
                                 max={currentDate}
                                 value={values.dateOfBirth}
                                 onChange={handleChange}
-                                required
                               />{" "}
                               <label
                                 className="form-label"
@@ -450,7 +396,6 @@ const ViewNonJoiner = () => {
                                 value={values.phone}
                                 onChange={handleChange}
                                 label="Phone Number"
-                                star={true}
                               />
                               {errors.phone && touched.phone ? (
                                 <p className="text-danger msg">
@@ -496,6 +441,9 @@ const ViewNonJoiner = () => {
                         </div>
                       </form>
                     </div>
+                   
+                    </RenderIf>
+                    <RenderIf condition={!isInfoEditable}>
                     <div className="readonly-form1">
                       <div className="row">
                           <SingleField
@@ -542,6 +490,7 @@ const ViewNonJoiner = () => {
                         </div>
                       </div>
                     </div>
+                    </RenderIf>
                   </div>
                 </div>
 
@@ -555,12 +504,13 @@ const ViewNonJoiner = () => {
                         &nbsp; Address
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton2" className="infoedit3">
+                        <button id="editButton2" className="infoedit3" onClick={() => setIsAddressEditable(true)}>
                           Edit
                         </button>
                       </div>
                     </div>
-                    <div className="editable-form2" style={{ display: "none" }}>
+                    <RenderIf condition={isAddressEditable}>
+                    <div className="editable-form2">
                       <form noValidate="noValidate" onSubmit={handleSubmit}>
                         <div className="row">
                           <div className="col-lg-12 col-md-12 col-sm-12">
@@ -571,7 +521,6 @@ const ViewNonJoiner = () => {
                                 name="permanentAddress"
                                 value={values.permanentAddress}
                                 onChange={handleChange}
-                                required
                               />{" "}
                               <label
                                 className="form-label"
@@ -680,9 +629,10 @@ const ViewNonJoiner = () => {
                             />
                             &nbsp;
                             <p
+                              onClick={() => setIsAddressEditable(false)}
                               id="cancelButton2"
                               className="btn infoedit4"
-                              style={{ margin: "0" }}
+                              style={{ margin: "0", cursor: "pointer" }}
                             >
                               Cancel
                             </p>
@@ -690,7 +640,9 @@ const ViewNonJoiner = () => {
                         </div>
                       </form>
                     </div>
+                    </RenderIf>
                   </div>
+                  <RenderIf condition={!isAddressEditable}>
                   <div className="readonly-form2">
                     <div className="row">
                     <SingleField
@@ -722,7 +674,8 @@ const ViewNonJoiner = () => {
                         answer={renderValue(employee?.postal_code)}
                       />
                     </div>
-                  </div>
+                    </div>
+                  </RenderIf>
                 </div>
 
                 <div className="viewem mt-4">
@@ -737,14 +690,14 @@ const ViewNonJoiner = () => {
                       </h5>
 
                       <div className="infoedit1">
-                        <button id="editButton3" className="infoedit3">
+                        <button id="editButton3" className="infoedit3" onClick={() => setIsReviewEditable(true)}>
                           Edit
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  <EditNonJoinerReview employee={employee} />
+                  <EditNonJoinerReview employee={employee} isEditable={isReviewEditable} setIsEditable={setIsReviewEditable} onSave={handleRefetchEmployee} />
                 </div>
 
                 <div className="row mt-4">

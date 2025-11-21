@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Input = ({ label, name, value, onChange, type, star, max, min, inputMode, pattern }) => {
+export const Input = ({ label, name, value, onChange, type, star, max, min, inputMode, pattern, required }) => {
   return (
     <>
       <input
@@ -13,7 +13,7 @@ export const Input = ({ label, name, value, onChange, type, star, max, min, inpu
         min={min}
         inputMode={inputMode}
         pattern={pattern}
-        required
+        required={required !== undefined ? required : star}
       />
       <label
         className="form-label"
