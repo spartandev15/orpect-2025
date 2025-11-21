@@ -74,7 +74,7 @@ const CurrentEmployeeTable = () => {
               <thead>
                 <tr>
                   <th className="sticky-column-1 column-1" style={{ background: "#e1e9ed" }}>Employee ID</th>
-                  <th className="sticky-column-2" style={{ background: "#e1e9ed" }}>Name</th>
+                  <th className="sticky-column-2" style={{ background: "#e1e9ed", maxWidth: "150px" }}>Name</th>
                   <th className="sticky-column-3" style={{ background: "#e1e9ed" }}>Email</th>
                   <th style={{ background: "#e1e9ed" }}>Phone Number</th>
                   <th style={{ background: "#e1e9ed" }}>Designation</th>
@@ -102,7 +102,7 @@ const CurrentEmployeeTable = () => {
                   employees.map((i, index) => (
                     <tr key={index} className="table_data_background">
                       <td className="sticky-column-1 column-1">{i.emp_id}</td>
-                      <td className="sticky-column-2">{i.emp_name}</td>
+                      <td className="sticky-column-2" style={{ maxWidth: "150px", wordWrap: "break-word" }}>{i.emp_name}</td>
                       <td className="sticky-column-3">{i.email}</td>
                       <td>{i.phone}</td>
                       <td>{i.position}</td>

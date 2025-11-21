@@ -86,7 +86,7 @@ const CurrentEmployeeTable = () => {
               <thead>
                 <tr>
                   <th style={{ background: "#e1e9ed" }}>Sr. No.</th>
-                  <th style={{ background: "#e1e9ed" }}>Name</th>
+                  <th style={{ background: "#e1e9ed", maxWidth: "150px" }}>Name</th>
                   <th style={{ background: "#e1e9ed" }}>Email</th>
                   <th style={{ background: "#e1e9ed" }}>Phone Number</th>
                   <th style={{ background: "#e1e9ed" }}>Designation</th>
@@ -113,7 +113,7 @@ const CurrentEmployeeTable = () => {
                   employees.map((i, index) => (
                     <tr key={index} className="table_data_background">
                       <td>{dataIndex + index}</td>
-                      <td>{i.emp_name}</td>
+                      <td style={{ maxWidth: "150px", wordWrap: "break-word" }}>{i.emp_name}</td>
                       <td>{i.email}</td>
                       <td>{i.phone}</td>
                       <td>{i.position}</td>
