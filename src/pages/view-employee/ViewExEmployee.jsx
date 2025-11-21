@@ -543,9 +543,12 @@ const ViewExEmployee = () => {
                         &nbsp; Information
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton1" className="infoedit3" onClick={() => setIsInfoEditable(true)}>
-                          Edit
-                        </button>
+                        <RenderIf condition={!isInfoEditable}>
+                          <button id="" className="infoedit3" onClick={() => setIsInfoEditable(true)}>
+                            Edit
+                          </button>
+                        </RenderIf>
+
                       </div>
                     </div>
                     <RenderIf condition={isInfoEditable}>

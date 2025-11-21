@@ -56,7 +56,7 @@ const ViewEmployee = () => {
   const navigate = useNavigate()
   const { id } = useParams();
   const bearerToken = getFromLocalStorage("token");
-  const [updateEmployeeById,{isLoading:loading,}] = useUpdateEmployeeByIdMutation();
+  const [updateEmployeeById, { isLoading: loading, }] = useUpdateEmployeeByIdMutation();
   const {
     data,
     // isLoading:loading,
@@ -138,8 +138,8 @@ const ViewEmployee = () => {
           //   },
           //   body: formData,
           // });
-       const response = await updateEmployeeById({ id, formData }).unwrap();
-        console.log(response)
+          const response = await updateEmployeeById({ id, formData }).unwrap();
+          console.log(response)
           if (response?.status === "error") {
             toast.error(response?.message || "Failed to update employee");
           } else if (response?.status) {
@@ -165,7 +165,7 @@ const ViewEmployee = () => {
           toast.error(errorMessage);
           console.error("Update employee failed:", error);
         }
-        finally{
+        finally {
           setIsInfoEditable(false);
           setIsAddressEditable(false);
         }
@@ -191,8 +191,8 @@ const ViewEmployee = () => {
     values.dateOfBirth = data?.date_of_birth;
     values.postalCode = data?.postal_code;
 
-    
- 
+
+
     values.current_salaray = data?.current_salaray;
     values.increment_date = data?.increment_date;
     values.tax_number = data?.tax_number;
@@ -207,60 +207,12 @@ const ViewEmployee = () => {
     );
   }
 
-  // // Event Listner function for form
-  $(document).ready(function () {
-    $("#editButton").click(function () {
-      $(".editable-form").show();
-      $(".readonly-form").hide();
-      $("#editButton").hide();
-      $("#cancelButton").show();
-    });
-
-    $("#cancelButton").click(function () {
-      $(".editable-form").hide();
-      $(".readonly-form").show();
-      $("#editButton").show();
-      $("#cancelButton").hide();
-    });
-  });
 
   // // to here
 
-  //  // Event Listner function for form
-  $(document).ready(function () {
-    $("#editButton1").click(function () {
-      $(".editable-form1").show();
-      $(".readonly-form1").hide();
-      $("#editButton1").hide();
-      $("#cancelButton1").show();
-    });
-
-    $("#cancelButton1").click(function () {
-      $(".editable-form1").hide();
-      $(".readonly-form1").show();
-      $("#editButton1").show();
-      $("#cancelButton1").hide();
-    });
-  });
 
   // // to here
 
-  //    // Event Listner function for form
-  $(document).ready(function () {
-    $("#editButton2").click(function () {
-      $(".editable-form2").show();
-      $(".readonly-form2").hide();
-      $("#editButton2").hide();
-      $("#cancelButton2").show();
-    });
-
-    $("#cancelButton2").click(function () {
-      $(".editable-form2").hide();
-      $(".readonly-form2").show();
-      $("#editButton2").show();
-      $("#cancelButton2").hide();
-    });
-  });
 
   const renderValue = (value, fallback = "---") => (value ? value : fallback);
   const currentDate = new Date().toISOString().split("T")[0];
@@ -368,154 +320,157 @@ const ViewEmployee = () => {
                         &nbsp; Information
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton1" className="infoedit3" onClick={() => setIsInfoEditable(true)}>
-                          Edit
-                        </button>
+                        <RenderIf condition={!isInfoEditable}>
+                          <button id="" className="infoedit3" onClick={() => setIsInfoEditable(true)}>
+                            Edit
+                          </button>
+                        </RenderIf>
+
                       </div>
                     </div>
                     <RenderIf condition={isInfoEditable}>
-                    <div className="editable-form1">
-                      <form noValidate="noValidate" onSubmit={handleSubmit}>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                name="empName"
-                                value={values.empName}
-                                onChange={handleChange}
-                                label="Full Name"
-                                star={true}
-                              />
-                              {errors.empName && touched.empName ? (
-                                <p className="text-danger msg">
-                                  {errors.empName}
-                                </p>
-                              ) : null}
+                      <div className="editable-form1">
+                        <form noValidate="noValidate" onSubmit={handleSubmit}>
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="empName"
+                                  value={values.empName}
+                                  onChange={handleChange}
+                                  label="Full Name"
+                                  star={true}
+                                />
+                                {errors.empName && touched.empName ? (
+                                  <p className="text-danger msg">
+                                    {errors.empName}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                name="email"
-                                value={values.email}
-                                onChange={handleChange}
-                                label="E-Mail"
-                                star={true}
-                              />
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="email"
+                                  value={values.email}
+                                  onChange={handleChange}
+                                  label="E-Mail"
+                                  star={true}
+                                />
 
-                              {errors.email && touched.email ? (
-                                <p className="text-danger msg">
-                                  {errors.email}
-                                </p>
-                              ) : null}
+                                {errors.email && touched.email ? (
+                                  <p className="text-danger msg">
+                                    {errors.email}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                name="empId"
-                                value={values.empId}
-                                onChange={handleChange}
-                                label="Employee Id"
-                                star={true}
-                              />
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="empId"
+                                  value={values.empId}
+                                  onChange={handleChange}
+                                  label="Employee Id"
+                                  star={true}
+                                />
 
-                              {errors.empId && touched.empId ? (
-                                <p className="text-danger msg">
-                                  {errors.empId}
-                                </p>
-                              ) : null}
+                                {errors.empId && touched.empId ? (
+                                  <p className="text-danger msg">
+                                    {errors.empId}
+                                  </p>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  type="date"
+                                  name="dateOfJoining"
+                                  value={values.dateOfJoining}
+                                  onChange={handleChange}
+                                  label="Date of Joining"
+                                  star={true}
+                                  max={currentDate}
+                                />
+                                {errors.dateOfJoining && touched.dateOfJoining ? (
+                                  <p className="text-danger msg">
+                                    {errors.dateOfJoining}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                              type="date"
-                                name="dateOfJoining"
-                                value={values.dateOfJoining}
-                                onChange={handleChange}
-                                label="Date of Joining"
-                                star={true}
-                                max={currentDate}
-                              />
-                              {errors.dateOfJoining && touched.dateOfJoining ? (
-                                <p className="text-danger msg">
-                                  {errors.dateOfJoining}
-                                </p>
-                              ) : null}
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="tax_number"
+                                  value={values.tax_number}
+                                  onChange={(event) =>
+                                    setFieldValue(
+                                      "tax_number",
+                                      event.target.value.toUpperCase()
+                                    )
+                                  }
+                                  label="Tax Number"
+                                  star={true}
+                                />
+                                {errors.tax_number && touched.tax_number ? (
+                                  <p className="text-danger msg">
+                                    {errors.tax_number}
+                                  </p>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  type="date"
+                                  name="dateOfBirth"
+                                  value={values.dateOfBirth}
+                                  onChange={handleChange}
+                                  label="Date of Birth"
+                                  star={true}
+                                />
+                                {errors.dateOfBirth && touched.dateOfBirth ? (
+                                  <p className="text-danger msg">
+                                    {errors.dateOfBirth}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                name="tax_number"
-                                value={values.tax_number}
-                                onChange={(event) =>
-                                  setFieldValue(
-                                    "tax_number",
-                                    event.target.value.toUpperCase()
-                                  )
-                                }
-                                label="Tax Number"
-                                star={true}
-                              />
-                              {errors.tax_number && touched.tax_number ? (
-                                <p className="text-danger msg">
-                                  {errors.tax_number}
-                                </p>
-                              ) : null}
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  type="number"
+                                  name="phone"
+                                  value={values.phone}
+                                  onChange={handleChange}
+                                  label="Phone Number"
+                                  star={true}
+                                />
+                                {errors.phone && touched.phone ? (
+                                  <p className="text-danger msg">
+                                    {errors.phone}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                            <Input
-                                type="date"
-                                name="dateOfBirth"
-                                value={values.dateOfBirth}
-                                onChange={handleChange}
-                                label="Date of Birth"
-                                star={true}
-                              />
-                              {errors.dateOfBirth && touched.dateOfBirth ? (
-                                <p className="text-danger msg">
-                                  {errors.dateOfBirth}
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                type="number"
-                                name="phone"
-                                value={values.phone}
-                                onChange={handleChange}
-                                label="Phone Number"
-                                star={true}
-                              />
-                              {errors.phone && touched.phone ? (
-                                <p className="text-danger msg">
-                                  {errors.phone}
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
 
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <SelectPostion
-                                nameValue="position"
-                                handleChange={handleChange}
-                                value={values.position}
-                                required
-                              />
-                              {/* <label
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <SelectPostion
+                                  nameValue="position"
+                                  handleChange={handleChange}
+                                  value={values.position}
+                                  required
+                                />
+                                {/* <label
                                 className="form-label"
                                 for="typeText"
                                 style={{ background: "#fff" }}
@@ -523,91 +478,91 @@ const ViewEmployee = () => {
                                 Position &nbsp;
                                 <span className=" required">*</span>
                               </label> */}
-                              {errors.position && touched.position ? (
-                                <p className="text-danger msg">
-                                  {errors.position}
-                                </p>
-                              ) : null}
+                                {errors.position && touched.position ? (
+                                  <p className="text-danger msg">
+                                    {errors.position}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        {/* new start */} 
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                type="number"
-                                inputMode="numeric"
-                                name="current_salaray"
-                                value={values.current_salaray}
-                                onChange={handleChange}
-                                label="Current Salary"
+                          {/* new start */}
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  type="number"
+                                  inputMode="numeric"
+                                  name="current_salaray"
+                                  value={values.current_salaray}
+                                  onChange={handleChange}
+                                  label="Current Salary"
                                 // star={true}
-                              />
-                              {errors.current_salaray && touched.current_salaray ? (
-                                <p className="text-danger msg">{errors.current_salaray}</p>
-                              ) : null}
+                                />
+                                {errors.current_salaray && touched.current_salaray ? (
+                                  <p className="text-danger msg">{errors.current_salaray}</p>
+                                ) : null}
 
-                              
+
+                              </div>
                             </div>
-                          </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                              type="date"
-                                name="increment_date"
-                                value={values.increment_date}
-                                onChange={handleChange}
-                                label="Increment Date"
-                                max={currentDate}
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  type="date"
+                                  name="increment_date"
+                                  value={values.increment_date}
+                                  onChange={handleChange}
+                                  label="Increment Date"
+                                  max={currentDate}
                                 // star={true}
-                              />
-                              {errors.increment_date && touched.increment_date ? (
-                                <p className="text-danger msg">{errors.increment_date}</p>
-                              ) : null}
+                                />
+                                {errors.increment_date && touched.increment_date ? (
+                                  <p className="text-danger msg">{errors.increment_date}</p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        {/* end */}
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                name="linkedIn"
-                                value={values.linkedIn}
-                                onChange={handleChange}
-                                label="LinkedIn"
-                              />
-                              {errors.linkedIn && touched.linkedIn ? (
-                                <p className="text-danger msg">
-                                  {errors.linkedIn}
-                                </p>
-                              ) : null}
+                          {/* end */}
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="linkedIn"
+                                  value={values.linkedIn}
+                                  onChange={handleChange}
+                                  label="LinkedIn"
+                                />
+                                {errors.linkedIn && touched.linkedIn ? (
+                                  <p className="text-danger msg">
+                                    {errors.linkedIn}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="row mt-4">
-                          <div className="col-lg-12">
-                            <Button
-                              text="Save"
-                              id="cancelButton1"
-                              className="btn infoedit3"
-                              loading={loading}
-                            />
-                            &nbsp;
-                            <p
-                            onClick={() => setIsInfoEditable(false)}
-                              id="cancelButton1"
-                              className="btn infoedit4"
-                              style={{ margin: "0" }}
-                            >
-                              Cancel
-                            </p>
+                          <div className="row mt-4">
+                            <div className="col-lg-12">
+                              <Button
+                                text="Save"
+                                id="cancelButton1"
+                                className="btn infoedit3"
+                                loading={loading}
+                              />
+                              &nbsp;
+                              <p
+                                onClick={() => setIsInfoEditable(false)}
+                                id="cancelButton1"
+                                className="btn infoedit4"
+                                style={{ margin: "0" }}
+                              >
+                                Cancel
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </form>
-                    </div>
+                        </form>
+                      </div>
                     </RenderIf>
                     <RenderIf condition={!isInfoEditable}><div className="readonly-form1">
                       <div className="row">
@@ -684,7 +639,7 @@ const ViewEmployee = () => {
                       </div>
                     </div>
                     </RenderIf>
-                    
+
                   </div>
                 </div>
 
@@ -698,175 +653,178 @@ const ViewEmployee = () => {
                         &nbsp; Address
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton2" className="infoedit3" onClick={() => setIsAddressEditable(true)}>
-                          Edit
-                        </button>
+                        <RenderIf condition={!isAddressEditable}>
+                          <button id="" className="infoedit3" onClick={() => setIsAddressEditable(true)}>
+                            Edit
+                          </button>
+                        </RenderIf>
+
                       </div>
                     </div>
                     <RenderIf condition={isAddressEditable}>
-                    <div className="editable-form2">
-                      <form noValidate="noValidate" onSubmit={handleSubmit}>
-                        <div className="row">
-                          <div className="col-lg-12 col-md-12 col-sm-12">
-                            <div className="form-outline">
-                              <textarea
-                                className="form-control"
-                                name="permanentAddress"
-                                placeholder=" "
-                                value={values.permanentAddress}
-                                onChange={handleChange}
-                                required
-                              ></textarea>
-                              <label
-                                className="form-label"
-                                for="typeText"
-                                style={{ background: "#fff" }}
-                              >
-                                Address&nbsp;
-                              </label>
-                              {errors.permanentAddress &&
-                              touched.permanentAddress ? (
-                                <p className="text-danger msg">
-                                  {errors.permanentAddress}
-                                </p>
-                              ) : null}
+                      <div className="editable-form2">
+                        <form noValidate="noValidate" onSubmit={handleSubmit}>
+                          <div className="row">
+                            <div className="col-lg-12 col-md-12 col-sm-12">
+                              <div className="form-outline">
+                                <textarea
+                                  className="form-control"
+                                  name="permanentAddress"
+                                  placeholder=" "
+                                  value={values.permanentAddress}
+                                  onChange={handleChange}
+                                  required
+                                ></textarea>
+                                <label
+                                  className="form-label"
+                                  for="typeText"
+                                  style={{ background: "#fff" }}
+                                >
+                                  Address&nbsp;
+                                </label>
+                                {errors.permanentAddress &&
+                                  touched.permanentAddress ? (
+                                  <p className="text-danger msg">
+                                    {errors.permanentAddress}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <CountrySelect
-                                selectedCountry={values.country}
-                                countryOptions={countryOptions}
-                                handleCountryChange={handleCountryChange}
-                              />
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <CountrySelect
+                                  selectedCountry={values.country}
+                                  countryOptions={countryOptions}
+                                  handleCountryChange={handleCountryChange}
+                                />
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Select
-                                className="basic-single"
-                                classNamePrefix="select"
-                                placeholder="Select State.."
-                                isDisabled={
-                                  selectedCountry?.name ? false : true
-                                }
-                                isClearable={true}
-                                isRtl={false}
-                                isSearchable={true}
-                                name="state"
-                                id="state"
-                                options={stateOptions}
-                                defaultValue={
-                                  values.state
-                                    ? {
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Select
+                                  className="basic-single"
+                                  classNamePrefix="select"
+                                  placeholder="Select State.."
+                                  isDisabled={
+                                    selectedCountry?.name ? false : true
+                                  }
+                                  isClearable={true}
+                                  isRtl={false}
+                                  isSearchable={true}
+                                  name="state"
+                                  id="state"
+                                  options={stateOptions}
+                                  defaultValue={
+                                    values.state
+                                      ? {
                                         label: values.state,
                                         value: values.state,
                                       }
-                                    : null
-                                }
-                                onChange={handleStateChange}
-                                style={{ textAlign: "center" }}
-                              />
-                              {errors.state && touched.state ? (
-                                <p className="text-danger msg">
-                                  {errors.state}
-                                </p>
-                              ) : null}
+                                      : null
+                                  }
+                                  onChange={handleStateChange}
+                                  style={{ textAlign: "center" }}
+                                />
+                                {errors.state && touched.state ? (
+                                  <p className="text-danger msg">
+                                    {errors.state}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                name="city"
-                                value={values.city}
-                                onChange={handleChange}
-                                label="City"
-                              />
-                              {errors.city && touched.city ? (
-                                <p className="text-danger msg">{errors.city}</p>
-                              ) : null}
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="city"
+                                  value={values.city}
+                                  onChange={handleChange}
+                                  label="City"
+                                />
+                                {errors.city && touched.city ? (
+                                  <p className="text-danger msg">{errors.city}</p>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  type="number"
+                                  name="postalCode"
+                                  value={values.postalCode}
+                                  onChange={handleChange}
+                                  label="Postal Code"
+                                />
+                                {errors.postalCode && touched.postalCode ? (
+                                  <p className="text-danger msg">
+                                    {errors.postalCode}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Input
-                                type="number"
-                                name="postalCode"
-                                value={values.postalCode}
-                                onChange={handleChange}
-                                label="Postal Code"
+                          <div className="row mt-4">
+                            <div className="col-lg-12">
+                              <Button
+                                text="Save"
+                                id="cancelButton1"
+                                className="btn infoedit3"
+                                loading={loading}
                               />
-                              {errors.postalCode && touched.postalCode ? (
-                                <p className="text-danger msg">
-                                  {errors.postalCode}
-                                </p>
-                              ) : null}
+                              &nbsp;
+                              <p
+                                onClick={() => setIsAddressEditable(false)}
+                                id="cancelButton2"
+                                className="btn infoedit4"
+                                style={{ margin: "0" }}
+                              >
+                                Cancel
+                              </p>
                             </div>
                           </div>
-                        </div>
-                        <div className="row mt-4">
-                          <div className="col-lg-12">
-                            <Button
-                              text="Save"
-                              id="cancelButton1"
-                              className="btn infoedit3"
-                              loading={loading}
-                            />
-                            &nbsp;
-                            <p
-                            onClick={() => setIsAddressEditable(false)}
-                              id="cancelButton2"
-                              className="btn infoedit4"
-                              style={{ margin: "0" }}
-                            >
-                              Cancel
-                            </p>
-                          </div>
-                        </div>
-                      </form>
-                    </div>
+                        </form>
+                      </div>
                     </RenderIf>
-                    
+
                   </div>
                   <RenderIf condition={!isAddressEditable}>
-                  <div className="readonly-form2">
-                    <div className="row">
-                      <SingleField
-                        title="Address"
-                        style={{ textAlign: "right" }}
-                        answer={renderValue(employee?.permanent_address)}
-                      />
+                    <div className="readonly-form2">
+                      <div className="row">
+                        <SingleField
+                          title="Address"
+                          style={{ textAlign: "right" }}
+                          answer={renderValue(employee?.permanent_address)}
+                        />
+                      </div>
+                      <div className="row">
+                        <SingleField
+                          title="Country"
+                          style={{ textTransform: "capitalize" }}
+                          answer={renderValue(employee?.country)}
+                        />
+                        <SingleField
+                          title="State"
+                          style={{ textTransform: "capitalize" }}
+                          answer={renderValue(employee?.state)}
+                        />
+                      </div>
+                      <div className="row">
+                        <SingleField
+                          title="City"
+                          style={{ textTransform: "capitalize" }}
+                          answer={renderValue(employee.city)}
+                        />
+                        <SingleField
+                          title="Postal Code"
+                          answer={renderValue(employee?.postal_code)}
+                        />
+                      </div>
                     </div>
-                    <div className="row">
-                      <SingleField
-                        title="Country"
-                        style={{ textTransform: "capitalize" }}
-                        answer={renderValue(employee?.country)}
-                      />
-                      <SingleField
-                        title="State"
-                        style={{ textTransform: "capitalize" }}
-                        answer={renderValue(employee?.state)}
-                      />
-                    </div>
-                    <div className="row">
-                      <SingleField
-                        title="City"
-                        style={{ textTransform: "capitalize" }}
-                        answer={renderValue(employee.city)}
-                      />
-                      <SingleField
-                        title="Postal Code"
-                        answer={renderValue(employee?.postal_code)}
-                      />
-                    </div>
-                  </div>
                   </RenderIf>
                 </div>
 
