@@ -303,7 +303,7 @@ const ViewSearchEmployee = () => {
                   <div className="d-flex justify-content-center gap-2" style={{ marginTop: "1rem" }}>
                     <button
                       className="btn mybtn m-0 px-4"
-                      onClick={() => navigate(`/view-search-employee/current-employee/${employeeId}`)}
+                      onClick={() => navigate(`/view-search-employee/current-employee/${id}`)}
                     >
                       View Details
                     </button>
