@@ -281,7 +281,7 @@ const ImportExportComponent = () => {
                     onChange={setImportEmployeeType}
                     options={employeeTypeOptions}
                     isSearchable={false}
-                    placeholder="Select employee type..."
+                    placeholder="Select Employee Type..."
                     className="react-select-container"
                     classNamePrefix="react-select"
                     styles={{
