@@ -377,7 +377,7 @@ const ViewEmployee = () => {
                                   name="empId"
                                   value={values.empId}
                                   onChange={handleChange}
-                                  label="Employee Id"
+                                  label="Employee ID"
                                   star={true}
                                 />
 
@@ -579,7 +579,7 @@ const ViewEmployee = () => {
                       </div>
                       <div className="row">
                         <SingleField
-                          title="Employee Id"
+                          title="Employee ID"
                           answer={employee?.emp_id}
                         />
                         <SingleField
@@ -613,7 +613,7 @@ const ViewEmployee = () => {
                       </div>
                       <div className="row">
                         <SingleField
-                          title="Current Salaray"
+                          title="Current Salary"
                           answer={employee?.current_salaray}
                         />
                         <SingleField
@@ -879,11 +879,11 @@ const ViewEmployee = () => {
                     <button
                       type="button"
                       className="deltepopup"
-                      onClick={() => setShowRatingSection(!showRatingSection)}
+                      onClick={() => setShowRatingSection   (!showRatingSection)}
                       aria-expanded={showRatingSection}
                       aria-controls="collapserate"
                     >
-                      Rate And Review
+                      Rate and Review
                     </button>
                   </div>
                 </div>

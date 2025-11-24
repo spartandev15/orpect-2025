@@ -224,7 +224,7 @@ const AddUser = () => {
             <label className="form-label">Country</label>
             <Select
               classNamePrefix="select"
-              placeholder="Select Country..."
+              placeholder="Select Country...."
               isClearable
               options={countryOptions}
               onChange={handleCountryChange}

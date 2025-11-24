@@ -181,7 +181,7 @@ const AddEmployee = () => {
                   name="empId"
                   value={values.empId}
                   onChange={handleChange}
-                  label="Employee Id" 
+                  label="Employee ID" 
                   star={true}
                 />
                 {errors.empId && touched.empId ? (
@@ -374,7 +374,7 @@ const AddEmployee = () => {
                 <Select
                   className="basic-single  "
                   classNamePrefix="select"
-                  placeholder="Select Country.."
+                  placeholder="Select Country..."
                   isClearable={true}
                   isRtl={false}
                   isSearchable={true}

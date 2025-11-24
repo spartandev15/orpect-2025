@@ -68,7 +68,7 @@ export const resetPasswordSchema = yup.object().shape({
 });
 
 export const addEmployeeSchema = yup.object().shape({
-  empId: yup.string().required("Employee Id is required"),
+  empId: yup.string().required("Employee ID is required"),
   empName: yup
     .string()
     .matches(/^[a-zA-Z ]+$/, "Employee name must contains alphabets only")

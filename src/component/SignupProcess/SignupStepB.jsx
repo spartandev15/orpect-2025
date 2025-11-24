@@ -201,7 +201,7 @@ const SignupStepB = () => {
                     : null
                 }
                 name="companyCountry"
-                placeholder="Select Country.."
+                placeholder="Select Country..."
                 options={countryOptions}
                 onChange={handleCountryChange}
               />

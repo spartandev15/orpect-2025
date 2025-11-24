@@ -310,7 +310,7 @@ const AddNonEmployeeReview = () => {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  placeholder="Select Country.."
+                  placeholder="Select Country..."
                   isClearable={true}
                   isRtl={false}
                   isSearchable={true}

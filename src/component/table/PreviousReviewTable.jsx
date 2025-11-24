@@ -172,7 +172,7 @@ const PreviousReviewTable = () => {
                       scope="col"
                       style={{ background: "rgb(225, 233, 237)" }}
                     >   
-                      Employee Id
+                      Employee ID
                     </th>
                   )}
                   <th

@@ -134,7 +134,7 @@ const ViewCurrentEmployeeDetails = () => {
                       </div>
                       <div className="row">
                         <SingleField
-                          title="Employee Id"
+                          title="Employee ID"
                           answer={employee?.emp_id}
                         />
                         <SingleField

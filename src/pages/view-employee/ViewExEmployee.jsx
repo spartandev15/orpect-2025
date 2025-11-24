@@ -596,7 +596,7 @@ const ViewExEmployee = () => {
                                   name="empId"
                                   value={values.empId}
                                   onChange={handleChange}
-                                  label="Employee Id"
+                                  label="Employee ID"
                                   star={true}
                                 />
 
@@ -760,7 +760,7 @@ const ViewExEmployee = () => {
                         </div>
                         <div className="row">
                           <SingleField
-                            title="Employee Id"
+                            title="Employee ID"
                             answer={employee?.emp_id}
                           />
                           <SingleField
