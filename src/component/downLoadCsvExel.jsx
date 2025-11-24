@@ -8,16 +8,14 @@ function DownloadCsvExel({ employeeType }) {
   // Get the appropriate file based on employee type
   const getFileForType = () => {
     switch (employeeType) {
-      case "Employee":
-      case "active":
+      case "current_employee":
         return CurrentEmployeeFile;
-      case "exemployee":
+      case "ex_employee":
         return ExEmployeeFile;
-      case "non-joiner":
+      case "non_joiner":
         return NonJoinerFile;
-      case "all":
       default:
-        return CurrentEmployeeFile; // Default to current employee file
+        return null;
     }
   };
 

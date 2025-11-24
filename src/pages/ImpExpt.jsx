@@ -21,9 +21,9 @@ const ImportExportComponent = () => {
 
   // Employee type options for React Select
   const employeeTypeOptions = [
-    { value: "Employee", label: "Current Employees" },
-    { value: "exemployee", label: "Ex Employees" },
-    { value: "non-joiner", label: "Non Joiner" },
+    { value: "current_employee", label: "Current Employees" },
+    { value: "ex_employee", label: "Ex Employees" },
+    { value: "non_joiner", label: "Non Joiner" },
   ];
 
   //   const handleExport = () => {
