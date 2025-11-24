@@ -77,7 +77,7 @@ const SignupStepB = () => {
   const stateOptions = states.map((state) => ({
     value: state.isoCode,
     label: state.name,
-    placeholder: "Select State...",
+    placeholder: "Select State....",
   }));
 
   const { values, errors, touched, handleSubmit, setFieldValue, handleChange } =
@@ -219,7 +219,7 @@ const SignupStepB = () => {
                 isRtl={false}
                 isSearchable={true}
                 name="companyState"
-                placeholder="Select State.."
+                placeholder="Select State..."
                 defaultValue={
                   mypreviousData.companyState
                     ? {

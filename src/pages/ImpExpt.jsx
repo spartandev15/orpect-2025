@@ -4,6 +4,7 @@ import Button from "../component/Button";
 import { useExcelExportMutation, useImportCSVMutation, useLazyGetExcelEmployeeQuery } from "../apis/importExportEmployee";
 import { toast } from "react-toastify";
 import DownloadCsvExel from "../component/downLoadCsvExel";
+import Select from "react-select";
 
 const ImportExportComponent = () => {
   const [activeTab, setActiveTab] = useState("export");
@@ -13,9 +14,17 @@ const ImportExportComponent = () => {
   const [importFile, setImportFile] = useState(null);
   const [exportDateFrom, setExportDateFrom] = useState("");
   const [exportDateTo, setExportDateTo] = useState("");
-  const [excelExport, { isLoading: loading }] =useExcelExportMutation();
-  const [importCSV, { isLoading: importloading }]=useImportCSVMutation()
+  const [importEmployeeType, setImportEmployeeType] = useState(null);
+  const [excelExport, { isLoading: loading }] = useExcelExportMutation();
+  const [importCSV, { isLoading: importloading }] = useImportCSVMutation()
   const fileInputRef = useRef(null);
+
+  // Employee type options for React Select
+  const employeeTypeOptions = [
+    { value: "Employee", label: "Current Employees" },
+    { value: "exemployee", label: "Ex Employees" },
+    { value: "non-joiner", label: "Non Joiner" },
+  ];
 
   //   const handleExport = () => {
   //     console.log("Exporting:", {
@@ -26,11 +35,11 @@ const ImportExportComponent = () => {
   //     // TODO: Add export CSV logic
   //   };
   const handleExport = async (format) => {
-    const data  ={
+    const data = {
       start_date: exportDateFrom,
-        end_date: exportDateTo,
-        status: exportFilter,
-        type:type
+      end_date: exportDateTo,
+      status: exportFilter,
+      type: type
     }
     try {
       const response = await excelExport(data).unwrap();
@@ -60,16 +69,22 @@ const ImportExportComponent = () => {
       toast.error("Please select a file to import");
       return;
     }
-    
+
+    if (!importEmployeeType) {
+      toast.error("Please select an employee type");
+      return;
+    }
+
     try {
-      console.log("Importing:", { file });
-  
+      console.log("Importing:", { file, employeeType: importEmployeeType?.value });
+
       const formData = new FormData();
       formData.append("csv_file", file);
-  
+      formData.append("employee_type", importEmployeeType.value);
+
       const response = await importCSV(formData).unwrap();
       console.log("Response:", response);
-  
+
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to import file");
         // Optional: Show details of the first error
@@ -92,13 +107,21 @@ const ImportExportComponent = () => {
       const errorMessage = error?.data?.message || error?.message || "An error occurred during import. Please try again.";
       toast.error(errorMessage);
       console.error("File import failed:", error);
-    }finally{
+    } finally {
       fileInputRef.current.value = '';
       setImportFile(null);
     }
   };
 
   const handleFileChange = (e) => {
+    if (!importEmployeeType) {
+      toast.error("Please select an employee type first");
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      return;
+    }
+    
     const file = e.target.files[0];
     if (file) {
       setImportFile(file);
@@ -115,6 +138,12 @@ const ImportExportComponent = () => {
   const handleDrop = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    if (!importEmployeeType) {
+      toast.error("Please select an employee type first");
+      return;
+    }
+    
     const file = e.dataTransfer.files[0];
     if (file && (file.name.endsWith('.csv') || file.name.endsWith('.xls') || file.name.endsWith('.xlsx'))) {
       setImportFile(file);
@@ -124,7 +153,7 @@ const ImportExportComponent = () => {
       toast.error("Please select a valid CSV or Excel file");
     }
   };
-  
+
 
   return (
     <Layout>
@@ -137,9 +166,8 @@ const ImportExportComponent = () => {
           <ul className="nav nav-tabs mb-3">
             <li className="nav-item">
               <button
-                className={`nav-link ${
-                  activeTab === "export" ? "active" : "text-secondary"
-                }`}
+                className={`nav-link ${activeTab === "export" ? "active" : "text-secondary"
+                  }`}
                 onClick={() => setActiveTab("export")}
               >
                 Export
@@ -147,9 +175,8 @@ const ImportExportComponent = () => {
             </li>
             <li className="nav-item">
               <button
-                className={`nav-link ${
-                  activeTab === "import" ? "active" : "text-secondary"
-                }`}
+                className={`nav-link ${activeTab === "import" ? "active" : "text-secondary"
+                  }`}
                 onClick={() => setActiveTab("import")}
               >
                 Import
@@ -183,12 +210,12 @@ const ImportExportComponent = () => {
                     value={type}
                     onChange={(e) => setType(e.target.value)}
                   >
-                     <option value="" disabled>
-                            Select 
-                        </option>
-                        <option value="pdf">PDF</option>
-                        <option value="csv">CSV</option>
-                    
+                    <option value="" disabled>
+                      Select
+                    </option>
+                    <option value="pdf">PDF</option>
+                    <option value="csv">CSV</option>
+
                   </select>
                 </div>
               </div>
@@ -230,44 +257,108 @@ const ImportExportComponent = () => {
           {activeTab === "import" && (
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
               <h4 className="text-center mb-4" style={{ color: '#333', fontWeight: '500' }}>
-                Import Data (Excel / CSV)
+                Import CSV File
               </h4>
 
-              <div 
-                className="border rounded p-4" 
-                style={{ 
-                  backgroundColor: '#f8f9fa', 
+              <div
+                className="border rounded p-4"
+                style={{
+                  backgroundColor: '#f8f9fa',
                   borderColor: '#0066cc',
                   borderWidth: '1px',
                   boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
                 }}
               >
+                {/* Employee Type Select */}
+                <div className="mb-4">
+                  <label className="form-label" style={{ color: '#333', fontWeight: '500', marginBottom: '8px' }}>
+                    Select Employee Type <span style={{ color: 'red' }}>*</span>
+                  </label>
+                  <Select
+                    name="employee_type"
+                    defaultValue={employeeTypeOptions[0]?.value ?? null}
+                    value={importEmployeeType}
+                    onChange={setImportEmployeeType}
+                    options={employeeTypeOptions}
+                    isSearchable={false}
+                    placeholder="Select employee type..."
+                    className="react-select-container"
+                    classNamePrefix="react-select"
+                    styles={{
+                      control: (base, state) => ({
+                        ...base,
+                        borderColor: state.isFocused ? '#134d75' : '#d3d3d3',
+                        boxShadow: state.isFocused ? '0 0 0 1px #134d75' : 'none',
+                        '&:hover': {
+                          borderColor: state.isFocused ? '#134d75' : '#d3d3d3',
+                        },
+                      }),
+                      option: (base, state) => ({
+                        ...base,
+                        backgroundColor: state.isSelected 
+                          ? '#134d75' 
+                          : state.isFocused 
+                          ? '#f5f5f5' 
+                          : base.backgroundColor,
+                        color: state.isSelected ? '#fff' : "#000",
+                        '&:active': {
+                          backgroundColor: '#134d75',
+                        },
+                        '&:hover': {
+                          color: "#000",
+                          backgroundColor: '#f5f5f5',
+                        },
+                      }),
+                      singleValue: (base) => ({
+                        ...base,
+                        color: '#134d75',
+                      }),
+                      placeholder: (base) => ({
+                        ...base,
+                        color: '#999',
+                      }),
+                    }}
+                    theme={(theme) => ({
+                      ...theme,
+                      colors: {
+                        ...theme.colors,
+                        primary: '#134d75',
+                        primary25: '#134d75',
+                        primary50: '#134d75',
+                        primary75: '#134d75',
+                      },
+                    })}
+                  />
+                </div>
+
                 {/* Download Demo File Section */}
                 <div className="text-center mb-4">
                   {/* <h6 className="mb-3" style={{ color: '#333', fontWeight: '500' }}>
                     Download Demo File
                   </h6> */}
-                  <DownloadCsvExel />
+                  <DownloadCsvExel employeeType={importEmployeeType?.value} />
                 </div>
 
                 {/* File Upload Dropzone */}
-                <div 
+                <div
                   className="border rounded p-5 text-center"
                   style={{
-                    borderColor: '#0066cc',
+                    borderColor: importEmployeeType ? '#0066cc' : '#d3d3d3',
                     borderWidth: '2px',
                     borderStyle: 'dashed',
-                    backgroundColor: '#fff',
+                    backgroundColor: importEmployeeType ? '#fff' : '#f5f5f5',
                     minHeight: '200px',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    cursor: 'pointer'
+                    cursor: importEmployeeType ? 'pointer' : 'not-allowed',
+                    opacity: importEmployeeType ? 1 : 0.6,
+                    pointerEvents: importEmployeeType ? 'auto' : 'none'
                   }}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                  onClick={() => fileInputRef.current?.click()}
+                  onDragOver={importEmployeeType ? handleDragOver : (e) => e.preventDefault()}
+                  onDrop={importEmployeeType ? handleDrop : (e) => e.preventDefault()}
+                  onClick={importEmployeeType ? () => fileInputRef.current?.click() : undefined}
                 >
                   <input
                     ref={fileInputRef}
@@ -277,18 +368,28 @@ const ImportExportComponent = () => {
                     id="csvUpload"
                     style={{ display: "none" }}
                     accept=".xls,.xlsx,.csv"
+                    disabled={!importEmployeeType}
                   />
                   <Button
                     className="btn mybtn"
                     text={importFile ? importFile.name : "Select CSV file"}
                     loading={importloading}
+                    disabled={!importEmployeeType}
                     onClick={(e) => {
                       e.stopPropagation();
-                      fileInputRef.current?.click();
+                      if (importEmployeeType) {
+                        fileInputRef.current?.click();
+                      } else {
+                        toast.error("Please select an employee type first");
+                      }
                     }}
                   />
                   <p style={{ color: '#666', marginTop: '10px', marginBottom: '0' }}>
-                    {importloading ? "Uploading..." : "or Drag and Drop Here"}
+                    {!importEmployeeType 
+                      ? "Please select employee type first" 
+                      : importloading 
+                      ? "Uploading..." 
+                      : "or Drag and Drop Here"}
                   </p>
                 </div>
 

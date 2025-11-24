@@ -57,7 +57,7 @@ const dispatch = useDispatch();
       isSearchable
       className="react-select-container"
       classNamePrefix="react-select"
-      placeholder={<span>Search and select position <span style={{ color: 'red' }}>*</span></span>}
+      placeholder={<span>Search and Select Position <span style={{ color: 'red' }}>*</span></span>}
     />
   );
 };

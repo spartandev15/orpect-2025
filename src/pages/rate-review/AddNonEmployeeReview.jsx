@@ -328,7 +328,7 @@ const AddNonEmployeeReview = () => {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  placeholder="Select State.."
+                  placeholder="Select State..."
                   isDisabled={selectedCountry?.name ? false : true}
                   isClearable={true}
                   isRtl={false}

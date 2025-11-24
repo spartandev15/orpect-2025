@@ -685,7 +685,7 @@
 //                               <Select
 //                                 className="basic-single"
 //                                 classNamePrefix="select"
-//                                 placeholder="Select State.."
+//                                 placeholder="Select State..."
 //                                 isDisabled={!selectedCountry?.name}
 //                                 isClearable={true}
 //                                 isRtl={false}
@@ -1422,7 +1422,7 @@ const Profile = () => {
                               <Select
                                 className="basic-single"
                                 classNamePrefix="select"
-                                placeholder="Select State.."
+                                placeholder="Select State..."
                                 isDisabled={!selectedCountry?.name}
                                 isClearable={true}
                                 isRtl={false}

@@ -237,7 +237,7 @@ const AddUser = () => {
             <label className="form-label">State</label>
             <Select
               classNamePrefix="select"
-              placeholder="Select State..."
+              placeholder="Select State...."
               isDisabled={!selectedCountry}
               isClearable
               options={stateOptions}
