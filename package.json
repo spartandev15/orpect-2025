@@ -31,6 +31,7 @@
     "react-select-country-list": "^2.2.3",
     "react-slick": "^0.29.0",
     "react-toastify": "^9.1.2",
+    "react-tooltip": "^5.30.0",
     "reactjs-popup": "^2.0.5",
     "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4",

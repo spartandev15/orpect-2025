@@ -24,6 +24,8 @@ import { SingleField } from "../../component/SingleField";
 import { Input } from "../../component/Input";
 import { useGetEmployeeByIdQuery, useUpdateEmployeeByIdMutation } from "../../apis/employee";
 import RenderIf from "../../component/RenderIf";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import "react-tooltip/dist/react-tooltip.css";
 const initialValues = {
   empId: "",
   empName: "",
@@ -67,6 +69,7 @@ const ViewEmployee = () => {
 
   const [isInfoEditable, setIsInfoEditable] = useState(false);
   const [isAddressEditable, setIsAddressEditable] = useState(false);
+  const [showRatingSection, setShowRatingSection] = useState(false);
 
   useEffect(() => {
     if (isSuccess) {
@@ -199,6 +202,7 @@ const ViewEmployee = () => {
 
 
   };
+
   if (!employee) {
     return (
       <div>
@@ -827,44 +831,45 @@ const ViewEmployee = () => {
                     </div>
                   </RenderIf>
                 </div>
-
-                <div className="collapse" id="collapserate">
-                  <div className="viewem mt-4">
-                    <div className="row">
-                      <div className="col-12">
-                        <h5 className="infoedit">
-                          <i
-                            className="fa fa-star"
-                            style={{ color: "#134d75" }}
-                          ></i>{" "}
-                          &nbsp; Rating
-                        </h5>
-                        <div className="infoedit1">
-                          <span className="hoverable">
-                            <i className="fa fa-info-circle hoverable__main"></i>
-                            <span
-                              className="hoverable__tooltip"
-                              style={{ background: "#f6a21e" }}
-                            >
-                              By saving this Rate and review form you are going
-                              to make this employee an Ex employee.{" "}
-                            </span>
-                          </span>
-                          &nbsp;&nbsp;
-                          {/* <button id="editButton3" className="infoedit3">
+                <RenderIf condition={showRatingSection}>
+                  <div>
+                    <div className="viewem mt-4">
+                      <div className="row">
+                        <div className="col-12">
+                          <h5 className="infoedit">
+                            <i
+                              className="fa fa-star"
+                              style={{ color: "#134d75" }}
+                            ></i>{" "}
+                            &nbsp; Rating
+                          </h5>
+                          <div className="infoedit1">
+                            <i 
+                              className="fa fa-info-circle" 
+                              data-tooltip-id="rating-tooltip"
+                              data-tooltip-content="By saving this Rate and review form you are going to make this employee an Ex employee."
+                              data-tooltip-place="left"
+                              style={{ cursor: "pointer" }}
+                            ></i>
+                            &nbsp;&nbsp;
+                            {/* <button id="editButton3" className="infoedit3">
                             Edit
                           </button> */}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* USING COMPONENT */}
-                    <AddEmployeeReview
-                      id={employee?.sid}
-                      dateOfJoining={values.dateOfJoining}
-                    />
+                      {/* USING COMPONENT */}
+                      <AddEmployeeReview
+                        id={employee?.sid}
+                        dateOfJoining={values.dateOfJoining}
+                        onClose={() => setShowRatingSection(false)}
+                      />
+                    </div>
                   </div>
-                </div>
+                </RenderIf>
+
+
                 <div className="row mt-4">
                   <div className="col-lg-4 col-sm-12"></div>
                   <div className="col-lg-4 col-md-6 col-sm-12 btnright">
@@ -873,11 +878,9 @@ const ViewEmployee = () => {
                   <div className="col-lg-4 col-md-6 col-sm-12 btnright">
                     <button
                       type="button"
-                      // id="editButton3"
                       className="deltepopup"
-                      data-toggle="collapse"
-                      data-target="#collapserate"
-                      aria-expanded="false"
+                      onClick={() => setShowRatingSection(!showRatingSection)}
+                      aria-expanded={showRatingSection}
                       aria-controls="collapserate"
                     >
                       Rate And Review
@@ -889,6 +892,10 @@ const ViewEmployee = () => {
           </div>
         </section>
       </Layout>
+      <ReactTooltip
+        id="rating-tooltip"
+        style={{ backgroundColor: "#f6a21e", color: "white" ,width: "350px"}}
+      />
     </>
   );
 };
