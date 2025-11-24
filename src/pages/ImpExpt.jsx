@@ -80,7 +80,7 @@ const ImportExportComponent = () => {
 
       const formData = new FormData();
       formData.append("csv_file", file);
-      formData.append("employee_type", importEmployeeType.value);
+      formData.append("status", importEmployeeType.value);
 
       const response = await importCSV(formData).unwrap();
       console.log("Response:", response);
@@ -275,7 +275,7 @@ const ImportExportComponent = () => {
                     Select Employee Type <span style={{ color: 'red' }}>*</span>
                   </label>
                   <Select
-                    name="employee_type"
+                    name="status"
                     defaultValue={employeeTypeOptions[0]?.value ?? null}
                     value={importEmployeeType}
                     onChange={setImportEmployeeType}
