@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-const ExcelPdf = () => {
+const ExcelPdf = ({employeeType = "current_employee"}) => {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
     const [getExcelEmployee,{isLoading}] = useLazyGetExcelEmployeeQuery()
@@ -46,7 +46,8 @@ const ExcelPdf = () => {
             const response = await getExcelEmployee({
                 start_date: formatDate(startDate),
                 end_date: formatDate(endDate),
-                status: format
+                status: format,
+                employeeType: employeeType
             }).unwrap()
     
             const fileUrl = response?.file_url

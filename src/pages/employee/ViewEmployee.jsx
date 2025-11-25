@@ -847,7 +847,7 @@ const ViewEmployee = () => {
                             <i 
                               className="fa fa-info-circle" 
                               data-tooltip-id="rating-tooltip"
-                              data-tooltip-content="By saving this Rate and review form you are going to make this employee an Ex employee."
+                              data-tooltip-content="By saving this form you are going to make this employee an Ex employee."
                               data-tooltip-place="left"
                               style={{ cursor: "pointer" }}
                             ></i>

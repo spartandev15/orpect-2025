@@ -12,7 +12,7 @@ const SaveRatingPopup = () => {
       >
         Save
       </button>
-                                                                                    
+
       <div id="myreview" className="modal fade">
         <div className="modal-dialog modal-confirm">
           <div className="modal-content">
@@ -34,6 +34,9 @@ const SaveRatingPopup = () => {
               </p>
             </div>
             <div className="modal-footer justify-content-center">
+              <button type="submit" className="btn" style={{ backgroundColor: "#134d75", color: "#fff" }}>
+                Save
+              </button>
               <button
                 type="button"
                 className="btn btn-secondary"
@@ -42,9 +45,7 @@ const SaveRatingPopup = () => {
                 Cancel
               </button>
 
-              <button type="submit" className="btn btn-danger">
-                Save
-              </button>
+
             </div>
           </div>
         </div>

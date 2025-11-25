@@ -64,7 +64,7 @@ const ExEmployeeTable = () => {
             <i className="fa fa-search navi-search"></i>
           </div>
         </div>
-        <ExcelPdf/>
+        <ExcelPdf employeeType="ex_employee"/>
       </div>
 
       <div className="row">
