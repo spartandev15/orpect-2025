@@ -26,7 +26,7 @@ const ExEmployeeTable = () => {
   } = useGetExEmployeeQuery({
     page: currentPage,
     searchText,
-    position,
+      position,
   });
 
   const employees = data?.exEmployee?.data || [];

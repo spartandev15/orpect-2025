@@ -75,6 +75,7 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
             <div className="col-lg-2 col-md-6 px-1">
                 <div className="search_button" style={{ position: 'relative' }}>
                     <DatePicker
+                    style={{zIndex: 2}}
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
                         placeholderText="Start Date"
@@ -82,6 +83,7 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                         dateFormat="yyyy-MM-d"
                         name="start_date"
                         autoComplete="off"
+                        calendarClassName='z-3'
                     />
                     <svg 
                         width="20" 
@@ -95,7 +97,7 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                             top: '50%',
                             transform: 'translateY(-50%)',
                             pointerEvents: 'none',
-                            zIndex: 1
+                            zIndex: 0
                         }}
                     >
                         <rect x="3" y="4" width="14" height="13" rx="2" stroke="#000000" strokeWidth="1.4"/>
@@ -129,7 +131,7 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                             top: '50%',
                             transform: 'translateY(-50%)',
                             pointerEvents: 'none',
-                            zIndex: 1
+                            zIndex: 0
                         }}
                     >
                         <rect x="3" y="4" width="14" height="13" rx="2" stroke="#000000" strokeWidth="1.4"/>
