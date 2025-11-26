@@ -198,7 +198,7 @@ const ImportExportComponent = () => {
                   >
                     <option value="all">All</option>
                     {/* <option value="positions">Positions</option> */}
-                    <option value="Employee">Employee</option>
+                    <option value="Employee">Current Employee</option>
                     <option value="exemployee">Ex-Employee</option>
                     <option value="non-joiner">Non-Joiner</option>
                   </select>
