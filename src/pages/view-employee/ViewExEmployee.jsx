@@ -96,81 +96,13 @@ const ViewExEmployee = () => {
   //     setLoading(false);
   //   });
   // }, [loading]);
-  const { values, errors, touched, handleChange, handleSubmit, setFieldValue } =
+  const { values, errors, touched, handleChange, handleSubmit, setFieldValue, validateForm, setTouched } =
     useFormik({
       initialValues: initialValues,
       validationSchema: editExEmployeeSchema,
       onSubmit: async (values) => {
-        try {
-          // setLoading(true);
-
-          const formData = new FormData();
-          formData.append("empId", values.empId);
-          formData.append("empName", values.empName);
-          formData.append("email", values.email);
-          formData.append("phone", values.phone);
-          formData.append("position", values.position);
-          formData.append("dateOfJoining", values.dateOfJoining);
-          if (values.dateOfBirth) {
-            formData.append("dateOfBirth", values.dateOfBirth);
-          }
-          formData.append("tax_number", values.tax_number);
-          if (values.linkedIn) {
-            formData.append("linkedIn", values.linkedIn);
-          }
-          if (values.permanentAddress) {
-            formData.append("permanentAddress", values.permanentAddress);
-          }
-          if (values.city) {
-            formData.append("city", values.city);
-          }
-          if (values.state) {
-            formData.append("state", values.state);
-          }
-          if (values.country) {
-            formData.append("country", values.country);
-          }
-          if (values.postalCode) {
-            formData.append("postalCode", values.postalCode);
-          }
-          if (values.image) {
-            formData.append("image", values.image);
-          }
-          formData.append("nonjoiner", 0);
-          formData.append("exEmp", 1);
-          // const response = await fetch(`${BASE_URL}/updateEmployee/${id}`, {
-          //   method: "POST",
-          //   headers: {
-          //     Authorization: `Bearer ${bearerToken}`,
-          //   },
-          //   body: formData,
-          // });
-          const response = await updateEmployeeById({ id, formData }).unwrap();
-          console.log(response)
-          if (response?.status === "error") {
-            toast.error(response?.message || "Failed to update employee");
-          } else if (response?.status) {
-            toast.success("Successfully saved");
-            // Exit edit mode - hide editable form and show readonly form
-            $(".editable-form").hide();
-            $(".readonly-form").show();
-            $("#editButton").show();
-            $("#cancelButton").hide();
-            // Refresh employee data
-            if (isSuccess && data?.employee) {
-              setEmployee(data.employee);
-              setValues(data.employee);
-            }
-            // setLoading(false);
-            // window.location.reload();
-          } else {
-            toast.error(response?.message || "Something went wrong");
-          }
-        } catch (error) {
-          const errorMessage = error?.data?.message || error?.message || "Failed to update employee";
-          toast.error(errorMessage);
-          console.error("Update employee failed:", error);
-        }
+        // This onSubmit is not used directly, but kept for formik initialization
+        // Separate handlers handleInformationUpdate and handleAddressUpdate are used instead
       },
     });
 
@@ -338,9 +270,26 @@ const ViewExEmployee = () => {
     setSelectedState(state);
   };
 
-  // Information section update handler
+  // Information section update handler using formik
   const handleInformationUpdate = async (e) => {
     e.preventDefault();
+
+    // Validate form using formik
+    const validationErrors = await validateForm();
+    
+    // Check if there are errors in information fields only
+    const infoFields = ['empId', 'empName', 'email', 'phone', 'position', 'dateOfJoining', 'dateOfBirth', 'tax_number', 'linkedIn'];
+    const hasInfoErrors = infoFields.some(field => validationErrors[field]);
+    
+    if (hasInfoErrors) {
+      // Touch all information fields to show errors
+      const touchedFields = {};
+      infoFields.forEach(field => {
+        touchedFields[field] = true;
+      });
+      setTouched(touchedFields);
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -386,13 +335,9 @@ const ViewExEmployee = () => {
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to update information");
       } else if (response?.status) {
-        toast.success("Successfully saved");
-        // Hide edit form and show readonly form
+        toast.success("Information updated successfully");
         // Refresh employee data
-        if (isSuccess && data?.employee) {
-          setEmployee(data.employee);
-          setValues(data.employee);
-        }
+        await handleRefetchEmployee();
       } else {
         toast.error(response?.message || "Something went wrong");
       }
@@ -405,9 +350,26 @@ const ViewExEmployee = () => {
     }
   };
 
-  // Address section update handler
+  // Address section update handler using formik
   const handleAddressUpdate = async (e) => {
     e.preventDefault();
+
+    // Validate form using formik
+    const validationErrors = await validateForm();
+    
+    // Check if there are errors in address fields only
+    const addressFields = ['permanentAddress', 'city', 'state', 'country', 'postalCode'];
+    const hasAddressErrors = addressFields.some(field => validationErrors[field]);
+    
+    if (hasAddressErrors) {
+      // Touch all address fields to show errors
+      const touchedFields = {};
+      addressFields.forEach(field => {
+        touchedFields[field] = true;
+      });
+      setTouched(touchedFields);
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -454,12 +416,8 @@ const ViewExEmployee = () => {
         toast.error(response?.message || "Failed to update address");
       } else if (response?.status) {
         toast.success("Address updated successfully");
-        // Hide edit form and show readonly form
         // Refresh employee data
-        if (isSuccess && data?.employee) {
-          setEmployee(data.employee);
-          setValues(data.employee);
-        }
+        await handleRefetchEmployee();
       } else {
         toast.error(response?.message || "Something went wrong");
       }
@@ -660,7 +618,7 @@ const ViewExEmployee = () => {
                                   label="Date of Birth"
                                   star={true}
                                 />
-                                {errors.dateOfBirth && touched.dateOfBirth ? (
+                                {errors.dateOfBirth  ? (
                                   <p className="text-danger msg">
                                     {errors.dateOfBirth}
                                   </p>

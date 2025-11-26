@@ -36,11 +36,14 @@ const CurrentEmployeeTable = () => {
     isLoading: loading,
     isError,
     refetch,
-  } = useGetNonJoinerEmployeeQuery({
-    page: currentPage,
-    searchText: debouncedSearchText,
-    position,
-  });
+  } = useGetNonJoinerEmployeeQuery(
+    {
+      page: currentPage,
+      searchText: debouncedSearchText,
+      position,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const employees = data?.nonJoiners?.data || [];
   const totalPages = data?.nonJoiners?.last_page || 1;

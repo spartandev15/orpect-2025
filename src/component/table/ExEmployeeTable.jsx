@@ -23,11 +23,14 @@ const ExEmployeeTable = () => {
     isLoading,
     isError,
     refetch,
-  } = useGetExEmployeeQuery({
-    page: currentPage,
-    searchText,
+  } = useGetExEmployeeQuery(
+    {
+      page: currentPage,
+      searchText,
       position,
-  });
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const employees = data?.exEmployee?.data || [];
   const totalPages = data?.exEmployee?.last_page || 1;

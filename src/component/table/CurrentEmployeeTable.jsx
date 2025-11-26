@@ -23,11 +23,14 @@ const CurrentEmployeeTable = () => {
     isLoading:loading,
     isError,
     refetch,
-  } = useGetCurrentEmployeeQuery({
-    page: currentPage,
-    searchText,
-    position,
-  });
+  } = useGetCurrentEmployeeQuery(
+    {
+      page: currentPage,
+      searchText,
+      position,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const employees = data?.currentEmployees?.data || [];
   const totalPages = data?.currentEmployees?.last_page || 1;

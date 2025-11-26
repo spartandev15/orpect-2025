@@ -60,7 +60,7 @@ import * as yup from "yup";
         "min-age-validation",
         "Employee must be at least 14 years old",
         function (value) {
-          if (!value) return true;
+          // if (!value) return true;
           const birthDate = new Date(value);
           const today = new Date();
           const age = today.getFullYear() - birthDate.getFullYear();
@@ -145,17 +145,6 @@ import * as yup from "yup";
           }
           
           return exactAge >= 14;
-        }
-      )
-      .test(
-        "birth-before-joining",
-        "Date of Birth must be before Date of Joining",
-        function (value) {
-          const { dateOfJoining } = this.parent;
-          if (!dateOfJoining || !value) return true; // Skip if either date is missing
-          const birthDate = new Date(value);
-          const joiningDate = new Date(dateOfJoining);
-          return birthDate < joiningDate;
         }
       ),
     
