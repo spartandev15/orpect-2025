@@ -844,8 +844,8 @@ const ViewEmployee = () => {
                             &nbsp; Rating
                           </h5>
                           <div className="infoedit1">
-                            <i 
-                              className="fa fa-info-circle" 
+                            <i
+                              className="fa fa-info-circle"
                               data-tooltip-id="rating-tooltip"
                               data-tooltip-content="By saving this form you are going to make this employee an Ex employee."
                               data-tooltip-place="left"
@@ -879,7 +879,7 @@ const ViewEmployee = () => {
                     <button
                       type="button"
                       className="deltepopup"
-                      onClick={() => setShowRatingSection   (!showRatingSection)}
+                      onClick={() => setShowRatingSection(!showRatingSection)}
                       aria-expanded={showRatingSection}
                       aria-controls="collapserate"
                     >
@@ -894,7 +894,7 @@ const ViewEmployee = () => {
       </Layout>
       <ReactTooltip
         id="rating-tooltip"
-        style={{ backgroundColor: "#f6a21e", color: "white" ,width: "350px"}}
+        style={{ backgroundColor: "#f6a21e", color: "white", width: "350px" }}
       />
     </>
   );

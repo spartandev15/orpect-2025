@@ -120,7 +120,7 @@ const ViewCurrentEmployeeDetails = () => {
                           className="fa fa-address-card"
                           style={{ color: "#134d75" }}
                         ></i>{" "}
-                        &nbsp; Information
+                        &nbsp; Information  
                       </h5>
                     </div>
                     <div className="readonly-form1">

@@ -22,7 +22,7 @@ const initialValues = {
 const AddEmployeeReview = ({ id, dateOfJoining, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { values, errors, touched, setFieldValue, handleChange, handleSubmit } =
+  const { values, errors, touched, setFieldValue, handleChange, handleSubmit, validateForm, setTouched, isValid} =
     useFormik({
       initialValues: initialValues,
       validationSchema: RateReviewSchema,
@@ -319,7 +319,7 @@ const AddEmployeeReview = ({ id, dateOfJoining, onClose }) => {
 
             <div className="row mt-4">
               <div className="col-12">            
-                <SaveRatingPopup />
+                <SaveRatingPopup isValid={isValid} onSubmit={handleSubmit} validateForm={validateForm} setTouched={setTouched} values={values} />
                 &nbsp;
                 <p
                   style={{ margin: "0", cursor: "pointer" }}

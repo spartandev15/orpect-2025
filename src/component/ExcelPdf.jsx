@@ -4,10 +4,10 @@ import { toast } from 'react-toastify'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 
-const ExcelPdf = ({employeeType = "current_employee"}) => {
+const ExcelPdf = ({ employeeType = "current_employee" }) => {
     const [startDate, setStartDate] = useState(null)
     const [endDate, setEndDate] = useState(null)
-    const [getExcelEmployee,{isLoading}] = useLazyGetExcelEmployeeQuery()
+    const [getExcelEmployee, { isLoading }] = useLazyGetExcelEmployeeQuery()
 
     // const handleImport = async (format) => {
     //     // if (!startDate || !endDate) {
@@ -49,13 +49,13 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                 status: format,
                 employeeType: employeeType
             }).unwrap()
-    
+
             const fileUrl = response?.file_url
             if (!fileUrl) {
                 toast.error("File URL not found.")
                 return
             }
-    
+
             // Open PDF or CSV in new tab
             window.open(fileUrl, '_blank')
         } catch (error) {
@@ -63,7 +63,7 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
             toast.error("Failed to open file.")
         }
     }
-    
+
     const handleFormatChange = (e) => {
         const selectedFormat = e.target.value
         if (selectedFormat === '') return
@@ -75,7 +75,7 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
             <div className="col-lg-2 col-md-6 px-1">
                 <div className="search_button" style={{ position: 'relative' }}>
                     <DatePicker
-                    style={{zIndex: 2}}
+                        style={{ zIndex: 2 }}
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
                         placeholderText="Start Date"
@@ -85,13 +85,13 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                         autoComplete="off"
                         calendarClassName='z-3'
                     />
-                    <svg 
-                        width="20" 
-                        height="20" 
-                        viewBox="0 0 20 20" 
-                        fill="none" 
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
                         xmlns="http://www.w3.org/2000/svg"
-                        style={{    
+                        style={{
                             position: 'absolute',
                             right: '12px',
                             top: '50%',
@@ -100,10 +100,10 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                             zIndex: 0
                         }}
                     >
-                        <rect x="3" y="4" width="14" height="13" rx="2" stroke="#000000" strokeWidth="1.4"/>
-                        <path d="M7 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round"/>
-                        <path d="M13 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round"/>
-                        <path d="M3 8H17" stroke="#000000" strokeWidth="1.4"/>
+                        <rect x="3" y="4" width="14" height="13" rx="2" stroke="#000000" strokeWidth="1.4" />
+                        <path d="M7 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round" />
+                        <path d="M13 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round" />
+                        <path d="M3 8H17" stroke="#000000" strokeWidth="1.4" />
                     </svg>
                 </div>
             </div>
@@ -119,11 +119,11 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                         autoComplete="off"
                         zIndex={1000}
                     />
-                    <svg 
-                        width="20" 
-                        height="20" 
-                        viewBox="0 0 20 20" 
-                        fill="none" 
+                    <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 20 20"
+                        fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         style={{
                             position: 'absolute',
@@ -134,10 +134,10 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                             zIndex: 0
                         }}
                     >
-                        <rect x="3" y="4" width="14" height="13" rx="2" stroke="#000000" strokeWidth="1.4"/>
-                        <path d="M7 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round"/>
-                        <path d="M13 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round"/>
-                        <path d="M3 8H17" stroke="#000000" strokeWidth="1.4"/>
+                        <rect x="3" y="4" width="14" height="13" rx="2" stroke="#000000" strokeWidth="1.4" />
+                        <path d="M7 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round" />
+                        <path d="M13 2.5V5.5" stroke="#000000" strokeWidth="1.4" strokeLinecap="round" />
+                        <path d="M3 8H17" stroke="#000000" strokeWidth="1.4" />
                     </svg>
                 </div>
             </div>
@@ -149,13 +149,13 @@ const ExcelPdf = ({employeeType = "current_employee"}) => {
                         onChange={handleFormatChange}
                     >
                         <option value="" >
-                            Export 
+                            Export
                         </option>
                         <option value="pdf">PDF</option>
                         <option value="csv">CSV</option>
                     </select>
-                    <i 
-                        className="fas fa-chevron-down" 
+                    <i
+                        className="fas fa-chevron-down"
                         style={{
                             position: 'absolute',
                             right: '10px',

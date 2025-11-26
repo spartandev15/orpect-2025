@@ -21,7 +21,7 @@ const initialValues = {
   email: "",
   phone: "",
   position: "",
-  dateOfJoining: "", 
+  dateOfJoining: "",
   tax_number: "",
   dateOfBirth: "",
   permanentAddress: "",
@@ -31,8 +31,8 @@ const initialValues = {
   linkedIn: "",
   postalCode: "",
   current_salaray: "",
-increment_date: "",
-tax_number: "",
+  increment_date: "",
+  tax_number: "",
 };
 
 const AddEmployee = () => {
@@ -42,7 +42,7 @@ const AddEmployee = () => {
   const [selectedState, setSelectedState] = useState(null);
 
   const navigate = useNavigate();
-  const [addEmployee,{isLoading:loading}]=useAddEmployeeMutation()
+  const [addEmployee, { isLoading: loading }] = useAddEmployeeMutation()
   const { data } = useSelector((state) => state.data);
 
   const { values, errors, touched, handleChange, handleSubmit, setFieldValue } =
@@ -70,7 +70,7 @@ const AddEmployee = () => {
           formData.append("country", values.country);
           formData.append("postalCode", values.postalCode);
           formData.append("linkedIn", values.linkedIn);
-      
+
           formData.append("current_salaray", values.current_salaray);
           formData.append("increment_date", values.increment_date);
           formData.append("tax_number", values.tax_number);
@@ -84,7 +84,7 @@ const AddEmployee = () => {
           //   },
           //   body: formData,
           // });
-        const response =  await addEmployee({ formData }).unwrap();
+          const response = await addEmployee({ formData }).unwrap();
 
           // toast.success("Employee added successfully");
           if (response?.status === "error") {
@@ -181,7 +181,7 @@ const AddEmployee = () => {
                   name="empId"
                   value={values.empId}
                   onChange={handleChange}
-                  label="Employee ID" 
+                  label="Employee ID"
                   star={true}
                 />
                 {errors.empId && touched.empId ? (
@@ -233,14 +233,14 @@ const AddEmployee = () => {
               </div>
             </div>
             <div className="col-lg-6 col-sm-12  pb-4">
-                            <div className="form-outline">
-                              <SelectPostion
-                                nameValue="position"
-                                handleChange={handleChange}
-                                value={values.position}
-                                required
-                              />
-                              {/* <label
+              <div className="form-outline">
+                <SelectPostion
+                  nameValue="position"
+                  handleChange={handleChange}
+                  value={values.position}
+                  required
+                />
+                {/* <label
                                 className="form-label"
                                 for="typeText"
                                 style={{ background: "#fff" }}
@@ -248,13 +248,13 @@ const AddEmployee = () => {
                                 Position &nbsp;
                                 <span className="required">*</span>
                               </label> */}
-                              {errors.position && touched.position ? (
-                                <p className="text-danger msg">
-                                  {errors.position}
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
+                {errors.position && touched.position ? (
+                  <p className="text-danger msg">
+                    {errors.position}
+                  </p>
+                ) : null}
+              </div>
+            </div>
             {/* <div className="col-lg-6 col-sm-12  pb-4">
               <div className="form-outline datalist">
                 <input
@@ -294,7 +294,7 @@ const AddEmployee = () => {
 
                 <label
                   className="form-label"
-                  // for="typeText"
+                // for="typeText"
                 >
                   Date of Joining &nbsp;
                   <span className=" required">*</span>
@@ -325,7 +325,7 @@ const AddEmployee = () => {
             </div>
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
-              <input
+                <input
                   type="date"
                   className="form-control"
                   placeholder=" "
@@ -440,7 +440,7 @@ const AddEmployee = () => {
                   name="current_salaray"
                   value={values.current_salaray}
                   onChange={handleChange}
-                  label="Current Salary"                 />
+                  label="Current Salary" />
                 {errors.current_salaray && touched.current_salaray ? (
                   <p className="text-danger msg">{errors.current_salaray}</p>
                 ) : null}
@@ -449,19 +449,19 @@ const AddEmployee = () => {
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
-                type="date"
+                  type="date"
                   name="increment_date"
                   value={values.increment_date}
                   onChange={handleChange}
-                  label="Increment Date" 
-                  // star={true}
+                  label="Increment Date"
+                // star={true}
                 />
                 {errors.increment_date && touched.increment_date ? (
                   <p className="text-danger msg">{errors.increment_date}</p>
                 ) : null}
               </div>
             </div>
-            
+
             <div className="row" style={{ paddingRight: "0" }}>
               <div className="col-lg-4 col-md-4  pd-4 "></div>
               <div

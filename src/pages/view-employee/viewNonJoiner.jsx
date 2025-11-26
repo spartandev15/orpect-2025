@@ -49,12 +49,12 @@ const ViewNonJoiner = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const dispatch = useDispatch();
-      const navigate = useNavigate()
-  
+  const navigate = useNavigate()
+
   const { id } = useParams();
   const bearerToken = getFromLocalStorage("token");
-    const [updateEmployeeById,{isLoading:loading,}] = useUpdateEmployeeByIdMutation();
-  
+  const [updateEmployeeById, { isLoading: loading, }] = useUpdateEmployeeByIdMutation();
+
   const {
     data,
     // isLoading:loading,
@@ -144,7 +144,7 @@ const ViewNonJoiner = () => {
 
           const response = await updateEmployeeById({ id, formData }).unwrap();
           console.log(response)
-            if (response?.status === "error") {
+          if (response?.status === "error") {
             toast.error(response?.message || "Failed to update employee");
           } else if (response?.status) {
             toast.success("Successfully saved");
@@ -235,7 +235,7 @@ const ViewNonJoiner = () => {
     }
   }, [isSuccess, data]);
 
-  
+
   if (!employee) {
     return <LoadingSpinner />;
   }
@@ -297,49 +297,49 @@ const ViewNonJoiner = () => {
                       </div>
                     </div>
                     <RenderIf condition={isInfoEditable}>
-                    <div className="editable-form1">
-                      <form noValidate="noValidate" onSubmit={handleSubmit}>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                            <Input
-                                name="empName"
-                                value={values.empName}
-                                onChange={handleChange}
-                                label="Full Name"
-                              />
-                              {errors.empName && touched.empName ? (
-                                <p className="text-danger msg">
-                                  {errors.empName}
-                                </p>
-                              ) : null}
+                      <div className="editable-form1">
+                        <form noValidate="noValidate" onSubmit={handleSubmit}>
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="empName"
+                                  value={values.empName}
+                                  onChange={handleChange}
+                                  label="Full Name"
+                                />
+                                {errors.empName && touched.empName ? (
+                                  <p className="text-danger msg">
+                                    {errors.empName}
+                                  </p>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="email"
+                                  value={values.email}
+                                  onChange={handleChange}
+                                  label="E-Mail"
+                                />
+                                {errors.email && touched.email ? (
+                                  <p className="text-danger msg">
+                                    {errors.email}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                            <Input
-                                name="email"
-                                value={values.email}
-                                onChange={handleChange}
-                                label="E-Mail"
-                              />
-                              {errors.email && touched.email ? (
-                                <p className="text-danger msg">
-                                  {errors.email}
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <SelectPostion
-                                nameValue="position"
-                                handleChange={handleChange}
-                                value={values.position}
-                              />
-                              {/* <label
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <SelectPostion
+                                  nameValue="position"
+                                  handleChange={handleChange}
+                                  value={values.position}
+                                />
+                                {/* <label
                                 className="form-label"
                                 for="typeText"
                                 style={{ background: "#fff" }}
@@ -348,148 +348,148 @@ const ViewNonJoiner = () => {
                                 <span className=" required">*</span>
                               </label> */}
 
-                              {/* <input
+                                {/* <input
                                 type="text" 
                                 className="form-control"
                                 name="position"
                                 value={values.position}
                                 onChange={handleChange}
                               /> */}
-                              {errors.position && touched.position ? (
-                                <p className="text-danger msg">
-                                  {errors.position}
-                                </p>
-                              ) : null}
+                                {errors.position && touched.position ? (
+                                  <p className="text-danger msg">
+                                    {errors.position}
+                                  </p>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <input
+                                  type="date"
+                                  className="form-control"
+                                  placeholder=" "
+                                  name="dateOfBirth"
+                                  max={currentDate}
+                                  value={values.dateOfBirth}
+                                  onChange={handleChange}
+                                />{" "}
+                                <label
+                                  className="form-label"
+                                  for="typeText"
+                                  style={{ background: "#fff" }}
+                                >
+                                  Date of Birth &nbsp;
+                                </label>
+                                {errors.dateOfBirth && touched.dateOfBirth ? (
+                                  <p className="text-danger msg">
+                                    {errors.dateOfBirth}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <input
-                                type="date"
-                                className="form-control"
-                                placeholder=" "
-                                name="dateOfBirth"
-                                max={currentDate}
-                                value={values.dateOfBirth}
-                                onChange={handleChange}
-                              />{" "}
-                              <label
-                                className="form-label"
-                                for="typeText"
-                                style={{ background: "#fff" }}
-                              >
-                                Date of Birth &nbsp;
-                              </label>
-                              {errors.dateOfBirth && touched.dateOfBirth ? (
-                                <p className="text-danger msg">
-                                  {errors.dateOfBirth}
-                                </p>
-                              ) : null}
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="phone"
+                                  value={values.phone}
+                                  onChange={handleChange}
+                                  label="Phone Number"
+                                />
+                                {errors.phone && touched.phone ? (
+                                  <p className="text-danger msg">
+                                    {errors.phone}
+                                  </p>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="linkedIn"
+                                  value={values.linkedIn}
+                                  onChange={handleChange}
+                                  label="LinkedIn"
+                                />
+                                {errors.linkedIn && touched.linkedIn ? (
+                                  <p className="text-danger msg">
+                                    {errors.linkedIn}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                            <Input
-                                name="phone"
-                                value={values.phone}
-                                onChange={handleChange}
-                                label="Phone Number"
-                              />
-                              {errors.phone && touched.phone ? (
-                                <p className="text-danger msg">
-                                  {errors.phone}
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                            <Input
-                                name="linkedIn"
-                                value={values.linkedIn}
-                                onChange={handleChange}
-                                label="LinkedIn"
-                              />
-                              {errors.linkedIn && touched.linkedIn ? (
-                                <p className="text-danger msg">
-                                  {errors.linkedIn}
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
-                        </div>
 
-                        <div className="row mt-4">
-                          <div className="col-lg-12">
-                            <Button
-                              text="Save"
-                              id="cancelButton1"
-                              className="btn infoedit3"
-                              loading={loading}
-                            />
-                            &nbsp;
-                            <p
-                              id="cancelButton1"
-                              className="btn infoedit4"
-                              style={{ margin: "0" }}
-                            >
-                              Cancel
-                            </p>
+                          <div className="row mt-4">
+                            <div className="col-lg-12">
+                              <Button
+                                text="Save"
+                                id="cancelButton1"
+                                className="btn infoedit3"
+                                loading={loading}
+                              />
+                              &nbsp;
+                              <p
+                                id="cancelButton1"
+                                className="btn infoedit4"
+                                style={{ margin: "0" }}
+                              >
+                                Cancel
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </form>
-                    </div>
-                   
+                        </form>
+                      </div>
+
                     </RenderIf>
                     <RenderIf condition={!isInfoEditable}>
-                    <div className="readonly-form1">
-                      <div className="row">
+                      <div className="readonly-form1">
+                        <div className="row">
                           <SingleField
-                          title="Full Name"
-                          answer={employee?.emp_name}
-                          style={{ textTransform: "capitalize" }}
-                        />
-                        <SingleField title="E-Mail" answer={employee?.email} />
-                      </div>
-                      <div className="row">
-                       <SingleField
-                          title="Position"
-                          answer={employee?.position}
-                        />
-                         <SingleField
-                          title="Date of Birth"
-                          answer={
-                            employee?.date_of_birth
-                              ? formatDate(employee?.date_of_birth)
-                              : "---"
-                          }
-                        />
-                      </div>
-                      <div className="row">
-                      <SingleField
-                          title="Phone Number"
-                          answer={employee?.phone}
-                        />
-                        <div className="col-lg-6 col-md-6 col-sm-12">
-                          <p className="addlabelcard2"> </p>
-                          <h6 className="profileimgboxcompanydetail2">
-                            {employee?.linked_in ? (
-                              <a
-                                className="socialbtn1"
-                                href={renderValue(employee?.linked_in)}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                <img src={linkedin} alt="linkedin" />
-                              </a>
-                            ) : null
+                            title="Full Name"
+                            answer={employee?.emp_name}
+                            style={{ textTransform: "capitalize" }}
+                          />
+                          <SingleField title="E-Mail" answer={employee?.email} />
+                        </div>
+                        <div className="row">
+                          <SingleField
+                            title="Position"
+                            answer={employee?.position}
+                          />
+                          <SingleField
+                            title="Date of Birth"
+                            answer={
+                              employee?.date_of_birth
+                                ? formatDate(employee?.date_of_birth)
+                                : "---"
                             }
-                          </h6>
+                          />
+                        </div>
+                        <div className="row">
+                          <SingleField
+                            title="Phone Number"
+                            answer={employee?.phone}
+                          />
+                          <div className="col-lg-6 col-md-6 col-sm-12">
+                            <p className="addlabelcard2"> </p>
+                            <h6 className="profileimgboxcompanydetail2">
+                              {employee?.linked_in ? (
+                                <a
+                                  className="socialbtn1"
+                                  href={renderValue(employee?.linked_in)}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                >
+                                  <img src={linkedin} alt="linkedin" />
+                                </a>
+                              ) : null
+                              }
+                            </h6>
+                          </div>
                         </div>
                       </div>
-                    </div>
                     </RenderIf>
                   </div>
                 </div>
@@ -510,170 +510,170 @@ const ViewNonJoiner = () => {
                       </div>
                     </div>
                     <RenderIf condition={isAddressEditable}>
-                    <div className="editable-form2">
-                      <form noValidate="noValidate" onSubmit={handleSubmit}>
-                        <div className="row">
-                          <div className="col-lg-12 col-md-12 col-sm-12">
-                            <div className="form-outline">
-                              <input
-                                type="text"
-                                className="form-control"
-                                name="permanentAddress"
-                                value={values.permanentAddress}
-                                onChange={handleChange}
-                              />{" "}
-                              <label
-                                className="form-label"
-                                for="typeText"
-                                style={{ background: "#fff" }}
-                              >
-                                Address &nbsp;
-                              </label>
-                              {errors.permanentAddress &&
-                              touched.permanentAddress ? (
-                                <p className="text-danger msg">
-                                  {errors.permanentAddress}
-                                </p>
-                              ) : null}
+                      <div className="editable-form2">
+                        <form noValidate="noValidate" onSubmit={handleSubmit}>
+                          <div className="row">
+                            <div className="col-lg-12 col-md-12 col-sm-12">
+                              <div className="form-outline">
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="permanentAddress"
+                                  value={values.permanentAddress}
+                                  onChange={handleChange}
+                                />{" "}
+                                <label
+                                  className="form-label"
+                                  for="typeText"
+                                  style={{ background: "#fff" }}
+                                >
+                                  Address &nbsp;
+                                </label>
+                                {errors.permanentAddress &&
+                                  touched.permanentAddress ? (
+                                  <p className="text-danger msg">
+                                    {errors.permanentAddress}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <CountrySelect
-                                selectedCountry={values.country}
-                                countryOptions={countryOptions}
-                                handleCountryChange={handleCountryChange}
-                              />
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <CountrySelect
+                                  selectedCountry={values.country}
+                                  countryOptions={countryOptions}
+                                  handleCountryChange={handleCountryChange}
+                                />
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                              <Select
-                                className="basic-single"
-                                classNamePrefix="select"
-                                placeholder="Select State..."
-                                isDisabled={
-                                  selectedCountry?.name ? false : true
-                                }
-                                isClearable={true}
-                                isRtl={false}
-                                isSearchable={true}
-                                name="state"
-                                id="state"
-                                options={stateOptions}
-                                defaultValue={
-                                  values.state
-                                    ? {
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Select
+                                  className="basic-single"
+                                  classNamePrefix="select"
+                                  placeholder="Select State..."
+                                  isDisabled={
+                                    selectedCountry?.name ? false : true
+                                  }
+                                  isClearable={true}
+                                  isRtl={false}
+                                  isSearchable={true}
+                                  name="state"
+                                  id="state"
+                                  options={stateOptions}
+                                  defaultValue={
+                                    values.state
+                                      ? {
                                         label: values.state,
                                         value: values.state,
                                       }
-                                    : null
-                                }
-                                onChange={handleStateChange}
-                                style={{ textAlign: "center" }}
-                              />
+                                      : null
+                                  }
+                                  onChange={handleStateChange}
+                                  style={{ textAlign: "center" }}
+                                />
 
-                              {errors.state && touched.state ? (
-                                <p className="text-danger msg">
-                                  {errors.state}
-                                </p>
-                              ) : null}
+                                {errors.state && touched.state ? (
+                                  <p className="text-danger msg">
+                                    {errors.state}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                            <Input
-                                name="city"
-                                value={values.city}
-                                onChange={handleChange}
-                                label="City"
-                              />
-                              {errors.city && touched.city ? (
-                                <p className="text-danger msg">{errors.city}</p>
-                              ) : null}
+                          <div className="row">
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  name="city"
+                                  value={values.city}
+                                  onChange={handleChange}
+                                  label="City"
+                                />
+                                {errors.city && touched.city ? (
+                                  <p className="text-danger msg">{errors.city}</p>
+                                ) : null}
+                              </div>
                             </div>
-                          </div>
 
-                          <div className="col-lg-6 col-md-6 col-sm-12">
-                            <div className="form-outline">
-                            <Input
-                                type="number"
-                                name="postalCode"
-                                value={values.postalCode}
-                                onChange={handleChange}
-                                label="Postal Code"
-                              />
-                              {errors.postalCode && touched.postalCode ? (
-                                <p className="text-danger msg">
-                                  {errors.postalCode}
-                                </p>
-                              ) : null}
+                            <div className="col-lg-6 col-md-6 col-sm-12">
+                              <div className="form-outline">
+                                <Input
+                                  type="number"
+                                  name="postalCode"
+                                  value={values.postalCode}
+                                  onChange={handleChange}
+                                  label="Postal Code"
+                                />
+                                {errors.postalCode && touched.postalCode ? (
+                                  <p className="text-danger msg">
+                                    {errors.postalCode}
+                                  </p>
+                                ) : null}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="row mt-4">
-                          <div className="col-lg-12">
-                            {/* <button id="saveButton2" className="btn infoedit3">
+                          <div className="row mt-4">
+                            <div className="col-lg-12">
+                              {/* <button id="saveButton2" className="btn infoedit3">
                               Save
                             </button>{" "} */}
-                            <Button
-                              text="Save"
-                              id="cancelButton1"
-                              className="btn infoedit3"
-                              loading={loading}
-                            />
-                            &nbsp;
-                            <p
-                              onClick={() => setIsAddressEditable(false)}
-                              id="cancelButton2"
-                              className="btn infoedit4"
-                              style={{ margin: "0", cursor: "pointer" }}
-                            >
-                              Cancel
-                            </p>
+                              <Button
+                                text="Save"
+                                id="cancelButton1"
+                                className="btn infoedit3"
+                                loading={loading}
+                              />
+                              &nbsp;
+                              <p
+                                onClick={() => setIsAddressEditable(false)}
+                                id="cancelButton2"
+                                className="btn infoedit4"
+                                style={{ margin: "0", cursor: "pointer" }}
+                              >
+                                Cancel
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      </form>
-                    </div>
+                        </form>
+                      </div>
                     </RenderIf>
                   </div>
                   <RenderIf condition={!isAddressEditable}>
-                  <div className="readonly-form2">
-                    <div className="row">
-                    <SingleField
-                        title="Address"
-                        style={{ textAlign: "right" }}
-                        answer={renderValue(employee?.permanent_address)}
-                      />
-                    </div>
-                    <div className="row">
-                    <SingleField
-                        title="Country"
-                        style={{ textTransform: "capitalize" }}
-                        answer={renderValue(employee?.country)}
-                      />
-                      <SingleField
-                        title="State"
-                        style={{ textTransform: "capitalize" }}
-                        answer={renderValue(employee?.state)}
-                      />
-                    </div>
-                    <div className="row">
-                    <SingleField
-                        title="City"
-                        style={{ textTransform: "capitalize" }}
-                        answer={renderValue(employee.city)}
-                      />
-                      <SingleField
-                        title="Postal Code"
-                        answer={renderValue(employee?.postal_code)}
-                      />
-                    </div>
+                    <div className="readonly-form2">
+                      <div className="row">
+                        <SingleField
+                          title="Address"
+                          style={{ textAlign: "right" }}
+                          answer={renderValue(employee?.permanent_address)}
+                        />
+                      </div>
+                      <div className="row">
+                        <SingleField
+                          title="Country"
+                          style={{ textTransform: "capitalize" }}
+                          answer={renderValue(employee?.country)}
+                        />
+                        <SingleField
+                          title="State"
+                          style={{ textTransform: "capitalize" }}
+                          answer={renderValue(employee?.state)}
+                        />
+                      </div>
+                      <div className="row">
+                        <SingleField
+                          title="City"
+                          style={{ textTransform: "capitalize" }}
+                          answer={renderValue(employee.city)}
+                        />
+                        <SingleField
+                          title="Postal Code"
+                          answer={renderValue(employee?.postal_code)}
+                        />
+                      </div>
                     </div>
                   </RenderIf>
                 </div>
