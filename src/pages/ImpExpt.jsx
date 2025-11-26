@@ -196,7 +196,7 @@ const ImportExportComponent = () => {
                     value={exportFilter}
                     onChange={(e) => setExportFilter(e.target.value)}
                   >
-                    <option value="all">All</option>
+                    <option value="all">All Employee</option>
                     {/* <option value="positions">Positions</option> */}
                     <option value="Employee">Current Employee</option>
                     <option value="exemployee">Ex-Employee</option>
