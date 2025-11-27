@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useFormik } from "formik";
-import axios from "axios";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import { getFromLocalStorage } from "../helper";
 import Layout from "../component/layout";
 import Button from "../component/Button";
 import DownloadCsvExel from "../component/downLoadCsvExel";
-import { BASE_URL } from "../api/baseUrl";
+import { useImportCSVMutation } from "../apis/importExportEmployee";
 
 const initialValues = {
   csv_file: null,
@@ -20,46 +18,32 @@ const CsvvalidationSchema = yup.object().shape({
 });
 
 const UploadCsv = () => {
-  const [loading, setLoading] = useState(false);
   const [csvErrors, setCsvErrors] = useState();
+  const [importCSV, { isLoading: loading }] = useImportCSVMutation();
 
-  const bearerToken = getFromLocalStorage("token");
   const { errors, touched, handleSubmit, setFieldValue, values } = useFormik({
     initialValues: initialValues,
     validationSchema: CsvvalidationSchema,
     onSubmit: async (values) => {
-      setLoading(true);
       try {
         const formData = new FormData();
         formData.append("csv_file", values.csv_file);
         formData.append("image_zip_folder", values.image_zip_folder);
 
-        const apiUrl = `${BASE_URL}/uploadCSV`;
+        const response = await importCSV(formData).unwrap();
 
-        const response = await axios.post(apiUrl, formData, {
-          headers: {
-            "Content-Type": "text/csv",
-            Authorization: `Bearer ${bearerToken}`,
-          },
-        });
-
-        setLoading(false);
         toast.success("Successfully added");
-        setCsvErrors(null)
+        setCsvErrors(null);
       } catch (error) {
-        setLoading(false);
-        if (error.response) {
-          console.error(
-            "Request failed with status code",
-            error.response.status
-          );
-
-          if (error.response.data && error.response.data.message) {
-            toast.error(error.response.data.message);
-            setCsvErrors(error.response.data.errorList);
+        if (error.data) {
+          if (error.data.message) {
+            toast.error(error.data.message);
+            setCsvErrors(error.data.errorList);
           } else {
             toast.error("Some fields are missing. Please check.");
           }
+        } else {
+          toast.error("An error occurred. Please try again.");
         }
       }
     },

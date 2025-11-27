@@ -17,10 +17,12 @@ export const importExportEmployee = api.injectEndpoints({
       }),
     }),
     importCSV: builder.mutation({
-      query: ( data) => ({
+      query: (formData) => ({
         url: `uploadCSV`,
         method: "POST",
-        body: data,
+        body: formData,
+        // FormData will automatically set Content-Type to multipart/form-data with boundary
+        // No need to manually set headers for FormData
       }),
     }),
    
