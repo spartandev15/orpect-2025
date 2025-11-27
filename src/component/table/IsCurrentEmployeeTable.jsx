@@ -3,43 +3,28 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getFromLocalStorage } from "../../helper";
-import axios from "axios";
 import { Link } from "react-router-dom";
 import { linkedin, uploadProfile } from "../../asset";
-import { BASE_URL, IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
+import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
+import { useGetCurrentEmployeeQuery } from "../../apis/employee";
 
 const IsCurrentEmployeeTable = () => {
   const [Currentemployees, setCurrentEmployees] = useState([]);
-  const [loading, setLoading] = useState(false);
 
-  const token = getFromLocalStorage("token"); // Replace with your actual authorization token
- 
   const userDetal = getFromLocalStorage("user");
 
   const searchValue = useSelector((state) => state?.dashboardData?.searchValue);
-  useEffect(() => {
-    const fetchCurrentEmployee = async () => {
-      setLoading(true);
-      if (searchValue) {
-        try {
-          const headers = { Authorization: `Bearer ${token}` };
+  
+  const { data, isLoading: loading } = useGetCurrentEmployeeQuery(
+    { searchText: searchValue || "", page: 1, position: "" },
+    { skip: !searchValue }
+  );
 
-          const response = await axios.get(
-            `${BASE_URL}/getCurrentEmployees?searchText=${searchValue}`,
-            {
-              headers: headers,
-            }
-          );
-          const data = response.data;
-          setCurrentEmployees(data?.currentEmployees?.data);
-          setLoading(false);
-        } catch (error) {
-          setLoading(false);
-        }
-      }
-    };
-    fetchCurrentEmployee();
-  }, [searchValue]);
+  useEffect(() => {
+    if (data?.currentEmployees?.data) {
+      setCurrentEmployees(data.currentEmployees.data);
+    }
+  }, [data]);
 
   const formatDate = (dateString) => {
     const dateParts = dateString.split("T")[0].split("-");

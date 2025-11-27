@@ -84,9 +84,7 @@ export const employeeApi = api.injectEndpoints({
           method: "POST",
           body: formData,
         }
-       
-        
-      },
+       },
       invalidatesTags: ['Employee'],
     }),
     
