@@ -23,7 +23,7 @@ const ImportExportComponent = () => {
   const employeeTypeOptions = [
     { value: "current_employee", label: "Current Employees" },
     { value: "ex_employee", label: "Ex Employees" },
-    { value: "non_joiner", label: "Non Joiner" },
+    { value: "non_joiner", label: "Non Joiners" },
   ];
 
   //   const handleExport = () => {
@@ -227,7 +227,7 @@ const ImportExportComponent = () => {
                     type="date"
                     className="form-control"
                     value={exportDateFrom}
-                    onChange={(e) => setExportDateFrom(e.target.value)}
+                      onChange={(e) => setExportDateFrom(e.target.value)}
                   />
                 </div>
                 <div className="col-md-6">

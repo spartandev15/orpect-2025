@@ -335,7 +335,7 @@ const ViewExEmployee = () => {
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to update information");
       } else if (response?.status) {
-        toast.success("Information updated successfully");
+        toast.success("Successfully saved");
         // Refresh employee data
         await handleRefetchEmployee();
       } else {
@@ -415,7 +415,7 @@ const ViewExEmployee = () => {
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to update address");
       } else if (response?.status) {
-        toast.success("Address updated successfully");
+        toast.success("Successfully saved");
         // Refresh employee data
         await handleRefetchEmployee();
       } else {
