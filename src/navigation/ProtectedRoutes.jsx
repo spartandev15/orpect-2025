@@ -2,22 +2,28 @@ import React, { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { getFromLocalStorage } from '../helper';
 import { ADMIN_ROUTES, COMPANY_ROUTES, PUBLIC_ROUTES } from '../config/routes.config';
+import { getCookiePreferences, hasConsent } from '../helper/cookieManager';
 
 const ProtectedRoute = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://embed.tawk.to/648719bacc26a871b0220a14/1h2nrp1bp";
-    script.async = true;
-    script.charset = "UTF-8";
-    script.setAttribute("crossorigin", "*");
-
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    // Only load Tawk.to if user has consented to functional cookies
+    const preferences = getCookiePreferences();
+    const consent = hasConsent();
+    
+    if (consent && preferences.functional) {
+      // Check if script already exists
+      if (!document.getElementById('tawk-script')) {
+        const script = document.createElement("script");
+        script.id = 'tawk-script';
+        script.src = "https://embed.tawk.to/648719bacc26a871b0220a14/1h2nrp1bp";
+        script.async = true;
+        script.charset = "UTF-8";
+        script.setAttribute("crossorigin", "*");
+        document.body.appendChild(script);
+      }
+    }
   }, []);
 
   const regularToken = getFromLocalStorage("token");

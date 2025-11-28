@@ -71,6 +71,11 @@ import DataRequestFrom from "../pages/LandingPage/DataRequestFrom";
 import ImportExportComponent from "../pages/ImpExpt";
 import DataRequest from "../pages/SuperAdmin/DataRequest/DataRequest";
 import CompanyReviews from "../pages/SuperAdmin/Compaines/CompanyReviews";
+import CookiePolicy from "../pages/LandingPage/CookiePolicy/CookiePolicy";
+import Compliance from "../pages/LandingPage/Compliance/Compliance";
+import DataProcessingAgreement from "../pages/LandingPage/DataProcessingAgreement/DataProcessingAgreement";
+import DoNotSell from "../pages/LandingPage/DoNotSell/DoNotSell";
+import UserDataManagement from "../component/UserDataManagement/UserDataManagement";
 
 const Navigation = () => {
   const location = useLocation();
@@ -106,6 +111,10 @@ const Navigation = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/verification" element={<VerificationPage />} />
         <Route path="/data-request-form" element={<DataRequestFrom />} />
+        <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <Route path="/compliance" element={<Compliance />} />
+        <Route path="/data-processing-agreement" element={<DataProcessingAgreement />} />
+        <Route path="/do-not-sell" element={<DoNotSell />} />
 
 
         {/* Employee Dashboard */}
@@ -121,6 +130,14 @@ const Navigation = () => {
           element={
             <ProtectedRoute>
               <Profile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/data-management"
+          element={
+            <ProtectedRoute>
+              <UserDataManagement />
             </ProtectedRoute>
           }
         />

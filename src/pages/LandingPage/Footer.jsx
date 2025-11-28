@@ -1,7 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { orpect1 } from '../../asset'
 import { Link } from 'react-router-dom'
+import CookiePreferencesManager from '../../component/CookiePreferencesManager/CookiePreferencesManager'
 
+
+const CookiePreferencesLink = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  return (
+    <>
+      <a 
+        className="nav-link" 
+        href="#" 
+        onClick={(e) => {
+          e.preventDefault();
+          setShowModal(true);
+        }}
+        style={{ cursor: 'pointer' }}
+      >
+        Manage Cookies
+      </a>
+      {showModal && (
+        <CookiePreferencesManager onClose={() => setShowModal(false)} />
+      )}
+    </>
+  );
+};
 
 const Footer = () => {
   return (
@@ -40,6 +64,21 @@ const Footer = () => {
                   <li className="nav-item">
                    <Link className="nav-link" to="/data-request-form">Data Request Form</Link> 
                   </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/cookie-policy">Cookie Policy</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/compliance">Compliance</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/data-processing-agreement">Data Processing Agreement</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/do-not-sell">Do Not Sell My Data (CCPA)</Link>
+                  </li>
+                  {/* <li className="nav-item">
+                    <CookiePreferencesLink />
+                  </li> */}
                 </ul></div>
             </div>
             <div className="col-md-4 footer-column">
