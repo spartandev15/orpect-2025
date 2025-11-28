@@ -88,86 +88,13 @@ const ViewNonJoiner = () => {
   //     setLoading(false);
   //   });
   // }, [loading]);
-  const { values, errors, touched, handleChange, handleSubmit, setFieldValue } =
+  const { values, errors, touched, handleChange, handleSubmit, setFieldValue, validateForm, setTouched } =
     useFormik({
       initialValues: initialValues,
       validationSchema: editNonjoinerSchema,
       onSubmit: async (values) => {
-        try {
-          // setLoading(true);
-
-          const formData = new FormData();
-          const {
-            empName,
-            email,
-            phone,
-            position,
-            dateOfJoining,
-            dateOfBirth,
-            linkedIn,
-            image,
-          } = values;
-
-          formData.append("empName", empName);
-          formData.append("email", email);
-          formData.append("phone", phone);
-          formData.append("position", position);
-          if (dateOfJoining) {
-            formData.append("dateOfJoining", dateOfJoining);
-          }
-          if (dateOfBirth) {
-            formData.append("dateOfBirth", dateOfBirth);
-          }
-          if (linkedIn) {
-            formData.append("linkedIn", linkedIn);
-          }
-          if (values.permanentAddress) {
-            formData.append("permanentAddress", values.permanentAddress);
-          }
-          if (values.city) {
-            formData.append("city", values.city);
-          }
-          if (values.state) {
-            formData.append("state", values.state);
-          }
-          if (values.postalCode) {
-            formData.append("postalCode", values.postalCode);
-          }
-          if (values.country) {
-            formData.append("country", values.country);
-          }
-          if (image) {
-            formData.append("image", image);
-          }
-          formData.append("nonjoiner", 1);
-          formData.append("exEmp", 0);
-
-          const response = await updateEmployeeById({ id, formData }).unwrap();
-          console.log(response)
-          if (response?.status === "error") {
-            toast.error(response?.message || "Failed to update employee");
-          } else if (response?.status) {
-            toast.success("Successfully saved");
-            // Exit edit mode
-            setIsInfoEditable(false);
-            setIsAddressEditable(false);
-            setIsReviewEditable(false);
-            // Refresh employee data
-            if (isSuccess && data?.employee) {
-              setEmployee(data.employee);
-              setValues(data.employee);
-            }
-            // setLoading(false);
-            // window.location.reload();
-          } else {
-            toast.error(response?.message || "Something went wrong");
-          }
-        } catch (error) {
-          // setLoading(false);
-          const errorMessage = error?.data?.message || error?.message || "Failed to update employee";
-          toast.error(errorMessage);
-          console.error("Update employee failed:", error);
-        }
+        // This onSubmit is not used directly, but kept for formik initialization
+        // Separate handlers handleInformationUpdate and handleAddressUpdate are used instead
       },
     });
 
@@ -189,6 +116,166 @@ const ViewNonJoiner = () => {
     values.country = data?.country;
     values.dateOfBirth = data?.date_of_birth;
     values.postalCode = data?.postal_code;
+  };
+
+  // Information section update handler
+  const handleInformationUpdate = async (e) => {
+    e.preventDefault();
+
+    // Validate form using formik
+    const validationErrors = await validateForm();
+    
+    // Check if there are errors in information fields only
+    const infoFields = ['empName', 'email', 'phone', 'position', 'dateOfBirth', 'linkedIn'];
+    const hasInfoErrors = infoFields.some(field => validationErrors[field]);
+    
+    if (hasInfoErrors) {
+      // Touch all information fields to show errors
+      const touchedFields = {};
+      infoFields.forEach(field => {
+        touchedFields[field] = true;
+      });
+      setTouched(touchedFields);
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      // Information fields only
+      formData.append("empName", values.empName);
+      formData.append("email", values.email);
+      formData.append("phone", values.phone);
+      formData.append("position", values.position);
+      if (values.dateOfJoining) {
+        formData.append("dateOfJoining", values.dateOfJoining);
+      }
+      if (values.dateOfBirth) {
+        formData.append("dateOfBirth", values.dateOfBirth);
+      }
+      if (values.linkedIn) {
+        formData.append("linkedIn", values.linkedIn);
+      }
+
+      // Keep existing address fields
+      if (values.permanentAddress) {
+        formData.append("permanentAddress", values.permanentAddress);
+      }
+      if (values.city) {
+        formData.append("city", values.city);
+      }
+      if (values.state) {
+        formData.append("state", values.state);
+      }
+      if (values.country) {
+        formData.append("country", values.country);
+      }
+      if (values.postalCode) {
+        formData.append("postalCode", values.postalCode);
+      }
+      if (values.image) {
+        formData.append("image", values.image);
+      }
+      formData.append("nonjoiner", 1);
+      formData.append("exEmp", 0);
+
+      const response = await updateEmployeeById({ id, formData }).unwrap();
+      
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to update information");
+      } else if (response?.status) {
+        toast.success("Successfully saved");
+        // Refresh employee data
+        await handleRefetchEmployee();
+      } else {
+        toast.error(response?.message || "Something went wrong");
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message || error?.message || "Failed to update information";
+      toast.error(errorMessage);
+      console.error("Update information failed:", error);
+    } finally {
+      setIsInfoEditable(false);
+    }
+  };
+
+  // Address section update handler
+  const handleAddressUpdate = async (e) => {
+    e.preventDefault();
+
+    // Validate form using formik
+    const validationErrors = await validateForm();
+    
+    // Check if there are errors in address fields only
+    const addressFields = ['permanentAddress', 'city', 'state', 'country', 'postalCode'];
+    const hasAddressErrors = addressFields.some(field => validationErrors[field]);
+    
+    if (hasAddressErrors) {
+      // Touch all address fields to show errors
+      const touchedFields = {};
+      addressFields.forEach(field => {
+        touchedFields[field] = true;
+      });
+      setTouched(touchedFields);
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      // Keep existing information fields
+      formData.append("empName", values.empName);
+      formData.append("email", values.email);
+      formData.append("phone", values.phone);
+      formData.append("position", values.position);
+      if (values.dateOfJoining) {
+        formData.append("dateOfJoining", values.dateOfJoining);
+      }
+      if (values.dateOfBirth) {
+        formData.append("dateOfBirth", values.dateOfBirth);
+      }
+      if (values.linkedIn) {
+        formData.append("linkedIn", values.linkedIn);
+      }
+
+      // Address fields only
+      if (values.permanentAddress) {
+        formData.append("permanentAddress", values.permanentAddress);
+      }
+      if (values.city) {
+        formData.append("city", values.city);
+      }
+      if (values.state) {
+        formData.append("state", values.state);
+      }
+      if (values.country) {
+        formData.append("country", values.country);
+      }
+      if (values.postalCode) {
+        formData.append("postalCode", values.postalCode);
+      }
+      if (values.image) {
+        formData.append("image", values.image);
+      }
+      formData.append("nonjoiner", 1);
+      formData.append("exEmp", 0);
+
+      const response = await updateEmployeeById({ id, formData }).unwrap();
+
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to update address");
+      } else if (response?.status) {
+        toast.success("Successfully saved");
+        // Refresh employee data
+        await handleRefetchEmployee();
+      } else {
+        toast.error(response?.message || "Something went wrong");
+      }
+    } catch (error) {
+      const errorMessage = error?.data?.message || error?.message || "Failed to update address";
+      toast.error(errorMessage);
+      console.error("Update address failed:", error);
+    } finally {
+      setIsAddressEditable(false);
+    }
   };
 
 
@@ -298,7 +385,7 @@ const ViewNonJoiner = () => {
                     </div>
                     <RenderIf condition={isInfoEditable}>
                       <div className="editable-form1">
-                        <form noValidate="noValidate" onSubmit={handleSubmit}>
+                        <form noValidate="noValidate" onSubmit={handleInformationUpdate}>
                           <div className="row">
                             <div className="col-lg-6 col-md-6 col-sm-12">
                               <div className="form-outline">
@@ -425,15 +512,14 @@ const ViewNonJoiner = () => {
                             <div className="col-lg-12">
                               <Button
                                 text="Save"
-                                id="cancelButton1"
                                 className="btn infoedit3"
                                 loading={loading}
                               />
                               &nbsp;
                               <p
-                                id="cancelButton1"
+                                onClick={() => setIsInfoEditable(false)}
                                 className="btn infoedit4"
-                                style={{ margin: "0" }}
+                                style={{ margin: "0", cursor: "pointer" }}
                               >
                                 Cancel
                               </p>
@@ -511,7 +597,7 @@ const ViewNonJoiner = () => {
                     </div>
                     <RenderIf condition={isAddressEditable}>
                       <div className="editable-form2">
-                        <form noValidate="noValidate" onSubmit={handleSubmit}>
+                        <form noValidate="noValidate" onSubmit={handleAddressUpdate}>
                           <div className="row">
                             <div className="col-lg-12 col-md-12 col-sm-12">
                               <div className="form-outline">

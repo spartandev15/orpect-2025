@@ -47,10 +47,7 @@ import * as yup from "yup";
         return /^[0-9]{10}$/.test(value);
       }),
     position: yup.string().nullable(),
-    linkedIn: yup.string().matches(
-      /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\b/,
-      'Invalid LinkedIn URL format'
-    ).nullable(),
+    linkedIn: yup.string().url('Invalid URL').nullable(),
     
     dateOfBirth: yup
       .date()
