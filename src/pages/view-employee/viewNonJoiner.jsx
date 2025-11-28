@@ -378,9 +378,11 @@ const ViewNonJoiner = () => {
                         &nbsp; Information
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton1" className="infoedit3" onClick={() => setIsInfoEditable(true)}>
-                          Edit
-                        </button>
+                        {!isInfoEditable && (
+                          <button id="editButton1" className="infoedit3" onClick={() => setIsInfoEditable(true)}>
+                            Edit
+                          </button>
+                        )}
                       </div>
                     </div>
                     <RenderIf condition={isInfoEditable}>
@@ -590,9 +592,11 @@ const ViewNonJoiner = () => {
                         &nbsp; Address
                       </h5>
                       <div className="infoedit1">
-                        <button id="editButton2" className="infoedit3" onClick={() => setIsAddressEditable(true)}>
-                          Edit
-                        </button>
+                        {!isAddressEditable && (
+                          <button id="editButton2" className="infoedit3" onClick={() => setIsAddressEditable(true)}>
+                            Edit
+                          </button>
+                        )}
                       </div>
                     </div>
                     <RenderIf condition={isAddressEditable}>
@@ -776,9 +780,11 @@ const ViewNonJoiner = () => {
                       </h5>
 
                       <div className="infoedit1">
-                        <button id="editButton3" className="infoedit3" onClick={() => setIsReviewEditable(true)}>
-                          Edit
-                        </button>
+                        {!isReviewEditable && (
+                          <button id="editButton3" className="infoedit3" onClick={() => setIsReviewEditable(true)}>
+                            Edit
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

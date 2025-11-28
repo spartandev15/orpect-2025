@@ -967,9 +967,11 @@ const ViewExEmployee = () => {
                       </h5>
 
                       <div className="infoedit1">
-                        <button id="editButton3" className="infoedit3" onClick={() => setIsReviewEditable(true)}>
-                          Edit
-                        </button>
+                        {!isReviewEditable && (
+                          <button id="editButton3" className="infoedit3" onClick={() => setIsReviewEditable(true)}>
+                            Edit
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>
