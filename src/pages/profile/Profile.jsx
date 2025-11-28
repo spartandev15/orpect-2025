@@ -795,6 +795,7 @@ import { SingleField } from "../../component/SingleField";
 import { linkedin } from "../../asset";
 import { Input } from "../../component/Input";
 import {useGetUserQuery, useUpdateProfileMutation} from "../../apis/profile"
+import {useGetDesignationQuery} from "../../apis/company"
 
 const initialValues = {
   email: "",
@@ -827,6 +828,7 @@ const Profile = () => {
   const Dispatch = useDispatch();
   const [updateProfile,{data:updateProfileData}] = useUpdateProfileMutation();
   const { data } = useGetUserQuery();
+  const { data: designationData, isLoading: designationLoading } = useGetDesignationQuery();
 
   useEffect(() => {
     if (data) {
@@ -1176,16 +1178,14 @@ const Profile = () => {
                               value={values.designation}
                               onChange={handleChange}
                               required
+                              disabled={designationLoading}
                             >
-                              <option value="Founder">Founder</option>
-                              <option value=" Co Founder">Co Founder</option>
-                              <option value="CEO">CEO</option>
-                              <option value="Director">Director</option>
-                              <option value="Managing Director">
-                                Managing Director
-                              </option>
-                              <option value="Unit Head">Unit Head</option>
-                              <option value="Chairman">Chairman</option>
+                              <option value="">Select Designation</option>
+                              {designationData?.designations?.map((item) => (
+                                <option key={item.id} value={item.designation}>
+                                  {item.designation}
+                                </option>
+                              ))}
                             </select>
                             <label
                               className="form-label"
