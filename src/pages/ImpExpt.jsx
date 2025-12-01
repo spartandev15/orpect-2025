@@ -209,13 +209,13 @@ const ImportExportComponent = () => {
                     className="form-select"
                     value={type}
                     onChange={(e) => setType(e.target.value)}
+                    required
                   >
                     <option value="" disabled>
-                      Select
+                      Select Format
                     </option>
                     <option value="pdf">PDF</option>
                     <option value="csv">CSV</option>
-
                   </select>
                 </div>
               </div>

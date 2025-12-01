@@ -73,9 +73,9 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
     return (
         <>
             <div className="col-lg-2 col-md-6 px-1">
-                <div className="search_button" style={{ position: 'relative' }}>
+                <div className="" style={{ position: 'relative' }}>
                     <DatePicker
-                        style={{ zIndex: 2 }}
+                        style={{ zIndex: 2, width:'100%'}}
                         selected={startDate}
                         onChange={(date) => setStartDate(date)}
                         placeholderText="Start Date"
@@ -84,6 +84,7 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
                         name="start_date"
                         autoComplete="off"
                         calendarClassName='z-3'
+                        wrapperClassName='w-100'
                     />
                     <svg
                         width="20"
@@ -93,7 +94,7 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
                         xmlns="http://www.w3.org/2000/svg"
                         style={{
                             position: 'absolute',
-                            right: '12px',
+                            right: '8%',
                             top: '50%',
                             transform: 'translateY(-50%)',
                             pointerEvents: 'none',
@@ -118,6 +119,7 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
                         name="end_date"
                         autoComplete="off"
                         zIndex={1000}
+                        wrapperClassName='w-100'
                     />
                     <svg
                         width="20"
@@ -127,7 +129,7 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
                         xmlns="http://www.w3.org/2000/svg"
                         style={{
                             position: 'absolute',
-                            right: '12px',
+                            right: '8%',
                             top: '50%',
                             transform: 'translateY(-50%)',
                             pointerEvents: 'none',
