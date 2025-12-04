@@ -20,7 +20,7 @@ const CurrentEmployeeTable = () => {
   // RTK Query Hook
   const {
     data,
-    isLoading:loading,
+    isLoading: loading,
     isError,
     refetch,
   } = useGetCurrentEmployeeQuery(
@@ -67,7 +67,7 @@ const CurrentEmployeeTable = () => {
             <i className="fa fa-search navi-search"></i>
           </div>
         </div>
-        <ExcelPdf employeeType="current_employee"/>
+        <ExcelPdf employeeType="current_employee" />
       </div>
 
       <div className="row">
@@ -130,14 +130,17 @@ const CurrentEmployeeTable = () => {
           </div>
         </div>
       </div>
-      <div className="col-md-12 mt-4"></div>
+      <div className="col-md-12"></div>
       <div>
         {totalPages > 1 && (
-          <Pagination
-            totalPages={totalPages}
-            handlePageChange={handlePageChange}
-            currentPage={currentPage}
-          />
+          <div className="mt-3">
+            <Pagination
+              totalPages={totalPages}
+              handlePageChange={handlePageChange}
+              currentPage={currentPage}
+            />
+          </div>
+
         )}
       </div>
     </div>
