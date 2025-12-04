@@ -13,7 +13,55 @@ import { useAddPositionMutation, useGetPositionsQuery } from "../apis/postion";
 import Pagination from "../component/Pagination";
 
 const validationSchema = Yup.object().shape({
-  positions: Yup.string().required("Please add at least one Position"),
+  positions: Yup.string()
+    .required("Please add at least one Position")
+    .test(
+      "not-empty-after-trim",
+      "Position cannot be empty or only whitespace",
+      (value) => value && value.trim().length > 0
+    )
+    .test(
+      "valid-positions",
+      "Please enter valid position(s). Each position should be at least 2 characters long.",
+      (value) => {
+        if (!value || !value.trim()) return false;
+        
+        // Split by comma and validate each position
+        const positions = value
+          .split(",")
+          .map((pos) => pos.trim())
+          .filter((pos) => pos.length > 0);
+        
+        // Check if at least one valid position exists
+        if (positions.length === 0) return false;
+        
+        // Check each position has minimum length
+        const invalidPositions = positions.filter((pos) => pos.length < 2);
+        if (invalidPositions.length > 0) return false;
+        
+        // Check maximum length for each position (e.g., 100 characters)
+        const tooLongPositions = positions.filter((pos) => pos.length > 100);
+        if (tooLongPositions.length > 0) return false;
+        
+        return true;
+      }
+    )
+    .test(
+      "no-consecutive-commas",
+      "Invalid format: Multiple consecutive commas are not allowed",
+      (value) => {
+        if (!value) return true;
+        return !/,,+/.test(value);
+      }
+    )
+    .test(
+      "max-total-length",
+      "Total input length cannot exceed 500 characters",
+      (value) => {
+        if (!value) return true;
+        return value.length <= 500;
+      }
+    ),
 });
 
 const AddPosition = () => {
@@ -31,12 +79,30 @@ const AddPosition = () => {
   });
   const [addPosition, { isLoading: isAddLoading }] = useAddPositionMutation();
 
-  const handleSubmit = async (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm, setFieldError }) => {
     try {
-      const res = await addPosition(values).unwrap();
+      // Clean and validate the input data
+      const cleanedPositions = values.positions
+        .split(",")
+        .map((pos) => pos.trim())
+        .filter((pos) => pos.length >= 2 && pos.length <= 100); // Filter valid positions
+
+      // Check if we have at least one valid position after cleaning
+      if (cleanedPositions.length === 0) {
+        setFieldError("positions", "Please enter at least one valid position (minimum 2 characters)");
+        return;
+      }
+
+      // Prepare clean data for API
+      const cleanedData = {
+        positions: cleanedPositions.join(", "), // Join with comma and space for better readability
+      };
+
+      // Send cleaned data to API
+      const res = await addPosition(cleanedData).unwrap();
       if (res?.status === "error") {
         toast.error(res?.message || "Failed to add position");
-      } else if (res?.message &&res?.status) {
+      } else if (res?.message && res?.status) {
         toast.success(res?.message);
         resetForm(); // clear input
         setCurrentPage(1); // Reset to first page to see newly added position
@@ -81,11 +147,15 @@ const AddPosition = () => {
                     name="positions"
                     className="form-control"
                     placeholder="(eg:- Backend Developer, Frontend Developer)"
+                    maxLength={500}
                   />
+                  <small className="text-muted d-block mt-1">
+                    Each position must be 2-100 characters. Maximum 500 characters total.
+                  </small>
                   <ErrorMessage
                     name="positions"
                     component="div"
-                    className="text-danger"
+                    className="text-danger mt-2"
                   />
                 </div>
                 <div className="col-lg-12 col-sm-12 pb-4" style={{ textAlign: "center" }}>

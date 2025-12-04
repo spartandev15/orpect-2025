@@ -397,7 +397,7 @@ const AddNonEmployeeReview = () => {
                   required
                 />
                 <label className="form-label" for="typeTextarea">
-                  Review<span className="required">*</span>{" "}
+                  Review&nbsp;<span className="required">*</span>{" "}
                 </label>
                 {errors.review && touched.review ? (
                   <p className="text-danger msg">{errors.review}</p>
