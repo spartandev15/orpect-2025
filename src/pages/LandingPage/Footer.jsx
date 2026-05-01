@@ -64,7 +64,7 @@ const Footer = () => {
         <div className="container mt-3">
           <div className="row  ">
             <div className="col-md-6 box">
-              <span className="copyright quick-links footer_height">© COPYRIGHT 2023 <a href="https://orpect.com/" style={{color:"#134d75"}}>ORPECT LLC.</a> All Rights Reserved.</span>
+              <span className="copyright quick-links footer_height">© COPYRIGHT 2026 <a href="https://orpect.com/" style={{color:"#134d75"}}>ORPECT LLC.</a> All Rights Reserved.</span>
             </div>
             <div className="col-md-6 box">
               <ul className="list-inline social-buttons d-flex justify-content-end" >

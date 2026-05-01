@@ -133,8 +133,10 @@ const ViewNonJoiner = () => {
           console.log(response)
             if (response.status) {
             toast.success("Successfully saved");
-            navigate("/dashboard")
-
+            // navigate("/dashboard")
+            // navigate(/view-nonjoiner/${i.sid})
+            navigate(`/view-nonjoiner/${response?.employee_idurl}`)
+            
             // setLoading(false);
             // window.location.reload();
           } else {

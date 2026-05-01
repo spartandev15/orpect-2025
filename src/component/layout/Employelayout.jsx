@@ -79,7 +79,7 @@ const EmployeeLayout = ({children}) => {
 </div>
 <div className='col-lg-6'>
 <div className="footer_right">
-<span className="copyright quick-links footer_height">© COPYRIGHT 2023 <Link to="/dashboard" style={{color: "rgb(36, 77, 117)", fontWeight: "600"}}>ORPECT LLC.</Link> All Rights Reserved.</span>
+<span className="copyright quick-links footer_height">© COPYRIGHT 2026 <Link to="/dashboard" style={{color: "rgb(36, 77, 117)", fontWeight: "600"}}>ORPECT LLC.</Link> All Rights Reserved.</span>
 </div>
 </div>
         </div>

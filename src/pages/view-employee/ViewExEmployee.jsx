@@ -128,7 +128,8 @@ const ViewExEmployee = () => {
         console.log(response)
           if (response?.status) {
             toast.success("Successfully saved");
-            navigate("/dashboard")
+            // navigate("/dashboard")
+            navigate(`/view-exemployee/${response?.employee_idurl}`)
 
             // setLoading(false);
             // window.location.reload();

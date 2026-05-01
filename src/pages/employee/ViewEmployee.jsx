@@ -141,7 +141,7 @@ const ViewEmployee = () => {
         console.log(response)
           if (response.status) {
             toast.success("Successfully saved");
-            navigate("/dashboard")
+            navigate(`/view-employee/${response?.employee_idurl}`)
             // setLoading(false);
             // window.location.reload();
           } else {
@@ -288,7 +288,7 @@ const ViewEmployee = () => {
           <div className="container-fluid">
             <div className="row pd-4">
               <div className="col-lg-12">
-                <h3>Employee Details </h3>
+                <h3>Employee Details</h3>
               </div>
             </div>
             <div className="row  ">

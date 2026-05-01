@@ -659,7 +659,7 @@ console.log(notifications)
                 <div className="text-muted">
                   {" "}
                   <span className="copyright quick-links footer_height">
-                    © COPYRIGHT 2023 <a href="/dashboard">ORPECT LLC.</a> All
+                    © COPYRIGHT 2026 <a href="/dashboard">ORPECT LLC.</a> All
                     Rights Reserved.
                   </span>
                 </div>
