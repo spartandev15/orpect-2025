@@ -263,6 +263,7 @@ const ViewNonJoiner = () => {
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to update address");
       } else if (response?.status) {
+        navigate(`/view-nonjoiner/${response?.employee_idurl}`);
         toast.success("Successfully saved");
         // Refresh employee data
         await handleRefetchEmployee();

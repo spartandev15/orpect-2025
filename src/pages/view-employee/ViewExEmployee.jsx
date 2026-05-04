@@ -416,6 +416,8 @@ const ViewExEmployee = () => {
         toast.error(response?.message || "Failed to update address");
       } else if (response?.status) {
         toast.success("Successfully saved");
+            navigate(`/view-exemployee/${response?.employee_idurl}`);
+
         // Refresh employee data
         await handleRefetchEmployee();
       } else {
