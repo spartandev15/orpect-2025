@@ -51,8 +51,9 @@ const ViewExEmployee = () => {
   const [selectedState, setSelectedState] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-
   const { id } = useParams();
+  const [newId,setNewId]=useState(id)
+
   const bearerToken = getFromLocalStorage("token");
   const [updateEmployeeById, { isLoading: loading, }] = useUpdateEmployeeByIdMutation();
 
@@ -63,7 +64,7 @@ const ViewExEmployee = () => {
     isError,
     error,
     refetch: refetchEmployee,
-  } = useGetEmployeeByIdQuery(id);
+  } = useGetEmployeeByIdQuery(newId);
 
   const [isInfoEditable, setIsInfoEditable] = useState(false);
   const [isAddressEditable, setIsAddressEditable] = useState(false);
@@ -336,6 +337,9 @@ const ViewExEmployee = () => {
         toast.error(response?.message || "Failed to update information");
       } else if (response?.status) {
         toast.success("Successfully saved");
+        setNewId(response?.employee_idurl)
+            navigate(`/view-exemployee/${response?.employee_idurl}`);
+
         // Refresh employee data
         await handleRefetchEmployee();
       } else {
@@ -416,10 +420,13 @@ const ViewExEmployee = () => {
         toast.error(response?.message || "Failed to update address");
       } else if (response?.status) {
         toast.success("Successfully saved");
-            navigate(`/view-exemployee/${response?.employee_idurl}`);
+      
+        navigate(`/view-exemployee/${response.employee_idurl}`);
+        // setNewId(response?.employee_idurl)
 
         // Refresh employee data
-        await handleRefetchEmployee();
+        // await handleRefetchEmployee();
+        
       } else {
         toast.error(response?.message || "Something went wrong");
       }

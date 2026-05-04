@@ -52,6 +52,8 @@ const ViewNonJoiner = () => {
   const navigate = useNavigate()
 
   const { id } = useParams();
+    const [newId,setNewId]=useState(id)
+  
   const bearerToken = getFromLocalStorage("token");
   const [updateEmployeeById, { isLoading: loading, }] = useUpdateEmployeeByIdMutation();
 
@@ -62,7 +64,7 @@ const ViewNonJoiner = () => {
     isError,
     error,
     refetch: refetchEmployee,
-  } = useGetEmployeeByIdQuery(id);
+  } = useGetEmployeeByIdQuery(newId);
 
   const [isInfoEditable, setIsInfoEditable] = useState(false);
   const [isAddressEditable, setIsAddressEditable] = useState(false);
@@ -183,6 +185,9 @@ const ViewNonJoiner = () => {
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to update information");
       } else if (response?.status) {
+        setNewId(response?.employee_idurl)
+
+        navigate(`/view-nonjoiner/${response?.employee_idurl}`);
         toast.success("Successfully saved");
         // Refresh employee data
         await handleRefetchEmployee();
@@ -263,6 +268,8 @@ const ViewNonJoiner = () => {
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to update address");
       } else if (response?.status) {
+        setNewId(response?.employee_idurl)
+
         navigate(`/view-nonjoiner/${response?.employee_idurl}`);
         toast.success("Successfully saved");
         // Refresh employee data
