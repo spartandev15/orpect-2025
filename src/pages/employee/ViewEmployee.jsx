@@ -51,11 +51,11 @@ const initialValues = {
 
 const ViewEmployee = () => {
   // const [loading, setLoading] = useState(true);
+  const navigate = useNavigate()
   const [employee, setEmployee] = useState(null);
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
   const { id } = useParams();
   const bearerToken = getFromLocalStorage("token");
   const [updateEmployeeById, { isLoading: loading, }] = useUpdateEmployeeByIdMutation();
@@ -147,6 +147,7 @@ const ViewEmployee = () => {
             toast.error(response?.message || "Failed to update employee");
           } else if (response?.status) {
             toast.success("Successfully saved");
+            navigate(`/view-employee/${response?.employee_idurl}`);
             // Exit edit mode - hide editable form and show readonly form
             // $(".editable-form").hide();
             // $(".readonly-form").show();
