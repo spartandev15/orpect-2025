@@ -122,7 +122,9 @@ const handleImageUpload = (event) => {
         {oldImage?
         <img
         className="pic"
-      src={`https://spartanbots.xyz/borpact/${oldImage}`}
+      // src={`https://spartanbots.xyz/borpact/${oldImage}`}
+      src={`https://spartanbots.xyz/borpact/public/${oldImage}`}
+
         alt="profile"
         />:
         <img

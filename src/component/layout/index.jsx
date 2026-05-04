@@ -104,9 +104,9 @@ const Layout = ({ children }) => {
                   <img
                     src={
                       profileImage
-                        ? `https://spartanbots.xyz/opt_lv/${profileImage}`
+                        ? `https://spartanbots.xyz/borpact/public/${profileImage}`
                         : user && user.image
-                        ? `https://spartanbots.xyz/opt_lv/${user.image}`
+                        ? `https://spartanbots.xyz/borpact/public/${user.image}`
                         : uploadProfile
                     }
                     alt=""
@@ -277,9 +277,9 @@ const Layout = ({ children }) => {
                   <img
                     src={
                       profileImage
-                        ? `https://spartanbots.xyz/opt_lv/${profileImage}`
+                        ? `https://spartanbots.xyz/borpact/public/${profileImage}`
                         : user && user.image
-                        ? `https://spartanbots.xyz/opt_lv/${user.image}`
+                        ? `https://spartanbots.xyz/borpact/public/${user.image}`
                         : uploadProfile
                     }
                     alt=""
@@ -473,9 +473,9 @@ const Layout = ({ children }) => {
                           <img
                             src={
                               profileImage
-                                ? `https://spartanbots.xyz/opt_lv/${profileImage}`
+                                ? `https://spartanbots.xyz/borpact/public/${profileImage}`
                                 : user && user.image
-                                ? `https://spartanbots.xyz/opt_lv/${user.image}`
+                                ? `https://spartanbots.xyz/borpact/public/${user.image}`
                                 : uploadProfile
                             }
                             alt="profile"
