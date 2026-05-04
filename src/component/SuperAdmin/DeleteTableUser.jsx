@@ -73,7 +73,7 @@ import Popup from 'reactjs-popup';
 import { toast } from 'react-toastify';
 import { useDeleteUserByIdMutation } from '../../apis/SuperAdmin/user';
 
-const DeleteTableUser= ({ id }) => {
+const DeleteTableUser= ({ id, onDeleteSuccess }) => {
   const [loading, setLoading] = useState(false);
   const popupRef = React.createRef();
   const [deleteUserById,{isSuccess}] = useDeleteUserByIdMutation();
@@ -87,21 +87,32 @@ const DeleteTableUser= ({ id }) => {
 
     setLoading(true);
     try {
-      await deleteUserById(id).unwrap();
-      toast.success("Successfully Deleted");
-      handleClosePopup();
-      // window.location.reload(); // Optional: better to use state management instead
+      const response = await deleteUserById(id).unwrap();
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to delete user");
+      } else {
+        toast.success("Successfully Deleted");
+        handleClosePopup();
+        if (onDeleteSuccess) {
+          onDeleteSuccess();
+        }
+      }
     } catch (err) {
-      toast.error("Failed to delete employee.");
-      console.error(err);
+      const errorMessage = err?.data?.message || err?.message || "Failed to delete user.";
+      toast.error(errorMessage);
+      console.error("Delete user failed:", err);
     } finally {
       setLoading(false);
     }
   };
 useEffect(()=>{
-  handleClosePopup();
-
-},[isSuccess])
+  if (isSuccess) {
+    handleClosePopup();
+    if (onDeleteSuccess) {
+      onDeleteSuccess();
+    }
+  }
+},[isSuccess, onDeleteSuccess])
   return (
     <>
       <Popup

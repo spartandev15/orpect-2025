@@ -6,8 +6,10 @@ import LoadingSpinner from "../../component/LoadingSpinner";
 import { viewGlobalSearchedEmpById } from "../../api/rate&review";
 import Stars from "../../component/extras/Stars";
 import { linkedin, orpect1, uploadProfile } from "../../asset";
+import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
 
 const ViewEmployeeAllReview = () => {
+  debugger;
   const [loading, setLoading] = useState(true);
   const [employee, setEmployee] = useState(null);
   const dispatch = useDispatch();
@@ -26,8 +28,24 @@ const ViewEmployeeAllReview = () => {
   }
 
   return (
-    <Layout>
-      <section id="view-review">
+    <>
+      <style>
+        {`
+          #view-review .companynamereview,
+          #view-review .product-thumbnail1 img,
+          #view-review .product-thumbnail1 h6,
+          #view-review .companynamereview * {
+            filter: none !important;
+            -webkit-filter: none !important;
+            color: inherit !important;
+            text-shadow: none !important;
+            user-select: auto !important;
+            -webkit-user-select: auto !important;
+          }
+        `}
+      </style>
+      <Layout>
+        <section id="view-review">
         <div className="container">
           <div className="row view-rw">
             <div className="col-lg-12">
@@ -46,7 +64,7 @@ const ViewEmployeeAllReview = () => {
                           className="pic"
                           src={
                             i?.profile_image
-                              ? `https://spartanbots.xyz/opt_lv/${i?.profile_image}`
+                              ? `${IMAGE_BASE_URL_WITH_SLASH}${i?.profile_image}`
                               : uploadProfile
                           }
                           alt="profile"
@@ -77,9 +95,9 @@ const ViewEmployeeAllReview = () => {
                       <span className="companynamereview hoverable__main">
                         {i?.company_name}
                       </span>
-                      <span className="hoverable__tooltip1">
+                      {/* <span className="hoverable__tooltip1">
                         Available to Plus Members
-                      </span>
+                      </span> */}
                     </span>
                   </div>
                   <div className="search_mail">
@@ -118,7 +136,7 @@ const ViewEmployeeAllReview = () => {
                           className="pic"
                           src={
                             i?.company_logo
-                              ? `https://spartanbots.xyz/opt_lv/${i?.company_logo}`
+                              ? `${IMAGE_BASE_URL_WITH_SLASH}${i?.company_logo}`
                               : orpect1
                           }
                           alt="profile"
@@ -134,9 +152,9 @@ const ViewEmployeeAllReview = () => {
                       <div className="companynamereview mt-3">
                         {i?.company_phone}
                       </div>
-                      <span className="hoverable__tooltip12">
+                      {/* <span className="hoverable__tooltip12">
                       Available to Plus Members
-                    </span>
+                    </span> */}
                     </div>
                    
                   </span>
@@ -190,6 +208,7 @@ const ViewEmployeeAllReview = () => {
         </div>
       </section>
     </Layout>
+    </>
   );
 };
 

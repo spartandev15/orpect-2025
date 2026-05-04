@@ -105,7 +105,11 @@ const DataRequest = () => {
       </div>
 
       {totalPages > 1 && (
-        <Pagination totalPages={totalPages} handlePageChange={handlePageChange} />
+        <Pagination 
+          totalPages={totalPages} 
+          handlePageChange={handlePageChange}
+          currentPage={currentPage}
+        />
       )}
     </div>
   );

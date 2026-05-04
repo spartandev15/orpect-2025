@@ -1,33 +1,38 @@
-export const  getTimePeriod=(customDate)=> {
-    var currentDate = new Date();
+import moment from 'moment';
+
+export const getTimePeriod = (customDate) => {
+  if (!customDate) return "";
   
-    // Start date (date of joining)
-    var startDate = new Date(customDate);
+  const currentDate = moment();
+  const startDate = moment(customDate);
   
-    // Difference in years 
-    var yearsDiff = currentDate.getFullYear() - startDate.getFullYear();
+  // Calculate the difference
+  const years = currentDate.diff(startDate, 'years');
+  const months = currentDate.diff(startDate.clone().add(years, 'years'), 'months');
+  const days = currentDate.diff(startDate.clone().add(years, 'years').add(months, 'months'), 'days');
   
-    // Difference in months
-    var monthsDiff = currentDate.getMonth() - startDate.getMonth();
+  // Prepare the time period string
+  const parts = [];
   
-    // Adjust months if necessary
-    if (monthsDiff < 0) {
-      yearsDiff--;
-      monthsDiff = 12 + monthsDiff;
-    }
-  
-    // Prepare the time period string
-    var timePeriod = "";
-    if (yearsDiff > 0) {
-      timePeriod += yearsDiff + " years";
-      if (monthsDiff > 0) {
-        timePeriod += " ";
-      }
-    }
-    timePeriod += monthsDiff + " months";
-  
-    return timePeriod;
+  if (years > 0) {
+    parts.push(years + (years === 1 ? " year" : " years"));
   }
+  
+  if (months > 0) {
+    parts.push(months + (months === 1 ? " month" : " months"));
+  }
+  
+  if (days > 0) {
+    parts.push(days + (days === 1 ? " day" : " days"));
+  }
+  
+  // If no time has passed, return "0 days"
+  if (parts.length === 0) {
+    return "0 days";
+  }
+  
+  return parts.join(" ");
+}
 
 
 
@@ -111,46 +116,37 @@ export const  getTimePeriod=(customDate)=> {
 
 
 
-  export const getExEmployeeTime = (startDate, endDate) => {
-    var start = new Date(startDate);
-    var end = new Date(endDate);
+export const getExEmployeeTime = (startDate, endDate) => {
+  if (!startDate || !endDate) return "";
   
-    // Calculate the difference in months
-    var monthsDiff = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth());
+  const start = moment(startDate);
+  const end = moment(endDate);
   
-    // Check if start date is more than 15
-    if (start.getDate() > 15) {
-      monthsDiff--; // Subtract 1 from monthsDiff if start date is more than 15
-    }
+  // Calculate the difference
+  const years = end.diff(start, 'years');
+  const months = end.diff(start.clone().add(years, 'years'), 'months');
+  const days = end.diff(start.clone().add(years, 'years').add(months, 'months'), 'days');
   
-    // Check if end date is more than or equal to the next month's start
-    var nextMonthStart = new Date(end.getFullYear(), end.getMonth() + 1, 1);
-    if (end >= nextMonthStart) {
-      monthsDiff++; // Add 1 to monthsDiff if end date is more than or equal to the next month's start
-    }
+  // Prepare the time period string
+  const parts = [];
   
-    // Calculate the number of years and remaining months
-    var years = Math.floor(monthsDiff / 12);
-    var months = monthsDiff % 12;
+  if (years > 0) {
+    parts.push(years + (years === 1 ? " year" : " years"));
+  }
   
-    // Prepare the time period string
-    var timePeriod = "";
-    if (years > 0) {
-      timePeriod += years + " year";
-      if (years > 1) {
-        timePeriod += "s";
-      }
-      if (months > 0) {
-        timePeriod += " ";
-      }
-    }
-    if (months > 0 || timePeriod === "") {
-      timePeriod += months + " month";
-      if (months !== 1) {
-        timePeriod += "s";
-      }
-    }
+  if (months > 0) {
+    parts.push(months + (months === 1 ? " month" : " months"));
+  }
   
-    return timePeriod;
-  };
+  if (days > 0) {
+    parts.push(days + (days === 1 ? " day" : " days"));
+  }
+  
+  // If no time has passed, return "0 days"
+  if (parts.length === 0) {
+    return "0 days";
+  }
+  
+  return parts.join(" ");
+};
   

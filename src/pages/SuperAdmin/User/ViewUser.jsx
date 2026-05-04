@@ -43,7 +43,7 @@ const ViewUser = () => {
   const [showInfoForm, setShowInfoForm] = useState(false);
   const [showAddressForm, setShowAddressForm] = useState(false);
     const { id } = useParams();
-  const { data } = useGetUserByIdQuery(id);
+  const { data, refetch } = useGetUserByIdQuery(id);
   const [updateUserById] = useUpdateUserByIdMutation();
 console.log(data)
   useEffect(() => {
@@ -89,6 +89,7 @@ console.log(data)
           setShowInfoForm(false);
           setShowAddressForm(false);
           setSubmitting(false);
+          refetch();
         } catch (error) {
           if (error?.response?.data?.errors?.image) {
             toast.error("Image size must not be greater than 2048 kilobytes");
@@ -356,7 +357,6 @@ console.log(data)
                     <div className="row">
                       <SingleField
                         title="Address"
-                        style={{ textAlign: "left" }}
                         answer={renderValue(profile?.address)}
                       />
                     </div>
@@ -422,7 +422,7 @@ console.log(data)
                             <Select
                               className="basic-single"
                               classNamePrefix="select"
-                              placeholder="Select State.."
+                              placeholder="Select State..."
                               isDisabled={!selectedCountry?.name}
                               isClearable={true}
                               isRtl={false}

@@ -10,7 +10,7 @@ const CountrySelect = ({ selectedCountry, countryOptions, handleCountryChange })
       <Select
         className="basic-single"
         classNamePrefix="select"
-        placeholder="Select Country.."
+        placeholder="Select Country..."
         isClearable={true}
         isRtl={false}
         isSearchable={true}

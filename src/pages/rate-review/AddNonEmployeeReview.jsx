@@ -13,6 +13,7 @@ import Select from "react-select";
 import { BASE_URL } from "../../api/baseUrl";
 import { InputAdd } from "../../component/InputAdd";
 import { useAddExEmployeeReviewMutation } from "../../apis/employee";
+import SelectPostion from "../../component/SelectPosition";
 
 const initialValues = {
   // empId: "",
@@ -20,7 +21,7 @@ const initialValues = {
   email: "",
   phone: "",
   position: "",
-  pan_number: "",
+  tax_number: "",
   dateOfBirth: "",
   permanentAddress: "",
   city: "",
@@ -58,7 +59,28 @@ const NonJoinerValidatinon = yup.object().shape({
   review: yup.string().required("Review is required"),
   dateOfBirth: yup
     .date()
-    .max(new Date(), "Date of Birth must not be a future date"),
+    .max(new Date(), "Date of Birth must be a past date")
+    .required("Date of Birth is required")
+    .test(
+      "min-age-validation",
+      "Employee must be at least 14 years old",
+      function (value) {
+        if (!value) return true;
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = age;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
     postalCode: yup.number()
     .typeError('Postal code must be a number')
     .nullable()
@@ -87,7 +109,7 @@ const AddNonEmployeeReview = () => {
           formData.append("phone", values.phone);
           formData.append("position", values.position);
           formData.append("image", values.image?.blob || ""); // Use default value if no image
-          formData.append("pan_number", "");
+          formData.append("tax_number", "");
           formData.append("dateOfBirth", values.dateOfBirth);
           formData.append("linkedIn", values.linkedIn);
           formData.append("permanentAddress", values.permanentAddress);
@@ -116,17 +138,18 @@ const AddNonEmployeeReview = () => {
           // );
           const response =  await addExEmployeeReview({ formData }).unwrap();
           
-          if (response?.status) {
-
-       
+          if (response?.status === "error") {
+            toast.error(response?.message || "Failed to add review");
+          } else if (response?.status) {
             toast.success("Successfully added");
             navigate("/non-joiner");
           } else {
-            const errorData = await response.json();
-            throw new Error(errorData?.message);
+            toast.error(response?.message || "Something went wrong");
           }
         } catch (error) {
-          toast.error(error.message);
+          const errorMessage = error?.data?.message || error?.message || "Failed to add review";
+          toast.error(errorMessage);
+          console.error("Add review failed:", error);
         } finally {
           // setLoading(false);
         }
@@ -167,6 +190,10 @@ const AddNonEmployeeReview = () => {
     setSelectedState(state);
   };
   const currentDate = new Date().toISOString().split("T")[0];
+  // Calculate maximum date of birth (14 years ago from today) to ensure minimum age of 14
+  const maxDateOfBirth = new Date();
+  maxDateOfBirth.setFullYear(maxDateOfBirth.getFullYear() - 14);
+  const maxDateOfBirthString = maxDateOfBirth.toISOString().split("T")[0];
 
   return (
     <>
@@ -233,26 +260,13 @@ const AddNonEmployeeReview = () => {
               </div>
             </div>
             <div className="col-lg-6 col-sm-12  pb-4">
-              <div className="form-outline datalist">
-                <input
-                  type="text"
-                  list="cars"
-                  className="form-control"
-                  name="position"
+              <div className="form-outline">
+                <SelectPostion
+                  nameValue="position"
+                  handleChange={handleChange}
                   value={values.position}
-                  onChange={handleChange}
                   required
                 />
-                <label className="form-label" for="typeText">
-                  Position &nbsp;<span className="required">*</span>
-                </label>
-                <datalist className="datalist-ul" id="cars">
-                  {data?.positions?.map((i) => (
-                    <option key={i.id} value={i.position}>
-                      {i.position}
-                    </option>
-                  ))}
-                </datalist>
                 {errors.position && touched.position ? (
                   <p className="text-danger msg">{errors.position}</p>
                 ) : null}
@@ -267,7 +281,7 @@ const AddNonEmployeeReview = () => {
                   placeholder=" "
                   name="dateOfBirth"
                   value={values.dateOfBirth}
-                  max={currentDate}
+                  max={maxDateOfBirthString}
                   onChange={handleChange}
                   required
                 />
@@ -296,7 +310,7 @@ const AddNonEmployeeReview = () => {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  placeholder="Select Country.."
+                  placeholder="Select Country..."
                   isClearable={true}
                   isRtl={false}
                   isSearchable={true}
@@ -314,7 +328,7 @@ const AddNonEmployeeReview = () => {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  placeholder="Select State.."
+                  placeholder="Select State..."
                   isDisabled={selectedCountry?.name ? false : true}
                   isClearable={true}
                   isRtl={false}
@@ -383,7 +397,7 @@ const AddNonEmployeeReview = () => {
                   required
                 />
                 <label className="form-label" for="typeTextarea">
-                  Review<span className="required">*</span>{" "}
+                  Review&nbsp;<span className="required">*</span>{" "}
                 </label>
                 {errors.review && touched.review ? (
                   <p className="text-danger msg">{errors.review}</p>

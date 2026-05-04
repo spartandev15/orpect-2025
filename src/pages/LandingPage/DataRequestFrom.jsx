@@ -37,11 +37,17 @@ const DataRequestForm = () => {
   const handleSubmit = async (values, { resetForm }) => {
     try {
     //   toast.info('Submitting your request...');
-      await dataRequest({ data: values }).unwrap();
-      toast.success('Request submitted successfully!');
-      resetForm();
+      const response = await dataRequest({ data: values }).unwrap();
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to submit request");
+      } else {
+        toast.success('Request submitted successfully!');
+        resetForm();
+      }
     } catch (error) {
-      toast.error('Failed to submit request. Please try again.');
+      const errorMessage = error?.data?.message || error?.message || "Failed to submit request. Please try again.";
+      toast.error(errorMessage);
+      console.error("Data request failed:", error);
     }
   };
 

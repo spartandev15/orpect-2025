@@ -5,8 +5,8 @@ export const companiesApi = api.injectEndpoints({
 
   endpoints: (builder) => ({
     getAllCompanies: builder.query({
-      query: ({ page = 1,}) => ({
-        url: `admin/getCompanies?page=${page}`,
+      query: ({ page = 1, search = ""}) => ({
+        url: `admin/getCompanies?page=${page}&search=${search}`,
         method: "GET",
 
       }),
@@ -44,6 +44,23 @@ export const companiesApi = api.injectEndpoints({
         },
         invalidatesTags: ['Companies'],
       }),
+      updateCompany: builder.mutation({
+        query: ({ id, formData }) => {
+          return {
+            url: `admin/Companyupdate/${id}`,
+            method: "POST",
+            body: formData,
+          };
+        },
+        invalidatesTags: ['Companies'],
+      }),
+      getCompanyReviews: builder.query({
+        query: ({ page = 1, search = "" }) => ({
+          url: `admin/getCompanyReviews?page=${page}&search=${search}`,
+          method: "GET",
+        }),
+        providesTags: ['Companies'],
+      }),
   
   }),
   overrideExisting: false,
@@ -54,5 +71,7 @@ export const {
  useGetCompaniesByIdQuery,
  useDeleteCompanyByIdMutation,
  useAccountVerifiedMutation,
- useAddCompanyMutation
+ useAddCompanyMutation,
+ useUpdateCompanyMutation,
+ useGetCompanyReviewsQuery
 } = companiesApi;

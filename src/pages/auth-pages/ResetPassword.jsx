@@ -160,7 +160,7 @@ const ResetPassword = () => {
                           <p className="submitcontent">
                             Don't have an account.{" "}
                             <Link
-                              to="/signup"
+                              to="/signup"  
                               style={{ color: "#134d75", fontWeight: "600" }}
                             >
                               Sign Up

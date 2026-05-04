@@ -19,10 +19,10 @@ const initialValues = {
   teamworkCommunicationRating: "",
   lastCTC: 0,
 };
-const AddEmployeeReview = ({ id, dateOfJoining }) => {
+const AddEmployeeReview = ({ id, dateOfJoining, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { values, errors, touched, setFieldValue, handleChange, handleSubmit } =
+  const { values, errors, touched, setFieldValue, handleChange, handleSubmit, validateForm, setTouched, isValid} =
     useFormik({
       initialValues: initialValues,
       validationSchema: RateReviewSchema,
@@ -30,6 +30,10 @@ const AddEmployeeReview = ({ id, dateOfJoining }) => {
         try {
           dispatch(addRateReview(id, values)).then((res) => {
             toast.success("Successfully added");
+            // Call onClose if provided
+            if (onClose) {
+              onClose();
+            }
             // navigate('/ex-employee')
             
               window.location.href= '/orpect/ex-employee'
@@ -101,7 +105,7 @@ const AddEmployeeReview = ({ id, dateOfJoining }) => {
 
                   <div className="form-outline">
                     <input
-                      type="text"
+                      type="number"
                       name="lastCTC"
                       className="form-control"
                       value={values.lastCTC || ""}
@@ -315,15 +319,16 @@ const AddEmployeeReview = ({ id, dateOfJoining }) => {
 
             <div className="row mt-4">
               <div className="col-12">            
-                <SaveRatingPopup />
+                <SaveRatingPopup isValid={isValid} onSubmit={handleSubmit} validateForm={validateForm} setTouched={setTouched} values={values} />
                 &nbsp;
                 <p
-                  style={{ margin: "0" }}
+                  style={{ margin: "0", cursor: "pointer" }}
                   className="btn infoedit4"
-                  data-toggle="collapse"
-                  data-target="#collapserate"
-                  aria-expanded="false"
-                  aria-controls="collapserate"
+                  onClick={() => {
+                    if (onClose) {
+                      onClose();
+                    }
+                  }}
                 >
                   Cancel
                 </p>

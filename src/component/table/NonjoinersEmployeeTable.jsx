@@ -11,21 +11,39 @@ import { useGetNonJoinerEmployeeQuery } from "../../apis/employee";
 const CurrentEmployeeTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchText, setSearchText] = useState("");
+  const [debouncedSearchText, setDebouncedSearchText] = useState("");
   const [position, setPosition] = useState("");
   const [dataIndex, setDataIndex] = useState(1);
 
   const dispatch = useDispatch();
+
+  // Debounce search input to avoid too many API calls
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchText(searchText);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [searchText]);
+
+  // Reset to page 1 when search text or position changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearchText, position]);
 
   const {
     data,
     isLoading: loading,
     isError,
     refetch,
-  } = useGetNonJoinerEmployeeQuery({
-    page: currentPage,
-    searchText,
-    position,
-  });
+  } = useGetNonJoinerEmployeeQuery(
+    {
+      page: currentPage,
+      searchText: debouncedSearchText,
+      position,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const employees = data?.nonJoiners?.data || [];
   const totalPages = data?.nonJoiners?.last_page || 1;
@@ -71,7 +89,7 @@ const CurrentEmployeeTable = () => {
               <thead>
                 <tr>
                   <th style={{ background: "#e1e9ed" }}>Sr. No.</th>
-                  <th style={{ background: "#e1e9ed" }}>Name</th>
+                  <th style={{ background: "#e1e9ed", maxWidth: "150px" }}>Name</th>
                   <th style={{ background: "#e1e9ed" }}>Email</th>
                   <th style={{ background: "#e1e9ed" }}>Phone Number</th>
                   <th style={{ background: "#e1e9ed" }}>Designation</th>
@@ -98,7 +116,7 @@ const CurrentEmployeeTable = () => {
                   employees.map((i, index) => (
                     <tr key={index} className="table_data_background">
                       <td>{dataIndex + index}</td>
-                      <td>{i.emp_name}</td>
+                      <td style={{ maxWidth: "150px", wordWrap: "break-word" }}>{i.emp_name}</td>
                       <td>{i.email}</td>
                       <td>{i.phone}</td>
                       <td>{i.position}</td>
@@ -121,7 +139,11 @@ const CurrentEmployeeTable = () => {
       </div>
 
       {totalPages > 1 && (
-        <Pagination totalPages={totalPages} handlePageChange={handlePageChange} />
+        <Pagination 
+          totalPages={totalPages} 
+          handlePageChange={handlePageChange}
+          currentPage={currentPage}
+        />
       )}
     </div>
   );

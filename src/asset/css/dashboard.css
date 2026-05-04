@@ -327,6 +327,21 @@ color: #000;
     --bs-pagination-focus-box-shadow: none !important;
 }
 
+.active-page .page-link, .page-item.active-page .page-link{
+  background-color: #134d75 !important;
+  color: #f6a21e!important;
+  border-color: #134d75 !important;
+  font-weight: bold;
+  padding: 5px 12px;
+}
+
+.active-page .page-link:hover, .page-item.active-page .page-link:hover{
+  background-color: #134d75 !important;
+  color: #fff !important;
+  border-color: #134d75 !important;
+  font-weight: bold;
+}
+
 .disabled>.page-link, .page-link.disabled{
   color: #134d75 !important;
     /* pointer-events: none; */
@@ -1160,7 +1175,7 @@ font-size: 16px;
   border: none;
   border-radius: 5px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .infoedit4 {
@@ -1170,7 +1185,7 @@ font-size: 16px;
   border: none;
   border-radius: 5px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .infoedit4:active {
@@ -1180,7 +1195,7 @@ font-size: 16px;
   border: none;
   border-radius: 5px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .infoedit3 {

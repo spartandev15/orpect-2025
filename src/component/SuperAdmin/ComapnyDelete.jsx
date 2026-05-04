@@ -73,7 +73,7 @@ import Popup from 'reactjs-popup';
 import { toast } from 'react-toastify';
 import { useDeleteCompanyByIdMutation } from '../../apis/SuperAdmin/companies';
 
-const ComapnyDelete= ({ id }) => {
+const ComapnyDelete= ({ id, onDeleteSuccess }) => {
   const [loading, setLoading] = useState(false);
   const popupRef = React.createRef();
   const [deleteCompanyById,{isSuccess}] = useDeleteCompanyByIdMutation();
@@ -87,21 +87,32 @@ const ComapnyDelete= ({ id }) => {
 
     setLoading(true);
     try {
-      await deleteCompanyById(id).unwrap();
-      toast.success("Successfully Deleted");
-      handleClosePopup();
-      // window.location.reload(); // Optional: better to use state management instead
+      const response = await deleteCompanyById(id).unwrap();
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to delete company");
+      } else {
+        toast.success("Successfully Deleted");
+        handleClosePopup();
+        if (onDeleteSuccess) {
+          onDeleteSuccess();
+        }
+      }
     } catch (err) {
-      toast.error("Failed to delete employee.");
-      console.error(err);
+      const errorMessage = err?.data?.message || err?.message || "Failed to delete company.";
+      toast.error(errorMessage);
+      console.error("Delete company failed:", err);
     } finally {
       setLoading(false);
     }
   };
 useEffect(()=>{
-  handleClosePopup();
-
-},[isSuccess])
+  if (isSuccess) {
+    handleClosePopup();
+    if (onDeleteSuccess) {
+      onDeleteSuccess();
+    }
+  }
+},[isSuccess, onDeleteSuccess])
   return (
     <>
       <Popup

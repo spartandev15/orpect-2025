@@ -9,7 +9,7 @@ export const SateSelect = ({ selectedCountry, values, stateOptions, handleStateC
       <Select
         className="basic-single"
         classNamePrefix="select"
-        placeholder="Select State.."
+        placeholder="Select State..."
         isDisabled={!selectedCountry?.name}
         isClearable={true}
         isRtl={false}

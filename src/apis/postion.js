@@ -8,7 +8,6 @@ export const positionApi = api.injectEndpoints({
       query: ({ page = 1, searchText = "", position = "" }) => 
         `getPositions?page=${page}&per_page=${10}&search=${searchText}&status=${position}`,
       providesTags: ['Postion'],
-
     }),
 
     addPosition: builder.mutation({

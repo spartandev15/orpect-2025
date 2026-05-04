@@ -102,6 +102,7 @@
 
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const PrivacyText = () => {
   return (
@@ -116,11 +117,23 @@ const PrivacyText = () => {
 
             <div className="mt-4">
               <h4>1. Information We Collect</h4>
-              <ul className="mt-3">
-                <li>Name, email, job title, company name</li>
-                <li>Employee reviews and feedback data</li>
-                <li>Technical info such as IP address, browser type, and usage activity</li>
-                <li>Cookies and tracking technologies</li>
+              <p className="mt-3">
+                We collect information that you provide directly to us and information that is 
+                automatically collected when you use our services.
+              </p>
+              <p className="mt-2"><strong>Personal Information:</strong></p>
+              <ul>
+                <li>Name, email address, job title, company name</li>
+                <li>Employee reviews, feedback, and ratings</li>
+                <li>Account credentials and profile information</li>
+                <li>Communication preferences</li>
+              </ul>
+              <p className="mt-2"><strong>Automatically Collected Information:</strong></p>
+              <ul>
+                <li>IP address, browser type, device information</li>
+                <li>Usage data, pages visited, time spent on pages</li>
+                <li>Cookies and similar tracking technologies</li>
+                <li>Location data (if permitted)</li>
               </ul>
             </div>
 
@@ -135,50 +148,192 @@ const PrivacyText = () => {
             </div>
 
             <div className="mt-4">
-              <h4>3. Your Rights</h4>
-              <p className="mt-2"><strong>Under GDPR (EU residents):</strong></p>
+              <h4>3. Your Privacy Rights</h4>
+              
+              <div className="mt-3">
+                <h5>GDPR Rights (EU/EEA Residents)</h5>
+                <p className="mt-2">
+                  If you are located in the European Union or European Economic Area, you have the following rights:
+                </p>
+                <ul>
+                  <li><strong>Right of Access:</strong> Request a copy of your personal data</li>
+                  <li><strong>Right to Rectification:</strong> Correct inaccurate or incomplete data</li>
+                  <li><strong>Right to Erasure:</strong> Request deletion of your personal data ("right to be forgotten")</li>
+                  <li><strong>Right to Restrict Processing:</strong> Limit how we use your data</li>
+                  <li><strong>Right to Data Portability:</strong> Receive your data in a structured, machine-readable format</li>
+                  <li><strong>Right to Object:</strong> Object to processing of your personal data</li>
+                  <li><strong>Right to Withdraw Consent:</strong> Withdraw consent at any time where processing is based on consent</li>
+                </ul>
+                <p className="mt-2">
+                  <strong>Data Protection Officer (DPO):</strong> <a href="mailto:dpo@orpect.com" style={{ color: "#134d75", textDecoration: "none" }}>dpo@orpect.com</a>
+                </p>
+              </div>
+
+              <div className="mt-3">
+                <h5>CCPA Rights (California Residents)</h5>
+                <p className="mt-2">
+                  If you are a California resident, you have the following rights:
+                </p>
+                <ul>
+                  <li><strong>Right to Know:</strong> Know what personal information is collected, used, shared, or sold</li>
+                  <li><strong>Right to Delete:</strong> Request deletion of your personal information</li>
+                  <li><strong>Right to Opt-Out:</strong> Opt-out of the sale of personal information</li>
+                  <li><strong>Right to Non-Discrimination:</strong> Not be discriminated against for exercising your privacy rights</li>
+                </ul>
+                <p className="mt-2">
+                  <Link to="/do-not-sell" style={{ color: "#134d75", textDecoration: "none" }}>
+                    <strong>Click here to opt-out of data sales</strong>
+                  </Link>
+                </p>
+              </div>
+
+              <div className="mt-3">
+                <h5>PIPEDA Rights (Canada Residents)</h5>
+                <p className="mt-2">
+                  If you are located in Canada, you have the following rights:
+                </p>
+                <ul>
+                  <li><strong>Right to Access:</strong> Access your personal information</li>
+                  <li><strong>Right to Correction:</strong> Request correction of inaccurate information</li>
+                  <li><strong>Right to Withdraw Consent:</strong> Withdraw consent for collection, use, or disclosure</li>
+                  <li><strong>Right to File a Complaint:</strong> File a complaint with the Privacy Commissioner of Canada</li>
+                </ul>
+              </div>
+
+              <div className="mt-3">
+                <p className="mt-2">
+                  To exercise any of these rights, please contact us at{' '}
+                  <a href="mailto:privacy@orpect.com" style={{ color: "#134d75", textDecoration: "none" }}>privacy@orpect.com</a> or use our{' '}
+                  <Link to="/data-request-form" style={{ color: "#134d75", textDecoration: "none" }}>Data Request Form</Link>.
+                </p>
+                <p className="mt-2">
+                  We will respond to your request within 30 days (or as required by applicable law).
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <h4>4. Information Sharing and Disclosure</h4>
+              <p className="mt-3">
+                We do not sell your personal information. We may share your information in the following circumstances:
+              </p>
               <ul>
-                <li>Access, correct, or delete your data</li>
-                <li>Data portability and objection</li>
-                <li>Withdraw consent at any time</li>
+                <li><strong>Service Providers:</strong> With trusted third-party service providers who assist in operating our platform (under strict confidentiality agreements)</li>
+                <li><strong>Legal Requirements:</strong> When required by law, court order, or government regulation</li>
+                <li><strong>Business Transfers:</strong> In connection with a merger, acquisition, or sale of assets</li>
+                <li><strong>With Your Consent:</strong> When you explicitly consent to sharing</li>
               </ul>
-              <p className="mt-2"><strong>Under CCPA (California residents):</strong></p>
+              <p className="mt-2">
+                All third-party processors are bound by Data Processing Agreements (DPAs) ensuring compliance with applicable data protection laws.
+              </p>
+            </div>
+
+            <div className="mt-4">
+              <h4>5. Cookies and Tracking Technologies</h4>
+              <p className="mt-3">
+                We use cookies and similar tracking technologies to enhance your experience, analyze usage, and personalize content. 
+                You can manage your cookie preferences through our cookie consent banner or browser settings.
+              </p>
+              <p className="mt-2">
+                Please see our <Link to="/cookie-policy" style={{ color: "#134d75", textDecoration: "none" }}>Cookie Policy</Link> for detailed information about the cookies we use.
+              </p>
+            </div>
+
+            <div className="mt-4">
+              <h4>6. Data Retention</h4>
+              <p className="mt-3">
+                We retain your personal data only for as long as necessary to:
+              </p>
               <ul>
-                <li>Know what personal data is collected</li>
-                <li>Request data deletion</li>
-                <li>Opt-out of data sale (Note: we do not sell data)</li>
-                <li>Protection from discrimination when exercising privacy rights</li>
+                <li>Provide our services to you</li>
+                <li>Comply with legal obligations</li>
+                <li>Resolve disputes and enforce agreements</li>
+                <li>Maintain business records as required by law</li>
               </ul>
-              <p>Contact us at <a href="mailto:privacy@orpect.com" style={{ color: "#134d75", textDecoration: "none" }}>privacy@orpect.com</a> to exercise your rights.</p>
-            </div>
-
-            <div className="mt-4">
-              <h4>4. Cookies</h4>
-              <p>
-                We use cookies and similar tracking technologies to personalize your experience. Please see our <a href="/cookie-policy" style={{ color: "#134d75", textDecoration: "none" }}>Cookie Policy</a> for more information.
+              <p className="mt-2">
+                When you request deletion, we will delete your data within 30 days, except where 
+                retention is required by law.
               </p>
             </div>
 
             <div className="mt-4">
-              <h4>5. Data Retention</h4>
-              <p>
-                We retain your personal data only as long as necessary for business, legal, or regulatory reasons.
+              <h4>7. Data Security</h4>
+              <p className="mt-3">
+                ORPECT implements comprehensive security measures to protect your personal information:
+              </p>
+              <ul>
+                <li><strong>Encryption:</strong> Data encrypted in transit (TLS/SSL) and at rest</li>
+                <li><strong>Access Controls:</strong> Role-based access control and authentication</li>
+                <li><strong>Secure Infrastructure:</strong> Cloud services with SOC 2 compliance</li>
+                <li><strong>Regular Audits:</strong> Security assessments and penetration testing</li>
+                <li><strong>Incident Response:</strong> Procedures for handling data breaches</li>
+              </ul>
+              <p className="mt-2">
+                However, no method of transmission over the internet or method of electronic storage 
+                is completely secure. While we strive to protect your personal information, we cannot 
+                guarantee absolute security.
               </p>
             </div>
 
             <div className="mt-4">
-              <h4>6. Data Security</h4>
-              <p>
-                ORPECT implements robust security measures including encryption, access control, and secure infrastructure to protect your personal information. However, no method of transmission over the internet or method of electronic storage is completely secure.
+              <h4>8. International Data Transfers</h4>
+              <p className="mt-3">
+                Your personal data may be transferred to and processed in countries outside your 
+                country of residence. We ensure appropriate safeguards are in place, including:
+              </p>
+              <ul>
+                <li>EU Standard Contractual Clauses (SCCs) for EU data transfers</li>
+                <li>Adequacy decisions by regulatory authorities</li>
+                <li>Other approved transfer mechanisms under applicable laws</li>
+              </ul>
+            </div>
+
+            <div className="mt-4">
+              <h4>9. Children's Privacy</h4>
+              <p className="mt-3">
+                Our services are not intended for individuals under the age of 18. We do not knowingly 
+                collect personal information from children. If you believe we have collected information 
+                from a child, please contact us immediately.
               </p>
             </div>
 
             <div className="mt-4">
-              <h4>7. Contacting Us</h4>
-              <p>
-                If you have any questions about this Privacy Policy, please contact us at <a href="mailto:privacy@orpect.com" style={{ color: "#134d75", textDecoration: "none" }}>privacy@orpect.com</a>.
+              <h4>10. Changes to This Privacy Policy</h4>
+              <p className="mt-3">
+                We may update this Privacy Policy from time to time to reflect changes in our practices 
+                or for legal, operational, or regulatory reasons. We will notify you of any material 
+                changes by:
               </p>
-              {/* <p className="mt-2"><i>This policy is subject to updates. Please check this page periodically for any changes.</i></p> */}
+              <ul>
+                <li>Posting the updated policy on this page</li>
+                <li>Updating the "Last Updated" date</li>
+                <li>Sending an email notification (for significant changes)</li>
+              </ul>
+              <p className="mt-2">
+                We encourage you to review this Privacy Policy periodically.
+              </p>
+            </div>
+
+            <div className="mt-4">
+              <h4>11. Contact Us</h4>
+              <p className="mt-3">
+                If you have any questions, concerns, or requests regarding this Privacy Policy or our 
+                data practices, please contact us:
+              </p>
+              <ul>
+                <li><strong>General Privacy Inquiries:</strong> <a href="mailto:privacy@orpect.com" style={{ color: "#134d75", textDecoration: "none" }}>privacy@orpect.com</a></li>
+                <li><strong>Data Protection Officer (DPO):</strong> <a href="mailto:dpo@orpect.com" style={{ color: "#134d75", textDecoration: "none" }}>dpo@orpect.com</a></li>
+                <li><strong>Support:</strong> <a href="mailto:support@orpect.com" style={{ color: "#134d75", textDecoration: "none" }}>support@orpect.com</a></li>
+                <li><strong>Phone:</strong> <a href="tel:+1-8632168452" style={{ color: "#134d75", textDecoration: "none" }}>+1-8632168452</a></li>
+              </ul>
+              <p className="mt-3">
+                <Link to="/data-request-form" style={{ color: "#134d75", textDecoration: "none" }}>
+                  Submit a data request online
+                </Link>
+              </p>
+              <p className="mt-4">
+                <i>Last Updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</i>
+              </p>
             </div>
           </div>
         </div>

@@ -17,10 +17,11 @@ const addRateReview = (id,data) => (dispatch) => {
         resolve(res);
   
       } catch (error) {
+         console.log(error);
         reject(error?.response);
-        if(error){
-          window.location.href="/404"
-        }
+        // if(error){
+        //   
+        // }
       }
     });
   };

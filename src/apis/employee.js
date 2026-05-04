@@ -22,7 +22,9 @@ export const employeeApi = api.injectEndpoints({
     }),
 
     getNonJoinerEmployee: builder.query({
-      query: () => "getNonJoiners",
+      query: ({ page = 1, searchText = "", position = "" }) =>
+        `getNonJoiners?page=${page}&searchText=${searchText}&position=${position}`,
+      providesTags: ['Employee'],
     }),
 
     deleteEmployeeById: builder.mutation({
@@ -82,9 +84,7 @@ export const employeeApi = api.injectEndpoints({
           method: "POST",
           body: formData,
         }
-       
-        
-      },
+       },
       invalidatesTags: ['Employee'],
     }),
     

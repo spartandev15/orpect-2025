@@ -37,10 +37,10 @@ export const signupSchema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{6,}$/,
-      "Use 6 or more characters with a mix of letters, numbers & symbols"
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/,
+      "Use 8 or more characters with a mix of letters, numbers & symbols"
     ),
   password_confirmation: yup
     .string()
@@ -56,10 +56,10 @@ export const resetPasswordSchema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{6,}$/,
-      "Use 6 or more characters with a mix of letters, numbers & symbols"
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/,
+      "Use 8 or more characters with a mix of letters, numbers & symbols"
     ),
   password_confirmation: yup
     .string()
@@ -68,7 +68,7 @@ export const resetPasswordSchema = yup.object().shape({
 });
 
 export const addEmployeeSchema = yup.object().shape({
-  empId: yup.string().required("Employee Id is required"),
+  empId: yup.string().required("Employee ID is required"),
   empName: yup
     .string()
     .matches(/^[a-zA-Z ]+$/, "Employee name must contains alphabets only")
@@ -85,11 +85,32 @@ export const addEmployeeSchema = yup.object().shape({
   phone: yup
     .string()
     .required("Phone number is required")
-    .matches(/^[0-9]{10}$/, "Invalid Phone number"),
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
   dateOfJoining: yup
     .date()
     .max(new Date(), "Date of Joining must be a past date")
-    .required("Date of Joining is required"),
+    .required("Date of Joining is required")
+    .test(
+      "age-validation",
+      "Employee must be at least 14 years old at the time of joining",
+      function (value) {
+        const { dateOfBirth } = this.parent;
+        if (!dateOfBirth || !value) return true;
+        const birthDate = new Date(dateOfBirth);
+        const joiningDate = new Date(value);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
 
     linkedIn: yup.string().matches(
       /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\b/,
@@ -97,15 +118,83 @@ export const addEmployeeSchema = yup.object().shape({
     ).nullable(),
     position: yup.string().required("Position is required"),
     
-  pan_number: yup.string().required("Tax Number is required"),
+  tax_number: yup.string().required("Tax Number is required"),
 
   dateOfBirth: yup
     .date()
     .max(new Date(), "Date of Birth must be a past date")
-    .required("Date of Birth is required"),
+    .required("Date of Birth is required")
+    .test(
+      "min-age-validation",
+      "Date of Birth must be at least 14 years old",
+      function (value) {
+        if (!value) return true;
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = age;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    )
+    .test(
+      "age-validation",
+      "Employee must be at least 14 years old at the time of joining",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!dateOfJoining || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
     postalCode: yup.number()
     .typeError('Postal code must be a number')
+    .nullable(),
+  current_salaray: yup
+    .string()
     .nullable()
+    .test(
+      "is-valid-salary",
+      "Current salary must be a valid positive number",
+      function (value) {
+        if (!value || (typeof value === 'string' && value.trim() === "")) return true; // Optional field
+        const numValue = parseFloat(value);
+        return !isNaN(numValue) && isFinite(numValue) && numValue > 0;
+      }
+    ),
+  increment_date: yup
+    .date()
+    .nullable()
+    .max(new Date(), "Increment date must not be a future date")
+    .test(
+      "increment-after-joining",
+      "Increment date must be after the joining date",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!value || !dateOfJoining) return true; // Skip if either date is missing
+        const incrementDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        return incrementDate >= joiningDate;
+      }
+    ),
 });
 
 export const RateReviewSchema = yup.object().shape({
@@ -150,11 +239,77 @@ export const AddExEmployeeReviewSchema = yup.object().shape({
   phone: yup
     .string()
     .required("Phone number is required")
-    .matches(/^[0-9]{10}$/, "Invalid Phone number"),
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
+  dateOfBirth: yup
+    .date()
+    .max(new Date(), "Date of Birth must be a past date")
+    .required("Date of Birth is required")
+    .test(
+      "min-age-validation",
+      "Date of Birth must be at least 14 years old",
+      function (value) {
+        if (!value) return true;
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = age;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    )
+    .test(
+      "age-validation",
+      "Employee must be at least 14 years old at the time of joining",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!dateOfJoining || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
   dateOfJoining: yup
     .date()
     .max(new Date(), "Date of Joining must not be a future date")
-    .required("Date of Joining is required"),
+    .required("Date of Joining is required")
+    .test(
+      "age-validation",
+      "Employee must be at least 14 years old at the time of joining",
+      function (value) {
+        const { dateOfBirth } = this.parent;
+        if (!dateOfBirth || !value) return true;
+        const birthDate = new Date(dateOfBirth);
+        const joiningDate = new Date(value);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
   dateOfLeaving: yup
     .date()
     .max(new Date(), "Date of Leaving must not be a future date")
@@ -176,12 +331,12 @@ export const AddExEmployeeReviewSchema = yup.object().shape({
     .number()
     .required("Communication Rating is required"),
   review: yup.string().required("Review is required"),
-  pan_number: yup.string().required("Tax Number is required"),
+  tax_number: yup.string().required("Tax Number is required"),
   lastCTC: yup
-    .string()
+    .number()
     .nullable()
-    .matches(/^\d+$/, "Last CTC must contain only numbers")
-    .typeError("Last CTC must be a string"),
+    .typeError("Last CTC must be a number")
+    .min(0, "Last CTC must be a positive number"),
 });
 
 export const CsvvalidationSchema = yup.object().shape({
@@ -210,17 +365,79 @@ export const editCurrentEmployeeSchema = yup.object().shape({
   phone: yup
     .string()
     .required("Phone number is required")
-    .matches(/^[0-9]{10}$/, "Invalid Phone number"),
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
   position: yup.string().required("position is required"),
-  pan_number: yup.string().required("Tax Number is required"),
+  tax_number: yup.string().required("Tax Number is required"),
   dateOfBirth: yup
     .date()
     .max(new Date(), "Date of Birth must be a past date")
-    .required("Date of Birth is required"),
+    .required("Date of Birth is required")
+    .test(
+      "min-age-validation",
+      "Employee must be at least 14 years old",
+      function (value) {
+        if (!value) return true;
+        const birthDate = new Date(value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        const dayDiff = today.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = age;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    )
+    .test(
+      "age-validation",
+      "Employee must be at least 14 years old at the time of joining",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!dateOfJoining || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
   dateOfJoining: yup
     .date()
     .max(new Date(), "Date of Joining must be a past date")
-    .required("Date of Joining is required"),
+    .required("Date of Joining is required")
+    .test(
+      "age-validation",
+      "Employee must be at least 14 years old at the time of joining",
+      function (value) {
+        const { dateOfBirth } = this.parent;
+        if (!dateOfBirth || !value) return true; // Skip if either date is missing
+        const birthDate = new Date(dateOfBirth);
+        const joiningDate = new Date(value);
+        const ageAtJoining = joiningDate.getFullYear() - birthDate.getFullYear();
+        const monthDiff = joiningDate.getMonth() - birthDate.getMonth();
+        const dayDiff = joiningDate.getDate() - birthDate.getDate();
+        
+        // Calculate exact age
+        let exactAge = ageAtJoining;
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+          exactAge--;
+        }
+        
+        return exactAge >= 14;
+      }
+    ),
     linkedIn: yup.string().matches(
       /^(https?:\/\/)?(www\.)?linkedin\.com\/(in|company)\/[-a-zA-Z0-9@:%._\+~#=]{1,256}\b/,
       'Invalid LinkedIn URL format'
@@ -228,7 +445,22 @@ export const editCurrentEmployeeSchema = yup.object().shape({
     
   postalCode: yup.number()
   .typeError('Postal code must be a number')
-  .nullable()
+  .nullable(),
+  increment_date: yup
+    .date()
+    .nullable()
+    .max(new Date(), "Increment date must not be a future date")
+    .test(
+      "increment-after-joining",
+      "Increment date must be after the joining date",
+      function (value) {
+        const { dateOfJoining } = this.parent;
+        if (!value || !dateOfJoining) return true; // Skip if either date is missing
+        const incrementDate = new Date(value);
+        const joiningDate = new Date(dateOfJoining);
+        return incrementDate >= joiningDate;
+      }
+    ),
 });
 
 export const updateProfilSchema = yup.object().shape({
@@ -239,7 +471,7 @@ export const updateProfilSchema = yup.object().shape({
   company_phone: yup
     .string()
     .required("Phone number is required")
-    .matches(/^[0-9]{10}$/, "Invalid Phone number"),
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
     company_social_link:yup.string().url('Invalid URL format').nullable(),
   webmaster_email: yup.string().email("Invalid email format").nullable(false),
 });
@@ -267,14 +499,18 @@ export const adduserSchema = yup.object().shape({
   password: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters"),
+    .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
+    ),
 
   address: yup.string().nullable(),
 
   phone: yup
     .string()
     .required("Phone number is required")
-    .matches(/^[0-9]{10}$/, "Invalid phone number"),
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
 
   city: yup.string().nullable(),
 
@@ -299,40 +535,51 @@ export const addCompanySchema = yup.object().shape({
     .required("Company Type is required"),
 
   fullName: yup.string()
-    .required("Full Name is required"),
+    .matches(/^[a-zA-Z ]+$/, "Owner name must contain alphabets only")
+    .required("Owner Name is required")
+    .typeError("Owner name must be a string"),
 
   designation: yup.string()
     .required("Designation is required"),
 
   domainName: yup.string()
-    // .url("Enter a valid Domain URL")
-    .required("Domain Name is required"),
+    .required("Domain Name is required")
+    .matches(
+      /^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.[a-zA-Z]{2,}$/,
+      "Invalid domain name format"
+    ),
 
   email: yup.string()
     .email("Invalid email format")
     .required("Email is required"),
 
     password: yup.string()
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
     )
     .required("Password is required"),
   
 
   companyPhone: yup.string()
-    .matches(/^[0-9]+$/, "Only numbers are allowed")
-    .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number must be at most 15 digits")
-    .required("Company Phone is required"),
+    .required("Company Phone is required")
+    .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits"),
 
   registrationNumber: yup.string()
     .required("Registration Number is required"),
 
   companySocialLink: yup.string()
-    .url("Enter a valid Social Link URL"),
-    // .required("Company Social Link is required"),
+    .test('is-url-or-empty', 'Enter a valid Social Link URL', function(value) {
+      if (!value || value.trim() === '') return true; // Allow empty
+      try {
+        new URL(value);
+        return true;
+      } catch {
+        return false;
+      }
+    })
+    .nullable(),
 
   termsNconditions: yup.number()
     .oneOf([1], "You must accept the terms and conditions")

@@ -685,7 +685,7 @@
 //                               <Select
 //                                 className="basic-single"
 //                                 classNamePrefix="select"
-//                                 placeholder="Select State.."
+//                                 placeholder="Select State..."
 //                                 isDisabled={!selectedCountry?.name}
 //                                 isClearable={true}
 //                                 isRtl={false}
@@ -795,6 +795,7 @@ import { SingleField } from "../../component/SingleField";
 import { linkedin } from "../../asset";
 import { Input } from "../../component/Input";
 import {useGetUserQuery, useUpdateProfileMutation} from "../../apis/profile"
+import {useGetDesignationQuery} from "../../apis/company"
 
 const initialValues = {
   email: "",
@@ -827,6 +828,7 @@ const Profile = () => {
   const Dispatch = useDispatch();
   const [updateProfile,{data:updateProfileData}] = useUpdateProfileMutation();
   const { data } = useGetUserQuery();
+  const { data: designationData, isLoading: designationLoading } = useGetDesignationQuery();
 
   useEffect(() => {
     if (data) {
@@ -879,22 +881,34 @@ const Profile = () => {
 
         try {
           const response = await updateProfile({ formData }).unwrap();
-          setLoading(false);
-          removeFromLocalStorage("user");
-          setToLocalStorage("user", response?.user);
-          toast.success("Successfully saved");
-          // Close forms after successful submission
-          setShowInfoForm(false);
-          setShowAddressForm(false);
-          setSubmitting(false);
+          if (response?.status === "error") {
+            toast.error(response?.message || "Failed to update profile");
+            setLoading(false);
+            setSubmitting(false);
+          } else {
+            setLoading(false);
+            removeFromLocalStorage("user");
+            setToLocalStorage("user", response?.user);
+            toast.success("Successfully saved");
+            // Close forms after successful submission
+            setShowInfoForm(false);
+            setShowAddressForm(false);
+            setSubmitting(false);
+          }
         } catch (error) {
+          const errorMessage = error?.data?.message || error?.response?.data?.message || error?.message;
           if (error?.response?.data?.errors?.logoImage) {
             toast.error("logo image field must not be greater than 2048 kilobytes");
-          } else {
+          } else if (error?.response?.data?.errors?.companySocialLink) {
             toast.error(error?.response?.data?.errors.companySocialLink);
+          } else if (errorMessage) {
+            toast.error(errorMessage);
+          } else {
+            toast.error("Failed to update profile");
           }
           setLoading(false);
           setSubmitting(false);
+          console.error("Update profile failed:", error);
         }
       },
     });
@@ -1164,16 +1178,14 @@ const Profile = () => {
                               value={values.designation}
                               onChange={handleChange}
                               required
+                              disabled={designationLoading}
                             >
-                              <option value="Founder">Founder</option>
-                              <option value=" Co Founder">Co Founder</option>
-                              <option value="CEO">CEO</option>
-                              <option value="Director">Director</option>
-                              <option value="Managing Director">
-                                Managing Director
-                              </option>
-                              <option value="Unit Head">Unit Head</option>
-                              <option value="Chairman">Chairman</option>
+                              <option value="">Select Designation</option>
+                              {designationData?.designations?.map((item) => (
+                                <option key={item.id} value={item.designation}>
+                                  {item.designation}
+                                </option>
+                              ))}
                             </select>
                             <label
                               className="form-label"
@@ -1345,7 +1357,6 @@ const Profile = () => {
                       <div className="row">
                         <SingleField
                           title="Address"
-                          style={{ textAlign: "left" }}
                           answer={renderValue(profile?.company_address)}
                         />
                       </div>
@@ -1411,7 +1422,7 @@ const Profile = () => {
                               <Select
                                 className="basic-single"
                                 classNamePrefix="select"
-                                placeholder="Select State.."
+                                placeholder="Select State..."
                                 isDisabled={!selectedCountry?.name}
                                 isClearable={true}
                                 isRtl={false}

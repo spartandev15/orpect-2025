@@ -5,8 +5,8 @@ export const userApi = api.injectEndpoints({
 
   endpoints: (builder) => ({
     getAllAdmins: builder.query({
-      query: ({page= 1}) => ({
-        url: `admin/getAllAdmins?page=${page}`,
+      query: ({page= 1, search = ""}) => ({
+        url: `admin/getAllAdmins?page=${page}&search=${search}`,
         method: "GET",
 
       }),

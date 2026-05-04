@@ -7,6 +7,8 @@ import { logoutAllTabs } from './api/logout';
 import CookieConsent from './component/Cookies';
 import { messaging, getToken, onMessage } from './firebase';
 import Notification from './Notification';
+import { ROUTER_BASENAME } from './config/routes.config';
+import { initializeCookieManagement } from './helper/cookieManager';
 
 
 
@@ -47,15 +49,17 @@ function App() {
   
   
   useEffect(() => {
-    logoutAllTabs()
-   }, [])
+    logoutAllTabs();
+    // Initialize cookie management on app load
+    initializeCookieManagement();
+  }, [])
    
   return (
     <>
     <ToastContainer/>
-        <CookieConsent/>
-        <Notification />
-    <Router basename="/orpect">
+    <Notification />
+    <Router basename={ROUTER_BASENAME}>
+      <CookieConsent/>
       <Navigation/>
     </Router>
     </>

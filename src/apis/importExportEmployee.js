@@ -3,8 +3,8 @@ import { api } from "../apis/index";
 export const importExportEmployee = api.injectEndpoints({
   endpoints: (builder) => ({
     getExcelEmployee: builder.query({
-      query: ({ start_date, end_date ,status}) => ({
-        url: `getExcelEmployee?start_date=${start_date}&end_date=${end_date}&status=${status}`,
+      query: ({ start_date, end_date ,status, employeeType}) => ({
+        url: `getExcelEmployee?start_date=${start_date}&end_date=${end_date}&status=${status}&employeeType=${employeeType}`,
         method: "GET",
         // body: data,
       }),
@@ -12,15 +12,17 @@ export const importExportEmployee = api.injectEndpoints({
     excelExport: builder.mutation({
       query: ( data) => ({
         url: `store-excel-export`,
-        method: "POST",
+        method: "POST", 
         body: data,
       }),
     }),
     importCSV: builder.mutation({
-      query: ( data) => ({
+      query: (formData) => ({
         url: `uploadCSV`,
         method: "POST",
-        body: data,
+        body: formData,
+        // FormData will automatically set Content-Type to multipart/form-data with boundary
+        // No need to manually set headers for FormData
       }),
     }),
    

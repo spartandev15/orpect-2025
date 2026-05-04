@@ -42,11 +42,11 @@ const SuperAdminProfile = () => {
   const [selectedState, setSelectedState] = useState(null);
   const [showInfoForm, setShowInfoForm] = useState(false);
   const [showAddressForm, setShowAddressForm] = useState(false);
-    const [status, setStatus] = useState("profile");
-  
+  const [status, setStatus] = useState("profile");
+
   const { data } = useGetSuperAdminDetailsQuery();
   const [updateProfileById] = useUpdateProfileByIdMutation();
-console.log(data)
+  console.log(data)
   useEffect(() => {
     if (data) {
       setLoading(true);
@@ -63,7 +63,7 @@ console.log(data)
       onSubmit: async (values, { setSubmitting }) => {
         setLoading(true);
         const formData = new FormData();
-        
+
         formData.append("fullname", values.fullName);
         formData.append("email", values.email);
 
@@ -83,22 +83,32 @@ console.log(data)
         }
 
         try {
-          const response = await updateProfileById({ id:1, formData }).unwrap();
+          const response = await updateProfileById({ id: 1, formData }).unwrap();
 
-      console.log(response)
-          setLoading(false);
-          removeFromLocalStorage("user");
-          setToLocalStorage("user", response?.superadmin_data);
-          toast.success("Successfully saved");
-          setShowInfoForm(false);
-          setShowAddressForm(false);
-          setSubmitting(false);
+          console.log(response)
+          if (response?.status === "error") {
+            toast.error(response?.message || "Failed to update profile");
+            setLoading(false);
+            setSubmitting(false);
+          } else {
+            setLoading(false);
+            removeFromLocalStorage("user");
+            setToLocalStorage("user", response?.superadmin_data);
+            toast.success("Successfully saved");
+            setShowInfoForm(false);
+            setShowAddressForm(false);
+            setSubmitting(false);
+          }
         } catch (error) {
+          const errorMessage = error?.data?.message || error?.response?.data?.message || error?.message;
           if (error?.response?.data?.errors?.image) {
             toast.error("Image size must not be greater than 2048 kilobytes");
+          } else if (errorMessage) {
+            toast.error(errorMessage);
           } else {
-            toast.error(error?.response?.data?.message || "An error occurred");
+            toast.error("An error occurred");
           }
+          console.error("Update profile failed:", error);
           setLoading(false);
           setSubmitting(false);
         }
@@ -169,9 +179,9 @@ console.log(data)
               <div className="employebox">
                 <div className="profile-pic-wrapper">
                   <UpdateSuperAdminImage
-                empId={profile?.id}
+                    empId={profile?.id}
                     oldImage={values?.oldImage}
-           
+
                   />
                 </div>
                 <div
@@ -217,7 +227,7 @@ console.log(data)
                   </h5>
                   <div className="infoedit1">
                     {!showInfoForm && (
-                      <button 
+                      <button
                         className="infoedit3"
                         onClick={() => setShowInfoForm(true)}
                       >
@@ -326,7 +336,7 @@ console.log(data)
                 </div>
               )}
             </div>
-            
+
             <div className="viewem mt-4">
               <div className="row">
                 <div className="col-12">
@@ -338,7 +348,7 @@ console.log(data)
                   </h5>
                   <div className="infoedit1">
                     {!showAddressForm && (
-                      <button 
+                      <button
                         className="infoedit3"
                         onClick={() => setShowAddressForm(true)}
                       >
@@ -354,7 +364,7 @@ console.log(data)
                     <div className="row">
                       <SingleField
                         title="Address"
-                        style={{ textAlign: "left" }}
+                        style={{ textTransform: "capitalize" }}
                         answer={renderValue(profile?.address)}
                       />
                     </div>
@@ -420,7 +430,7 @@ console.log(data)
                             <Select
                               className="basic-single"
                               classNamePrefix="select"
-                              placeholder="Select State.."
+                              placeholder="Select State..."
                               isDisabled={!selectedCountry?.name}
                               isClearable={true}
                               isRtl={false}
@@ -429,9 +439,9 @@ console.log(data)
                               defaultValue={
                                 values.state
                                   ? {
-                                      label: values.state,
-                                      value: values.state,
-                                    }
+                                    label: values.state,
+                                    value: values.state,
+                                  }
                                   : null
                               }
                               options={stateOptions}
@@ -471,7 +481,7 @@ console.log(data)
                             text="Save"
                             className="btn infoedit3"
                             loading={loading}
-                            onClick={()=>setStatus("address")}
+                            onClick={() => setStatus("address")}
                           />
                           &nbsp;
                           <button

@@ -4,8 +4,8 @@ export const notificationApi = api.injectEndpoints({
     tagTypes: ['Notification'], // <-- ADD THIS LINE
   endpoints: (builder) => ({
     getNotifications: builder.query({
-      query: ({ page = 1, searchText = ""}) => ({
-        url: `notification/list?page=${page}&searchText=${searchText}`,
+      query: ({ page = 1, search = ""}) => ({
+        url: `notification/list?page=${page}&search=${search}`,
         method: "GET",
 
       }),

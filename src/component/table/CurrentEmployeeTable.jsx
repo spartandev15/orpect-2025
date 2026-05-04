@@ -20,14 +20,17 @@ const CurrentEmployeeTable = () => {
   // RTK Query Hook
   const {
     data,
-    isLoading:loading,
+    isLoading: loading,
     isError,
     refetch,
-  } = useGetCurrentEmployeeQuery({
-    page: currentPage,
-    searchText,
-    position,
-  });
+  } = useGetCurrentEmployeeQuery(
+    {
+      page: currentPage,
+      searchText,
+      position,
+    },
+    { refetchOnMountOrArgChange: true }
+  );
 
   const employees = data?.currentEmployees?.data || [];
   const totalPages = data?.currentEmployees?.last_page || 1;
@@ -45,14 +48,14 @@ const CurrentEmployeeTable = () => {
 
   return (
     <div className="container-fluid viewemployee main_inner_padding">
-      <div className="row">
-        <div className="col-lg-3">
+      <div className="row mb-3">
+        <div className="col-lg-3 px-1">
           <h3> Current Employees</h3>
         </div>
-        <div className="col-lg-2 col-md-6 pb-4">
+        <div className="col-lg-2 col-md-6 px-1">
           <SelectDefaultPosition changePostion={setPosition} />
         </div>
-        <div className="col-lg-2  col-md-6 pb-4">
+        <div className="col-lg-2  col-md-6 px-1">
           <div className="search_button">
             <input
               type="search"
@@ -64,7 +67,7 @@ const CurrentEmployeeTable = () => {
             <i className="fa fa-search navi-search"></i>
           </div>
         </div>
-        <ExcelPdf/>
+        <ExcelPdf employeeType="current_employee" />
       </div>
 
       <div className="row">
@@ -74,7 +77,7 @@ const CurrentEmployeeTable = () => {
               <thead>
                 <tr>
                   <th className="sticky-column-1 column-1" style={{ background: "#e1e9ed" }}>Employee ID</th>
-                  <th className="sticky-column-2" style={{ background: "#e1e9ed" }}>Name</th>
+                  <th className="sticky-column-2" style={{ background: "#e1e9ed", maxWidth: "150px" }}>Name</th>
                   <th className="sticky-column-3" style={{ background: "#e1e9ed" }}>Email</th>
                   <th style={{ background: "#e1e9ed" }}>Phone Number</th>
                   <th style={{ background: "#e1e9ed" }}>Designation</th>
@@ -102,7 +105,7 @@ const CurrentEmployeeTable = () => {
                   employees.map((i, index) => (
                     <tr key={index} className="table_data_background">
                       <td className="sticky-column-1 column-1">{i.emp_id}</td>
-                      <td className="sticky-column-2">{i.emp_name}</td>
+                      <td className="sticky-column-2" style={{ maxWidth: "150px", wordWrap: "break-word" }}>{i.emp_name}</td>
                       <td className="sticky-column-3">{i.email}</td>
                       <td>{i.phone}</td>
                       <td>{i.position}</td>
@@ -127,13 +130,17 @@ const CurrentEmployeeTable = () => {
           </div>
         </div>
       </div>
-      <div className="col-md-12 mt-4"></div>
+      <div className="col-md-12"></div>
       <div>
         {totalPages > 1 && (
-          <Pagination
-            totalPages={totalPages}
-            handlePageChange={handlePageChange}
-          />
+          <div className="mt-3">
+            <Pagination
+              totalPages={totalPages}
+              handlePageChange={handlePageChange}
+              currentPage={currentPage}
+            />
+          </div>
+
         )}
       </div>
     </div>

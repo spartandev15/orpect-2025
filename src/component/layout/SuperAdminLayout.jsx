@@ -12,9 +12,76 @@ import { setEmpType, setSearchValue } from "../../store/DashboardSlice";
 import { toast } from "react-toastify";
 import { logout } from "../../api/logout";
 import NotificationDropdown from "../extras/Notification/NotificationBell";
+import { Navigate } from "react-router-dom";
+import { ADMIN_ROUTES, COMPANY_ROUTES } from "../../config/routes.config";
+import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
+
+// Routes configuration array
+const sidebarRoutes = [
+  {
+    id: "submenu1",
+    type: "submenu",
+    label: "SuperAdmin User",
+    icon: "fas fa-users",
+    submenu: [
+      {
+        path: "/super-admin/user",
+        label: "User",
+        icon: "fa fa-edit",
+      },
+      {
+        path: "/super-admin/adduser",
+        label: "Add User",
+        icon: "fa fa-user-plus",
+        className: "logouticon curentemploye2",
+      },
+    ],
+  },
+  {
+    id: "submenu2",
+    type: "submenu",
+    label: "Company",
+    icon: "fa fa-building",
+    submenu: [
+
+      {
+        path: "/super-admin/addcompany",
+        label: "Add Company",
+        icon: "fa fa-plus",
+        className: "logouticon curentemploye2",
+      },
+      {
+        path: "/super-admin/companies",
+        label: "Company List",
+        icon: "fa fa-list",
+      },
+      
+    ],
+  },
+ 
+  {
+    type: "link",
+    path: "/super-admin/notification-list",
+    label: "Notification List",
+    icon: "fa fa-bell",
+  },
+  {
+    type: "link",
+    path: "/super-admin/data-request",
+    label: "Data Request",
+    icon: "fa fa-book",
+  },
+  {
+    type: "link",
+    path: "/super-admin/profile",
+    label: "Profile",
+    icon: "fa fa-user",
+  },
+];
 
 const SuperAdminLayout = ({ children }) => {
   const [search, setSearch] = useState("");
+  const [openSubmenus, setOpenSubmenus] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const notifications = useSelector(state => state.notification.list);
@@ -22,17 +89,42 @@ console.log(notifications)
   const searchValue = useSelector((state) => state?.dashboardData?.searchValue);
   const user = getFromLocalStorage("user");
   const profileImage = getFromLocalStorage("profileImage");
- useEffect(()=>{
+  const location = useLocation();
+
+  // Check for super admin authentication - additional layer of protection
+  const superAdminToken = getFromLocalStorage("superAdmintoken");
+  const regularToken = getFromLocalStorage("token");
+  
+  
+
+  // Check if current route matches submenu items and open submenu accordingly
+  useEffect(() => {
+    const path = location.pathname;
+    sidebarRoutes.forEach((route) => {
+      if (route.type === "submenu" && route.submenu) {
+        const hasActiveChild = route.submenu.some(
+          (subItem) => subItem.path === path
+        );
+        if (hasActiveChild) {
+          setOpenSubmenus((prev) => ({ ...prev, [route.id]: true }));
+        }
+      }
+    });
+  }, [location.pathname]);
+
+  useEffect(()=>{
 
  },[user])
   const logoutUser = () => {
     dispatch(logoutUserapi())
       .then((res) => {
-        logout();
+        logout(true); // Pass true to indicate admin logout
         toast.success("Logged out successfully");
       })
       .catch((err) => {
-        console.log(err);
+        // Even if API call fails, still logout locally
+        logout(true);
+        toast.success("Logged out successfully");
       });
   };
 
@@ -67,13 +159,115 @@ console.log(notifications)
       handleSearchInputChange();
     }
   };
-  const location = useLocation();
+
+  const toggleSubmenu = (submenuId, e) => {
+    e.preventDefault();
+    setOpenSubmenus(prev => ({
+      ...prev,
+      [submenuId]: !prev[submenuId]
+    }));
+  };
+
+  // Helper function to check if a submenu has active child
+  const isSubmenuActive = (route) => {
+    if (route.type === "submenu" && route.submenu) {
+      return route.submenu.some((subItem) => subItem.path === location.pathname);
+    }
+    return false;
+  };
+
+  // Render menu items
+  const renderMenuItem = (route, isMobile = false) => {
+    if (route.type === "submenu") {
+      const isActive = isSubmenuActive(route);
+      const isOpen = openSubmenus[route.id] || false;
+      
+      return (
+        <li key={route.id}>
+          <a
+            href="#"
+            onClick={(e) => toggleSubmenu(route.id, e)}
+            className={isActive ? "active" : ""}
+          >
+            <i className={route.icon}></i> &nbsp;
+            <span className="iconmenu">
+              {route.label} &nbsp;
+              <i
+                className="fa fa-caret-down"
+                style={{
+                  transform: isOpen ? "rotate(180deg)" : "rotate(0deg)",
+                  transition: "transform 0.3s ease",
+                  display: "inline-block",
+                }}
+              ></i>
+            </span>
+          </a>
+          <ul
+            className={`navi nav-list curentemploye1 ${isOpen ? "show" : "collapse"}`}
+            id={route.id}
+            style={{
+              display: isOpen ? "block" : "none",
+            }}
+          >
+            {route.submenu.map((subItem, index) => (
+              <li
+                key={index}
+                className={`dropdown-item curentemployepadding curentemploye1 ${
+                  subItem.className || ""
+                }`}
+              >
+                {isMobile ? (
+                  <span onClick={handleSidebarToggle}>
+                    <NavLink activeClassName="active" to={subItem.path}>
+                      <i className={subItem.icon}></i> &nbsp;
+                      <span className="iconmenu">{subItem.label}</span>
+                    </NavLink>
+                  </span>
+                ) : (
+                  <NavLink activeClassName="active" to={subItem.path}>
+                    <i className={subItem.icon}></i> &nbsp;
+                    <span className="iconmenu">{subItem.label}</span>
+                  </NavLink>
+                )}
+              </li>
+            ))}
+          </ul>
+        </li>
+      );
+    } else {
+      return (
+        <li key={route.path}>
+          {isMobile ? (
+            <span onClick={handleSidebarToggle}>
+              <NavLink activeClassName="active" to={route.path}>
+                <i className={route.icon}></i> &nbsp;
+                <span className="iconmenu">{route.label}</span>
+              </NavLink>
+            </span>
+          ) : (
+            <NavLink activeClassName="active" to={route.path}>
+              <i className={route.icon}></i> &nbsp;
+              <span className="iconmenu">{route.label}</span>
+            </NavLink>
+          )}
+        </li>
+      );
+    }
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+// If user only has regular token (not admin), redirect to dashboard
+if (regularToken && !superAdminToken) {
+  return <Navigate to={COMPANY_ROUTES.DASHBOARD} replace />;
+}
 
+// If no admin token at all, redirect to admin login
+if (!superAdminToken) {
+  return <Navigate to={ADMIN_ROUTES.LOGIN} replace />;
+}
   return (
     <>
       <div className="d-flex" id="wrapper">
@@ -108,9 +302,9 @@ console.log(notifications)
                   <img
                     src={
                       profileImage
-                        ? `https://spartanbots.xyz/borpact/public/${profileImage}`
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
                         : user && user.image
-                          ? `https://spartanbots.xyz/borpact/public/${user.image}`
+                          ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
                           : uploadProfile
                     }
                     alt=""
@@ -125,125 +319,7 @@ console.log(notifications)
             </div>
             <nav className="sb-sidenav-menu-nested nav  ">
               <ul className="list-unstyled">
-                <li>
-                  <NavLink
-                    exact
-                    activeClassName="active"
-                    to="/super-admin/user"
-                    data-toggle="collapse"
-                    data-target="#submenu1"
-                  >
-                    {" "}
-                    <i className="fas fa-users"></i> &nbsp;
-                    <span className="iconmenu">
-                      {" "}
-                      SuperAdmin User &nbsp;
-                      <i className="fa fa-caret-down"></i>
-                    </span>
-                  </NavLink>
-                  <ul
-                    className="navi nav-list collapse curentemploye1"
-                    id="submenu1"
-                  >
-                    <li className="dropdown-item curentemployepadding curentemploye1">
-                      <NavLink
-                        activeClassName="active"
-                        // className="reviewmenu"
-                        to="/super-admin/user"
-                      >
-                        <i className="fa fa-edit"></i> &nbsp;{" "}
-                        <span className="iconmenu">User</span>
-                      </NavLink>
-                    </li>
-
-
-
-                    <li className="dropdown-item logouticon curentemployepadding curentemploye1 curentemploye2">
-                      <NavLink
-                        activeClassName="active"
-                        // className="reviewmenu"
-                        to="/super-admin/adduser"
-                      >
-                        <i className="fa fa-user-plus"></i> &nbsp;{" "}
-                        <span className="iconmenu">Add User</span>
-                      </NavLink>
-                    </li>
-                  </ul>
-                </li>
-
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/companies"
-                  >
-                    <i className="fa fa-list"></i> &nbsp;{" "}
-                    <span className="iconmenu">Companies</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/addcompany"
-                  >
-                    <i className="fa fa-building"></i> &nbsp;{" "}
-                    <span className="iconmenu">Add Company</span>
-                  </NavLink>
-                </li>
-                {/* <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/user"
-                  >
-                    <i className="fa fa-edit"></i> &nbsp;{" "}
-                    <span className="iconmenu">User</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/adduser"
-                  >
-                    <i className="fa fa-user-plus"></i> &nbsp;{" "}
-                    <span className="iconmenu">Add User</span>
-                  </NavLink>
-                </li> */}
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/profile"
-                  >
-                    <i className="fa fa-user"></i> &nbsp;{" "}
-                    <span className="iconmenu">Profile</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/notification-list"
-                  >
-
-                    <i className="fa fa-bell"></i> &nbsp;{" "}
-                    <span className="iconmenu"> Notification List</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/data-request"
-                  >
-
-                    <i className="fa fa-book"></i> &nbsp;{" "}
-                    <span className="iconmenu"> Data Request</span>
-                  </NavLink>
-                </li>
-               
+                {sidebarRoutes.map((route) => renderMenuItem(route, false))}
               </ul>
             </nav>
           </div>
@@ -303,9 +379,9 @@ console.log(notifications)
                   <img
                     src={
                       profileImage
-                        ? `https://spartanbots.xyz/borpact/public/${profileImage}`
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
                         : user && user.image
-                          ? `https://spartanbots.xyz/borpact/public/${user.image}`
+                          ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
                           : uploadProfile
                     }
                     alt=""
@@ -319,137 +395,8 @@ console.log(notifications)
               </div>
             </div>
             <nav className="sb-sidenav-menu-nested nav  ">
-            <ul className="list-unstyled">
-                <li>
-                  <NavLink
-                    exact
-                    activeClassName="active"
-                    to="/super-admin/user"
-                    data-toggle="collapse"
-                    data-target="#submenu1"
-                  >
-                    {" "}
-                    <i className="fas fa-users"></i> &nbsp;
-                    <span className="iconmenu">
-                      {" "}
-                      SuperAdmin User &nbsp;
-                      <i className="fa fa-caret-down"></i>
-                    </span>
-                  </NavLink>
-                  <ul
-                    className="navi nav-list collapse curentemploye1"
-                    id="submenu1"
-                  >
-                    <li className="dropdown-item curentemployepadding curentemploye1">
-                    <span  onClick={handleSidebarToggle}>
-
-                      <NavLink
-                        activeClassName="active"
-                        // className="reviewmenu"
-                        to="/super-admin/user"
-                      >
-                        <i className="fa fa-edit"></i> &nbsp;{" "}
-                        <span className="iconmenu">User</span>
-                      </NavLink></span>
-                    </li>
-
-
-
-                    <li className="dropdown-item logouticon curentemployepadding curentemploye1 curentemploye2">
-                    <span  onClick={handleSidebarToggle}>
-
-                      <NavLink
-                        activeClassName="active"
-                        // className="reviewmenu"
-                        to="/super-admin/adduser"
-                      >
-                        <i className="fa fa-user-plus"></i> &nbsp;{" "}
-                        <span className="iconmenu">Add User</span>
-                      </NavLink></span>
-                    </li>
-                  </ul>
-                </li>
-
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/companies"
-                  >
-                    <i className="fa fa-list"></i> &nbsp;{" "}
-                    <span className="iconmenu">Companies</span>
-                  </NavLink></span>
-                </li>
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/addcompany"
-                  >
-                    <i className="fa fa-building"></i> &nbsp;{" "}
-                    <span className="iconmenu">Add Company</span>
-                  </NavLink></span>
-                </li>
-                {/* <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/user"
-                  >
-                    <i className="fa fa-edit"></i> &nbsp;{" "}
-                    <span className="iconmenu">User</span>
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/adduser"
-                  >
-                    <i className="fa fa-user-plus"></i> &nbsp;{" "}
-                    <span className="iconmenu">Add User</span>
-                  </NavLink>
-                </li> */}
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/profile"
-                  >
-                    <i className="fa fa-user"></i> &nbsp;{" "}
-                    <span className="iconmenu">Profile</span>
-                  </NavLink></span>
-                </li>
-                <li>
-                <span  onClick={handleSidebarToggle}>
-
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/notification-list"
-                  >
-
-                    <i className="fa fa-bell"></i> &nbsp;{" "}
-                    <span className="iconmenu"> Notification List</span>
-                  </NavLink></span>
-                </li>
-                <li>
-                  <NavLink
-                    activeClassName="active"
-                    // className="reviewmenu"
-                    to="/super-admin/data-request"
-                  >
-
-                    <i className="fa fa-book"></i> &nbsp;{" "}
-                    <span className="iconmenu"> Data Request</span>
-                  </NavLink>
-                </li>
+              <ul className="list-unstyled">
+                {sidebarRoutes.map((route) => renderMenuItem(route, true))}
               </ul>
               {/* <ul className="list-unstyled">
                 <li>

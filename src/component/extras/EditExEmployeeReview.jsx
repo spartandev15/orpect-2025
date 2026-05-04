@@ -4,10 +4,10 @@ import { RateReviewSchema } from "../../helper/schema";
 import { addRateReview } from "../../api/rate&review";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import $ from "jquery";
 import Button from "../Button";
 import Stars from "./Stars";
 import { formatDate } from "../../helper/hooks/formatedDate";
+import RenderIf from "../RenderIf";
 
 const initialValues = {
   exEmployee: 1,
@@ -20,7 +20,7 @@ const initialValues = {
   teamworkCommunicationRating: 0,
   lastCTC: 0,
 };
-const EditExEmployeeReview = ({ employee, dateOfJoining }) => {
+const EditExEmployeeReview = ({ employee, dateOfJoining, isEditable, setIsEditable, onSave }) => {
   const [loading, setLoading] = useState(false);
   const [exEmployeeReview, setExployeeReview] = useState(null);
   const dispatch = useDispatch();
@@ -36,7 +36,13 @@ const EditExEmployeeReview = ({ employee, dateOfJoining }) => {
           dispatch(addRateReview(employee?.sid, values)).then((res) => {
             toast.success("Successfully saved");
             setLoading(false);
-            window.location.reload();
+            if (setIsEditable) {
+              setIsEditable(false);
+            }
+            // Call onSave callback to refetch employee data
+            if (onSave) {
+              onSave();
+            }
           });
         } catch (error) {
           setLoading(false);
@@ -77,23 +83,7 @@ const EditExEmployeeReview = ({ employee, dateOfJoining }) => {
       setValues(employee);
       setExployeeReview(employee);
     }
-  }, []);
-
-  $(document).ready(function () {
-    $("#editButton").click(function () {
-      $(".editable-form").show();
-      $(".readonly-form").hide();
-      $("#editButton").hide();
-      $("#cancelButton").show();
-    });
-
-    $("#cancelButton").click(function () {
-      $(".editable-form").hide();
-      $(".readonly-form").show();
-      $("#editButton").show();
-      $("#cancelButton").hide();
-    });
-  });
+  }, [employee]);
 
   const attitudeRating = values.attitudeBehaviourRating || 0;
   const performanceRating = values.performanceRating || 0;
@@ -107,6 +97,7 @@ const EditExEmployeeReview = ({ employee, dateOfJoining }) => {
 
   return (
     <>
+      <RenderIf condition={!isEditable}>
       <div className="row">
         <div className="readonly-form3">
           <div className="row">
@@ -164,8 +155,10 @@ const EditExEmployeeReview = ({ employee, dateOfJoining }) => {
           </div>
         </div>
       </div>
+      </RenderIf>
       <form noValidate="noValidate" onSubmit={handleSubmit}>
-        <div className="editable-form3" style={{ display: "none" }}>
+        <RenderIf condition={isEditable}>
+        <div className="editable-form3">
           <div className="row">
             <div className="row mt-2">
               <div className="col-lg-5 col-md-5 col-sm-12 mt-3">
@@ -193,7 +186,7 @@ const EditExEmployeeReview = ({ employee, dateOfJoining }) => {
 
                 <div className="form-outline">
                   <input
-                    type="text"
+                    type="number"
                     name="lastCTC"
                     className="form-control"
                     value={values.lastCTC || ""}
@@ -404,15 +397,17 @@ const EditExEmployeeReview = ({ employee, dateOfJoining }) => {
               <Button loading={loading} text="Save" className="btn infoedit3" />
               &nbsp;
               <p
+                onClick={() => setIsEditable && setIsEditable(false)}
                 id="cancelButton3"
                 className="btn infoedit4"
-                style={{ marginTop: "1rem" }}
+                style={{ marginTop: "1rem", cursor: "pointer" }}
               >
                 Cancel
               </p>
             </div>
           </div>
         </div>
+        </RenderIf>
       </form>
     </>
   );

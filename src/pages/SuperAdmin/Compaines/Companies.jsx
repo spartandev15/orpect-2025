@@ -10,32 +10,50 @@ import { toast } from "react-toastify";
 import Pagination from "../../../component/Pagination";
 
 const Companies = () => {
-  const [searchText, setSearchText] = useState("");
+  const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data, isLoading } = useGetAllCompaniesQuery({ page: currentPage });
+  // Debounce search input
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500); // 500ms delay
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  const { data, isLoading, refetch } = useGetAllCompaniesQuery({ page: currentPage, search: debouncedSearch });
   const [accountVerified, { isLoading: verifiedLoading, error }] = useAccountVerifiedMutation()
   const companies = data?.allCompanies?.data || [];
   const totalPages = data?.allCompanies?.last_page || 1;
 
   const handleVerify = async (id) => {
     try {
-      await accountVerified(id).unwrap();
-      toast.success("Company has been successfully verified.");
+      const response = await accountVerified(id).unwrap();
+      if (response?.status === "error") {
+        toast.error(response?.message || "Failed to verify company");
+      } else {
+        toast.success("Company has been successfully verified.");
+        refetch();
+      }
     } catch (err) {
+      const errorMessage = err?.data?.message || err?.message || "Failed to verify company";
+      toast.error(errorMessage);
       console.error("Verification failed:", err);
     }
   };
-  // Filter companies by search text (searching company name or full name)
-  const filteredCompanies = companies.filter((company) =>
-    company.company_name.toLowerCase().includes(searchText.toLowerCase()) ||
-    company.full_name.toLowerCase().includes(searchText.toLowerCase())
-  );
 
   useEffect(() => {
-    dispatch(setCurrentEmployeeCount(filteredCompanies.length));
-  }, [filteredCompanies, dispatch]);
+    dispatch(setCurrentEmployeeCount(companies.length));
+  }, [companies, dispatch]);
+
+  // Reset to page 1 when debounced search text changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [debouncedSearch]);
+
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
   };
@@ -52,8 +70,8 @@ const Companies = () => {
               type="search"
               className="form-control inner_search_icon"
               placeholder="Search"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <i className="fa fa-search navi-search"></i>
           </div>
@@ -73,8 +91,7 @@ const Companies = () => {
                   <th style={{ background: "#e1e9ed" }}>Phone</th>
                   <th style={{ background: "#e1e9ed" }}>Designation</th>
                   {/* <th style={{ background: "#e1e9ed" }}>Created</th> */}
-                  <th style={{ background: "#e1e9ed" }}>is_account_verified</th>
-
+                  <th style={{ background: "#e1e9ed" }}>Account Status</th>
 
                   <th className="sticky-column-last" style={{ background: "#e1e9ed" }}>Action</th>
                 </tr>
@@ -86,7 +103,7 @@ const Companies = () => {
                       Loading...
                     </td>
                   </tr>
-                ) : filteredCompanies.length === 0 ? (
+                ) : companies.length === 0 ? (
                   <tr>
                     <td colSpan="8" style={{ textAlign: "center" }}>
                       <Link to="/super-admin/addcompany" className="addempbtn1">
@@ -96,7 +113,7 @@ const Companies = () => {
                     </td>
                   </tr>
                 ) : (
-                  filteredCompanies?.map((company, index) => (
+                  companies?.map((company, index) => (
                     <tr key={index} className="table_data_background">
                       <td >{company.sid}</td>
                       <td >{company.company_name}</td>
@@ -108,14 +125,14 @@ const Companies = () => {
                       <td className="text-center">
                         <button
                           type="button"
-                          className={`btn btn-sm w-100 text-white ${company?.is_account_verified === 1 ? "btn-success" : "btn-danger"}`}
+                          className={`btn btn-sm w-100 text-white ${String(company?.is_account_verified) === "1" ? "btn-success" : "btn-danger"}`}
                           onClick={() => handleVerify(company?.id)}
                           style={{ minWidth: "100px" }}
                         >
                           {isLoading ? (
                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                           ) : (
-                            company?.is_account_verified === 1 ? "Verified" : "Not Verified"
+                            String(company?.is_account_verified) === "1" ? "Verified" : "Not Verified"
                           )}
                         </button>
                       </td>
@@ -130,7 +147,7 @@ const Companies = () => {
                           </button>
                         </Link>
                         &nbsp;&nbsp;
-                        <ComapnyDelete id={company?.id} />
+                        <ComapnyDelete id={company?.id} onDeleteSuccess={refetch} />
                         </span>
                       </td>
                       
@@ -147,6 +164,7 @@ const Companies = () => {
           <Pagination
             totalPages={totalPages}
             handlePageChange={handlePageChange}
+            currentPage={currentPage}
           />
         )}
       </div>

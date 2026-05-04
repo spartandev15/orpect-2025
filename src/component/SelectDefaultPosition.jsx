@@ -21,19 +21,37 @@ const SelectDefaultPosition = ({ changePostion }) => {
 
 
   return (
-    <select defaultValue="Select-Position"
-      className="form-control main_inner_dropdown"
-      onChange={(e) => changePostion(e.target.value)}
-    >
-      <option  value=" ">
-      Select Position
-      </option>
-      {data?.positions?.map((i) => (
-        <option key={i.id} value={i.position}>
-          {i.position}
+    <div style={{ position: 'relative' }}>
+      <select defaultValue="Select-Position"
+        className="form-control main_inner_dropdown"
+        onChange={(e) => changePostion(e.target.value)}
+        style={{ 
+          appearance: 'none',
+          paddingRight: '30px'
+        }}
+      >
+        <option  value=" ">
+        Select Position
         </option>
-      ))}
-    </select>
+        {data?.positions?.map((i) => (
+          <option key={i.id} value={i.position}>
+            {i.position}
+          </option>
+        ))}
+      </select>
+      <i 
+        className="fa fa-chevron-down" 
+        style={{
+          position: 'absolute',
+          right: '10px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          pointerEvents: 'none',
+          color: '#666',
+          fontSize: '11px'
+        }}
+      ></i>
+    </div>
   );
 };
 

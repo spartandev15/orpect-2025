@@ -15,6 +15,7 @@ import EmployeeCropImage from "../../component/extras/crop-image/EmployeeCropIma
 import { BASE_URL } from "../../api/baseUrl";
 import { InputAdd } from "../../component/InputAdd";
 import { useAddExEmployeeReviewMutation } from "../../apis/employee";
+import SelectPostion from "../../component/SelectPosition";
 
 const initialValues = {
   empId: "",
@@ -23,7 +24,7 @@ const initialValues = {
   phone: "",
   position: "",
   dateOfJoining: "",
-  pan_number: "",
+  tax_number: "",
   dateOfBirth: "",
   dateOfLeaving: "",
   permanentAddress: "",
@@ -64,7 +65,7 @@ const AddExEmployeeReview = () => {
           formData.append("position", values.position);
           formData.append("dateOfJoining", values.dateOfJoining);
           formData.append("image", values?.image?.blob || ""); // Use default value if no image
-          formData.append("pan_number", values.pan_number);
+          formData.append("tax_number", values.tax_number);
           formData.append("dateOfBirth", values.dateOfBirth);
           formData.append("permanentAddress", values.permanentAddress);
           formData.append("linkedIn", values.linkedIn);
@@ -102,16 +103,19 @@ const AddExEmployeeReview = () => {
           // });
           const response =  await addExEmployeeReview({ formData }).unwrap();
           
-          if (response?.status) {
+          if (response?.status === "error") {
+            toast.error(response?.message || "Failed to add review");
+          } else if (response?.status) {
             //  await response.json();
             toast.success("Successfully added");
             navigate("/ex-employee");
           } else {
-            const errorData = await response.json();
-            throw new Error(errorData?.message);
+            toast.error(response?.message || "Something went wrong");
           }
         } catch (error) {
-          toast.error(error.message);
+          const errorMessage = error?.data?.message || error?.message || "Failed to add review";
+          toast.error(errorMessage);
+          console.error("Add review failed:", error);
         } finally {
           // setLoading(false);
         }
@@ -176,6 +180,10 @@ const AddExEmployeeReview = () => {
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
+  // Calculate maximum date of birth (14 years ago from today) to ensure minimum age of 14
+  const maxDateOfBirth = new Date();
+  maxDateOfBirth.setFullYear(maxDateOfBirth.getFullYear() - 14);
+  const maxDateOfBirthString = maxDateOfBirth.toISOString().split("T")[0];
 
   return (
     <>
@@ -206,7 +214,7 @@ const AddExEmployeeReview = () => {
                   name="empId"
                   value={values.empId}
                   onChange={handleChange}
-                  label="Employee Id"
+                  label="Employee ID"
                   star={true}
                 />
                 {errors.empId && touched.empId ? (
@@ -258,26 +266,13 @@ const AddExEmployeeReview = () => {
               </div>
             </div>
             <div className="col-lg-6 col-sm-12  pb-4">
-              <div className="form-outline datalist">
-                <input
-                  type="text"
-                  list="cars"
-                  className="form-control"
-                  name="position"
+              <div className="form-outline">
+                <SelectPostion
+                  nameValue="position"
+                  handleChange={handleChange}
                   value={values.position}
-                  onChange={handleChange}
                   required
                 />
-                <label className="form-label" for="typeText">
-                  Position &nbsp;<span className="required">*</span>
-                </label>
-                <datalist className="datalist-ul" id="cars">
-                  {data?.positions?.map((i) => (
-                    <option key={i.id} value={i.position}>
-                      {i.position}
-                    </option>
-                  ))}
-                </datalist>
                 {errors.position && touched.position ? (
                   <p className="text-danger msg">{errors.position}</p>
                 ) : null}
@@ -309,19 +304,19 @@ const AddExEmployeeReview = () => {
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
-                  name="pan_number"
-                  value={values.pan_number}
+                  name="tax_number"
+                  value={values.tax_number}
                   onChange={(event) =>
                     setFieldValue(
-                      "pan_number",
+                      "tax_number",
                       event.target.value.toUpperCase()
                     )
                   }
                   label="Tax Number"
                   star={true}
                 />
-                {errors.pan_number && touched.pan_number ? (
-                  <p className="text-danger msg">{errors.pan_number}</p>
+                {errors.tax_number && touched.tax_number ? (
+                  <p className="text-danger msg">{errors.tax_number}</p>
                 ) : null}
               </div>
             </div>
@@ -333,13 +328,16 @@ const AddExEmployeeReview = () => {
                   placeholder=" "
                   name="dateOfBirth"
                   value={values.dateOfBirth}
-                  max={currentDate}
+                  max={maxDateOfBirthString}
                   onChange={handleChange}
                   required
                 />
                 <label className="form-label" for="typeText">
                   Date of Birth
                 </label>
+                {errors.dateOfBirth && touched.dateOfBirth ? (
+                  <p className="text-danger msg">{errors.dateOfBirth}</p>
+                ) : null}
               </div>
             </div>
             <div className="col-lg-6 col-sm-12 pb-4">
@@ -373,7 +371,7 @@ const AddExEmployeeReview = () => {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  placeholder="Select Country.."
+                  placeholder="Select Country..."
                   isClearable={true}
                   isRtl={false}
                   isSearchable={true}
@@ -391,7 +389,7 @@ const AddExEmployeeReview = () => {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  placeholder="Select State.."
+                  placeholder="Select State..."
                   isDisabled={selectedCountry?.name ? false : true}
                   isClearable={true}
                   isRtl={false}
@@ -434,6 +432,7 @@ const AddExEmployeeReview = () => {
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
+                  type="number"
                   name="lastCTC"
                   value={values.lastCTC}
                   onChange={handleChange}

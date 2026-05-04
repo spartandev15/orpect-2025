@@ -53,14 +53,18 @@ const AddCompany = () => {
 
         const response = await addCompany({ formData }).unwrap();
 
-        if (response.status) {
+        if (response?.status === "error") {
+          toast.error(response?.message || "Failed to add company");
+        } else if (response?.status) {
           toast.success("Successfully added");
           navigate("/super-admin/companies");
         } else {
-          throw new Error(response?.message);
+          toast.error(response?.message || "Something went wrong");
         }
       } catch (error) {
-        toast.error(error?.message || "Something went wrong");
+        const errorMessage = error?.data?.message || error?.message || "Something went wrong";
+        toast.error(errorMessage);
+        console.error("Add company failed:", error);
       }
     }
   });
@@ -105,11 +109,11 @@ const AddCompany = () => {
           </div>
 
 
-          {/* Full Name */}
+          {/* Owner Name */}
           <div className="col-lg-6 col-sm-12 pb-4">
           <div className="form-outline">
 
-            <InputAdd name="fullName" value={values.fullName} onChange={handleChange} label="Full Name" star={true} />
+            <InputAdd name="fullName" value={values.fullName} onChange={handleChange} label="Owner Name" star={true} />
             {errors.fullName && touched.fullName && <p className="text-danger msg">{errors.fullName}</p>}
           </div>
           </div>
@@ -154,7 +158,18 @@ const AddCompany = () => {
           <div className="col-lg-6 col-sm-12 pb-4">
           <div className="form-outline">
 
-            <InputAdd type="number" name="companyPhone" value={values.companyPhone} onChange={handleChange} label="Company Phone" star={true} />
+            <InputAdd 
+              type="tel" 
+              name="companyPhone" 
+              value={values.companyPhone} 
+              onChange={(e) => {
+                const value = e.target.value.replace(/\D/g, '').slice(0, 10); // Only allow digits, max 10
+                setFieldValue("companyPhone", value);
+              }}
+              label="Company Phone"
+              star={true} 
+              maxLength="10" 
+            />
             {errors.companyPhone && touched.companyPhone && <p className="text-danger msg">{errors.companyPhone}</p>}
           </div>
           </div>

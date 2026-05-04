@@ -22,9 +22,9 @@ const updatePasswordschema = yup.object().shape({
   newPassword: yup
     .string()
     .required("Password is required")
-    .min(6, "Password must be at least 6 characters")
+    .min(8, "Password must be at least 8 characters")
     .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{6,}$/,
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/,
       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one symbol"
     ),
   newPassword_confirmation: yup
@@ -50,6 +50,7 @@ const UpdateAdminPassword = () => {
         toast.success("Password updated");
         navigate("/super-admin/profile");
       } catch (err) {
+        debugger;
         toast.error(err?.data?.message || "Something went wrong");
       } finally {
         setLoading(false);

@@ -21,8 +21,8 @@ const initialValues = {
   email: "",
   phone: "",
   position: "",
-  dateOfJoining: "", 
-  pan_number: "",
+  dateOfJoining: "",
+  tax_number: "",
   dateOfBirth: "",
   permanentAddress: "",
   city: "",
@@ -31,9 +31,8 @@ const initialValues = {
   linkedIn: "",
   postalCode: "",
   current_salaray: "",
-increment_date: "",
-last_increment_date: "",
-tax_number: "",
+  increment_date: "",
+  tax_number: "",
 };
 
 const AddEmployee = () => {
@@ -43,7 +42,7 @@ const AddEmployee = () => {
   const [selectedState, setSelectedState] = useState(null);
 
   const navigate = useNavigate();
-  const [addEmployee,{isLoading:loading}]=useAddEmployeeMutation()
+  const [addEmployee, { isLoading: loading }] = useAddEmployeeMutation()
   const { data } = useSelector((state) => state.data);
 
   const { values, errors, touched, handleChange, handleSubmit, setFieldValue } =
@@ -63,7 +62,7 @@ const AddEmployee = () => {
           if (values.image) {
             formData.append("image", values?.image.blob);
           }
-          formData.append("pan_number", values.pan_number);
+          formData.append("tax_number", values.tax_number);
           formData.append("dateOfBirth", values.dateOfBirth);
           formData.append("permanentAddress", values.permanentAddress);
           formData.append("city", values.city);
@@ -71,10 +70,9 @@ const AddEmployee = () => {
           formData.append("country", values.country);
           formData.append("postalCode", values.postalCode);
           formData.append("linkedIn", values.linkedIn);
-      
+
           formData.append("current_salaray", values.current_salaray);
           formData.append("increment_date", values.increment_date);
-          formData.append("last_increment_date", values.last_increment_date);
           formData.append("tax_number", values.tax_number);
 
 
@@ -86,18 +84,21 @@ const AddEmployee = () => {
           //   },
           //   body: formData,
           // });
-        const response =  await addEmployee({ formData }).unwrap();
+          const response = await addEmployee({ formData }).unwrap();
 
           // toast.success("Employee added successfully");
-          if (response.status) {
+          if (response?.status === "error") {
+            toast.error(response?.message || "Failed to add employee");
+          } else if (response?.status) {
             toast.success("Successfully added");
             navigate("/dashboard");
           } else {
-            const errorData = await response.json();
-            throw new Error(errorData?.message);
+            toast.error(response?.message || "Something went wrong");
           }
         } catch (error) {
-          toast.error(error?.message);
+          const errorMessage = error?.data?.message || error?.message || "Failed to add employee";
+          toast.error(errorMessage);
+          console.error("Add employee failed:", error);
         } finally {
           // setLoading(false);
         }
@@ -145,6 +146,10 @@ const AddEmployee = () => {
   };
 
   const currentDate = new Date().toISOString().split("T")[0];
+  // Calculate maximum date of birth (14 years ago from today) to ensure minimum age of 14
+  const maxDateOfBirth = new Date();
+  maxDateOfBirth.setFullYear(maxDateOfBirth.getFullYear() - 14);
+  const maxDateOfBirthString = maxDateOfBirth.toISOString().split("T")[0];
   return (
     <>
       <Layout>
@@ -176,7 +181,7 @@ const AddEmployee = () => {
                   name="empId"
                   value={values.empId}
                   onChange={handleChange}
-                  label="Employee Id" 
+                  label="Employee ID"
                   star={true}
                 />
                 {errors.empId && touched.empId ? (
@@ -228,14 +233,14 @@ const AddEmployee = () => {
               </div>
             </div>
             <div className="col-lg-6 col-sm-12  pb-4">
-                            <div className="form-outline">
-                              <SelectPostion
-                                nameValue="position"
-                                handleChange={handleChange}
-                                value={values.position}
-                                required
-                              />
-                              {/* <label
+              <div className="form-outline">
+                <SelectPostion
+                  nameValue="position"
+                  handleChange={handleChange}
+                  value={values.position}
+                  required
+                />
+                {/* <label
                                 className="form-label"
                                 for="typeText"
                                 style={{ background: "#fff" }}
@@ -243,13 +248,13 @@ const AddEmployee = () => {
                                 Position &nbsp;
                                 <span className="required">*</span>
                               </label> */}
-                              {errors.position && touched.position ? (
-                                <p className="text-danger msg">
-                                  {errors.position}
-                                </p>
-                              ) : null}
-                            </div>
-                          </div>
+                {errors.position && touched.position ? (
+                  <p className="text-danger msg">
+                    {errors.position}
+                  </p>
+                ) : null}
+              </div>
+            </div>
             {/* <div className="col-lg-6 col-sm-12  pb-4">
               <div className="form-outline datalist">
                 <input
@@ -289,7 +294,7 @@ const AddEmployee = () => {
 
                 <label
                   className="form-label"
-                  // for="typeText"
+                // for="typeText"
                 >
                   Date of Joining &nbsp;
                   <span className=" required">*</span>
@@ -302,31 +307,31 @@ const AddEmployee = () => {
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
-                  name="pan_number"
-                  value={values.pan_number}
+                  name="tax_number"
+                  value={values.tax_number}
                   onChange={(event) =>
                     setFieldValue(
-                      "pan_number",
+                      "tax_number",
                       event.target.value.toUpperCase()
                     )
                   }
-                  label="Pan Number"
+                  label="Tax Number"
                   star={true}
                 />
-                {errors.pan_number && touched.pan_number ? (
-                  <p className="text-danger msg">{errors.pan_number}</p>
+                {errors.tax_number && touched.tax_number ? (
+                  <p className="text-danger msg">{errors.tax_number}</p>
                 ) : null}
               </div>
             </div>
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
-              <input
+                <input
                   type="date"
                   className="form-control"
                   placeholder=" "
                   name="dateOfBirth"
                   value={values.dateOfBirth}
-                  max={currentDate}
+                  max={maxDateOfBirthString}
                   onChange={handleChange}
                   required
                 />
@@ -369,7 +374,7 @@ const AddEmployee = () => {
                 <Select
                   className="basic-single  "
                   classNamePrefix="select"
-                  placeholder="Select Country.."
+                  placeholder="Select Country..."
                   isClearable={true}
                   isRtl={false}
                   isSearchable={true}
@@ -387,7 +392,7 @@ const AddEmployee = () => {
                 <Select
                   className="basic-single"
                   classNamePrefix="select"
-                  placeholder="Select State.."
+                  placeholder="Select State..."
                   isDisabled={selectedCountry?.name ? false : true}
                   isClearable={true}
                   isRtl={false}
@@ -430,63 +435,33 @@ const AddEmployee = () => {
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
+                  type="number"
+                  inputMode="numeric"
                   name="current_salaray"
                   value={values.current_salaray}
                   onChange={handleChange}
-                  label="Current Salary" 
-                  // star={true}
-                />
-                {/* {errors.current_salaray && touched.current_salaray ? (
+                  label="Current Salary" />
+                {errors.current_salaray && touched.current_salaray ? (
                   <p className="text-danger msg">{errors.current_salaray}</p>
-                ) : null} */}
+                ) : null}
               </div>
             </div>
             <div className="col-lg-6 col-sm-12 pb-4">
               <div className="form-outline">
                 <InputAdd
-                type="date"
+                  type="date"
                   name="increment_date"
                   value={values.increment_date}
                   onChange={handleChange}
-                  label="Increment Date" 
-                  // star={true}
+                  label="Increment Date"
+                // star={true}
                 />
-                {/* {errors.increment_date && touched.increment_date ? (
+                {errors.increment_date && touched.increment_date ? (
                   <p className="text-danger msg">{errors.increment_date}</p>
-                ) : null} */}
+                ) : null}
               </div>
             </div>
-            <div className="col-lg-6 col-sm-12 pb-4">
-              <div className="form-outline">
-                <InputAdd
-                                type="date"
 
-                  name="last_increment_date"
-                  value={values.last_increment_date}
-                  onChange={handleChange}
-                  label="Last Increment Date" 
-                  // star={true}
-                />
-                {/* {errors.last_increment_date && touched.last_increment_date ? (
-                  <p className="text-danger msg">{errors.last_increment_date}</p>
-                ) : null} */}
-              </div>
-            </div>
-            <div className="col-lg-6 col-sm-12 pb-4">
-              <div className="form-outline">
-                <InputAdd
-                  name="tax_number"
-                  value={values.tax_number}
-                  onChange={handleChange}
-                  label="Tax Number" 
-                  // star={true}
-                />
-                {/* {errors.tax_number && touched.tax_number ? (
-                  <p className="text-danger msg">{errors.tax_number}</p>
-                ) : null} */}
-              </div>
-            </div>
-            
             <div className="row" style={{ paddingRight: "0" }}>
               <div className="col-lg-4 col-md-4  pd-4 "></div>
               <div
