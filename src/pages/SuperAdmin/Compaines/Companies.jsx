@@ -11,6 +11,9 @@ import Pagination from "../../../component/Pagination";
 
 const Companies = () => {
   const [search, setSearch] = useState("");
+  const [is_account_verified, setIs_account_verified] = useState();
+
+  
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -24,7 +27,7 @@ const Companies = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  const { data, isLoading, refetch } = useGetAllCompaniesQuery({ page: currentPage, search: debouncedSearch });
+  const { data, isLoading, refetch } = useGetAllCompaniesQuery({ page: currentPage, search: debouncedSearch,is_account_verified:is_account_verified });
   const [accountVerified, { isLoading: verifiedLoading, error }] = useAccountVerifiedMutation()
   const companies = data?.allCompanies?.data || [];
   const totalPages = data?.allCompanies?.last_page || 1;
@@ -57,15 +60,48 @@ const Companies = () => {
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
   };
-
+const handleFormatChange = (e) => {
+        const selectedFormat = e.target.value
+        if (!selectedFormat) return
+        setIs_account_verified(selectedFormat)
+    }
   return (
     <div className="container-fluid viewemployee main_inner_padding">
       <div className="row">
-        <div className="col-lg-9">
+        <div className="col-lg-8">
           <h3>Companies</h3>
         </div>
-        <div className="col-lg-3 col-md-6 pb-4">
-          <div className="search_button">
+        <div className="col-lg-4 col-md-6 d-flex pb-4 justify-content-end gap-2">
+          
+           {/* ✅ Export Dropdown */}
+           
+                <div style={{ position: 'relative' }}>
+                    <select
+                        className="form-control main_inner_dropdown"
+                        defaultValue=""
+                        onChange={handleFormatChange}
+                        disabled={isLoading}
+                    >
+                        <option value=" ">Select</option>
+                        <option value="1">Verified</option>
+                        <option value="0">Unverified</option>
+                    </select>
+
+                    <i
+                        className="fas fa-chevron-down"
+                        style={{
+                            position: 'absolute',
+                            right: '10px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            pointerEvents: 'none',
+                            color: '#6c757d',
+                            fontSize: '11px'
+                        }}
+                    />
+                </div>
+           
+            <div className="search_button">
             <input
               type="search"
               className="form-control inner_search_icon"
@@ -76,6 +112,8 @@ const Companies = () => {
             <i className="fa fa-search navi-search"></i>
           </div>
         </div>
+
+            
       </div>
 
       <div className="row">
