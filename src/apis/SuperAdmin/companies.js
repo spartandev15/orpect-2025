@@ -5,8 +5,9 @@ export const companiesApi = api.injectEndpoints({
 
   endpoints: (builder) => ({
     getAllCompanies: builder.query({
-      query: ({ page = 1, search = ""}) => ({
-        url: `admin/getCompanies?page=${page}&search=${search}`,
+      query: ({ page = 1, search = "",is_account_verified=""}) => ({
+        url: `admin/getCompanies?page=${page}&search=${search}
+        &is_account_verified=${is_account_verified}`,
         method: "GET",
 
       }),

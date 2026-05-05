@@ -41,7 +41,7 @@ const Notification = () => {
       
                 // Now get the token using the registration
                 getToken(messaging, {
-                  vapidKey: 'BIt8l068im-u_hFaUX-j5Syro87byjm5wSXsgKafy4_p2zukJNG9vsVtZCqeiewKCGYGFeDCsap43-XSF04QAew',
+                  vapidKey: 'BIJ5Cz2Z08Vy0nmimo51wb5AeUNrAWBfkn4p8pwdaBHblDmoBLzUZGa6DfilROY69Xb9TOeRtebJ63FB257fPoQ',
                   serviceWorkerRegistration: registration
                 })
                   .then((currentToken) => {
