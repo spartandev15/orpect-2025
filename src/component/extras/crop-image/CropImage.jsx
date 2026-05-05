@@ -228,7 +228,7 @@ const handleImageUpload = (event) => {
                         onClick={handleSaveImage}
                         className="btn mybtn"
                       />
-                      <button className="btn mybtn" onClick={handleReset}>
+                      <button className="btn mybtn" style={{backgroundColor:"#f6a21e"}}onClick={handleReset}>
                         Cancel
                       </button>
                     </div>

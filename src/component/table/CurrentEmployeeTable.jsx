@@ -114,8 +114,7 @@ const CurrentEmployeeTable = () => {
                         <Link to={`/view-employee/${i?.sid}`} style={{ textDecoration: "none" }}>
                           <button type="button" className="btn act_btn_v">
                             <span className="hoverable">
-                              <i className="fas fa-eye eye-cs hoverable__main"></i>
-                              <span className="hoverable__tooltip">Add Reviews</span>
+                              <i className="fas fa-eye eye-cs"></i>
                             </span>
                           </button>
                         </Link>
