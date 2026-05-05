@@ -56,7 +56,7 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
             {/* ✅ Start Date */}
             <div className="col-lg-2 col-md-6 px-1">
                 <div >
-                    <input
+                    {/* <input
                       placeholder='Start Date'
                         type="date"
                         name="start_date"
@@ -64,22 +64,43 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
                         max={today}
                         onChange={(e) => setStartDate(e.target.value)}
                         className="form-control"
-                    />
-                    
+                    /> */}
+                    <input
+  type={startDate ? "date" : "text"}
+  placeholder="Start Date"
+  value={startDate}
+  onFocus={(e) => (e.target.type = "date")}
+  onBlur={(e) => {
+    if (!startDate) e.target.type = "text"
+  }}
+  onChange={(e) => setStartDate(e.target.value)}
+  className="form-control"
+/>
                 </div>
             </div>
 
             {/* ✅ End Date */}
             <div className="col-lg-2 col-md-6 px-1">
                 <div >
-                    <input
+                    {/* <input
                         type="date"
                         name="end_date"
-                        value={endDate}
+                        value={setEndDate}
                         max={today}
                         onChange={(e) => setEndDate(e.target.value)}
                         className="form-control"
-                    />
+                    /> */}
+                                 <input
+  type={endDate ? "date" : "text"}
+  placeholder="End Date"
+  value={endDate}
+  onFocus={(e) => (e.target.type = "date")}
+  onBlur={(e) => {
+    if (!endDate) e.target.type = "text"
+  }}
+  onChange={(e) => setEndDate(e.target.value)}
+  className="form-control"
+/>
                 </div>
             </div>
 
