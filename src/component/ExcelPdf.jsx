@@ -105,7 +105,7 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
             </div>
 
             {/* ✅ Export Dropdown */}
-            <div className="col-lg-1 col-md-6 p-0">
+            <div className="col-lg-1 col-md-6 px-0">
                 <div style={{ position: 'relative' }}>
                     <select
                         className="form-control main_inner_dropdown"
