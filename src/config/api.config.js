@@ -10,10 +10,10 @@
  */
 
 // Default API base URL
-const DEFAULT_API_BASE_URL = "http://spartanbots.xyz/borpact/public/api";
+const DEFAULT_API_BASE_URL = "https://spartanbots.xyz/borpact/public/api";
 
 // Default Image base URL
-const DEFAULT_IMAGE_BASE_URL = "http://spartanbots.xyz/borpact/public";
+const DEFAULT_IMAGE_BASE_URL = "https://spartanbots.xyz/borpact/public";
 
 // Get API base URL from environment variable or use default
 export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || DEFAULT_API_BASE_URL;

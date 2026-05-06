@@ -14,7 +14,7 @@ export const authApi = api.injectEndpoints({
       query: (credentials) => {
         // Debugging: log the credentials being passed
         console.log("Attempting to log in with credentials:", credentials);
-    debugger
+        
         return {
           url: "login",
           method: "POST",
