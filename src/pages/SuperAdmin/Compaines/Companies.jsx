@@ -77,6 +77,7 @@ const handleFormatChange = (e) => {
            
                 <div style={{ position: 'relative' }}>
                     <select
+                      style={{width:'100px'}}
                         className="form-control main_inner_dropdown"
                         defaultValue=""
                         onChange={handleFormatChange}
@@ -179,8 +180,8 @@ const handleFormatChange = (e) => {
                         <Link to={`/super-admin/viewcompany/${company?.id}`} style={{ textDecoration: "none" }}>
                           <button type="button" className="btn act_btn_v">
                             <span className="hoverable">
-                              <i className="fas fa-eye eye-cs hoverable__main"></i>
-                              <span className="hoverable__tooltip">View Details</span>
+                              <i className="fas fa-eye eye-cs "></i>
+                              {/* <span className="hoverable__tooltip">View Details</span> */}
                             </span>
                           </button>
                         </Link>

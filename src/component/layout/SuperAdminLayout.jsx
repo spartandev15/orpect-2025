@@ -119,12 +119,12 @@ console.log(notifications)
     dispatch(logoutUserapi())
       .then((res) => {
         logout(true); // Pass true to indicate admin logout
-        toast.success("Logged out successfully");
+        // toast.success("Logged out successfully");
       })
       .catch((err) => {
         // Even if API call fails, still logout locally
         logout(true);
-        toast.success("Logged out successfully");
+        // toast.success("Logged out successfully");
       });
   };
 
