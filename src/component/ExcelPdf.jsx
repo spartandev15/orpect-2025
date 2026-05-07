@@ -12,10 +12,10 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
 
     const handleImport = async (format) => {
         // ✅ Validation
-        if (!startDate || !endDate) {
-            toast.error("Please select both start and end dates.")
-            return
-        }
+        // if (!startDate || !endDate) {
+        //     toast.error("Please select both start and end dates.")
+        //     return
+        // }
 
         if (startDate > endDate) {
             toast.error("Start date cannot be greater than end date.")
@@ -113,7 +113,7 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
                         onChange={handleFormatChange}
                         disabled={isLoading}
                     >
-                        <option value="">Export</option>
+                        <option value="" disabled>Export</option>
                         <option value="pdf">PDF</option>
                         <option value="csv">CSV</option>
                     </select>
