@@ -42,8 +42,15 @@ const EmployeeLayout = ({children}) => {
                 <div className="profile-user profile-user-d">
                   <div className="profile-user-h">
                     <a to="">
-                      <img src={user1}
-                        alt="profile" />
+                      {
+                        user1 ? <img src={user1}
+                        alt="profile" />:
+                           <div className="firstLetterPic">
+  {/* {name?.charAt(0)?.toUpperCase()} */}
+  d
+</div>
+                      }
+                     
                     </a>
                   </div>
                 </div>

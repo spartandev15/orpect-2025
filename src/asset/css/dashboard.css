@@ -967,7 +967,36 @@ margin: 1rem ;
   align-items: center;
   margin-bottom: 20px;
 }
+.firstLetterPic {
+ 
+      height: 110px;
+    width: 110px;
+  border-radius: 50%;
+  background: #134d75;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: xx-large;
 
+}
+.firstLetterPicSmall {
+ 
+   height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background: #134d75;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: large;
+
+}
 .pic-holder .pic {
   height: 100%;
   width: 100%;
