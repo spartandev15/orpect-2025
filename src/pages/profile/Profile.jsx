@@ -794,7 +794,7 @@ import { BASE_URL } from "../../api/baseUrl";
 import { SingleField } from "../../component/SingleField";
 import { linkedin } from "../../asset";
 import { Input } from "../../component/Input";
-import {useGetUserQuery, useUpdateProfileMutation} from "../../apis/profile"
+import {useDeleteProfileImageMutation, useGetUserQuery, useUpdateProfileMutation} from "../../apis/profile"
 import {useGetDesignationQuery} from "../../apis/company"
 
 const initialValues = {
@@ -829,7 +829,7 @@ const Profile = () => {
   const [updateProfile,{data:updateProfileData}] = useUpdateProfileMutation();
   const { data } = useGetUserQuery();
   const { data: designationData, isLoading: designationLoading } = useGetDesignationQuery();
-
+  const [deleteProfileImage,{loading:deleteLoading}]=useDeleteProfileImageMutation()
   useEffect(() => {
     if (data) {
       setLoading(true);
@@ -932,9 +932,9 @@ const Profile = () => {
     values.company_city = data?.company_city;
   };
 // useEffect(()=>{
-//   setShowInfoForm(false);
-//   setShowAddressForm(false);
-// },[updateProfileData])
+//    removeFromLocalStorage("user");
+//             setToLocalStorage("user", updateProfileData?.user);
+// },[updateProfileData?.user])
 // console.log(updateProfileData)
   const countries = Country.getAllCountries();
   const states = selectedCountry
@@ -968,7 +968,21 @@ const Profile = () => {
   };
 
   const renderValue = (value, fallback = "---") => (value ? value : fallback);
+//  remove profile
+  const handleDeleteProfileImage =async()=>{
+    try {
+  const res=  await deleteProfileImage(profile?.id)
+   removeFromLocalStorage("user");
+         setToLocalStorage("profileImage", "")
+   
+            setToLocalStorage("user", res?.data?.data);
+      window.location.reload();
 
+    } catch (error) {
+      
+    }
+  }
+  console.log(profile)
   if (!profile) {
     return <LoadingSpinner />;
   }
@@ -992,6 +1006,9 @@ const Profile = () => {
                       loading={loading}
                       oldImage={values.oldLogoImage}
                       setLoading={setLoading}
+                      handleDeleteProfileImage={handleDeleteProfileImage}
+                      name={profile?.company_name}
+                      deleteLoading={deleteLoading}
                     />
                   </div>
                   <div

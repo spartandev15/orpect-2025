@@ -29,6 +29,14 @@ export const userApi = api.injectEndpoints({
       providesTags: ['Profile'],
 
     }),
+     deleteProfileImage: builder.mutation({
+      query: (id) => ({
+        url: `delete-user-image/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags:['Profile']
+
+    }),
   }),
   overrideExisting: false,
 });
@@ -37,4 +45,5 @@ export const {
   useUpdateProfileMutation,
   useUpdatePasswordMutation,
   useGetUserQuery,
+  useDeleteProfileImageMutation
 } = userApi;

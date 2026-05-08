@@ -282,7 +282,7 @@ const Layout = ({ children }) => {
     window.scrollTo(0, 0);
   }, []);
 
-
+console.log(profileImage,user)
   return (
     <>
       <div className="d-flex" id="wrapper">
@@ -314,16 +314,20 @@ const Layout = ({ children }) => {
               <div className="profile-dtl">
                 <Link to="/dashboard">
                   {" "}
-                  <img
+                {profileImage ||  user?.image ?<img
                     src={
                       profileImage
                         ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
-                        : user && user.image
-                        ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
+                        : user && user?.image
+                        ? `${IMAGE_BASE_URL_WITH_SLASH}${user?.image}`
                         : uploadProfile
                     }
                     alt=""
-                  />
+                  />:
+                     <div className="firstLetterPic">
+  {user?.company_name?.charAt(0)?.toUpperCase()}
+</div>}
+
                   <p>{user?.company_name}</p>
                 </Link>
               </div>
@@ -483,7 +487,8 @@ const Layout = ({ children }) => {
                       <div className="profile-user-h">
                         <Link>
                           {" "}
-                          <img
+                          {
+                            profileImage ||  user?.image ? <img
                             src={
                               profileImage
                                 ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
@@ -492,7 +497,13 @@ const Layout = ({ children }) => {
                                 : uploadProfile
                             }
                             alt="profile"
-                          />
+                          />:
+                                         <div className="firstLetterPicSmall">
+  {user?.company_name?.charAt(0)?.toUpperCase()}
+  
+</div>
+                          }
+                         
                         </Link>
                       </div>
                     </div>
