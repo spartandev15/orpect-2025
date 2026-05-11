@@ -12,6 +12,7 @@ import { SingleField } from "../../../component/SingleField";
 import { Input } from "../../../component/Input";
 import { useGetCompaniesByIdQuery, useUpdateCompanyMutation } from "../../../apis/SuperAdmin/companies";
 import { currentem, exemploye, nonjoiner, review } from '../../../asset'
+import * as yup from "yup";
 
 const initialValues = {
   sid: "", 
@@ -46,10 +47,16 @@ const ViewCompany = () => {
   const [updateCompany, { isLoading: updateLoading }] = useUpdateCompanyMutation();
 
   const countries = Country.getAllCountries();
-
+const Validation = yup.object().shape({
+  company_postal_code: yup
+    .string()
+    .matches(/^\d+$/, "Only numbers are allowed")
+    .required("Postal code is required"),
+});
   const { values, errors, touched, handleChange, handleSubmit, setFieldValue } =
     useFormik({
       initialValues: initialValues,
+      validationSchema:Validation,
       onSubmit: async (values, { setSubmitting }) => {
         setLoading(true);
         const formData = new FormData();
