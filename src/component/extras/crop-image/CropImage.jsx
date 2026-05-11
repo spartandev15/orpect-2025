@@ -18,6 +18,7 @@ const CropImage = ({ oldImage, handleDeleteProfileImage ,name,deleteLoading}) =>
   const [modalOpen, setModalOpen] = useState(false);
   const bearerToken = getFromLocalStorage("token");
 
+  
   const handleOpenModal = () => {
     setModalOpen(true);
   };

@@ -112,9 +112,7 @@ console.log(notifications)
     });
   }, [location.pathname]);
 
-  useEffect(()=>{
-
- },[user])
+  
   const logoutUser = () => {
     dispatch(logoutUserapi())
       .then((res) => {
@@ -148,7 +146,9 @@ console.log(notifications)
       };
     }
   }, []);
+  useEffect(()=>{
 
+  },[])
   const handleSearchInputChange = () => {
     dispatch(setEmpType(""));
     navigate("/search-employee");
@@ -299,7 +299,7 @@ if (!superAdminToken) {
               <div className="profile-dtl">
                 <Link to="/super-admin/dashboard">
                   {" "}
-                  <img
+                  {/* <img
                     src={
                       profileImage
                         ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
@@ -308,12 +308,21 @@ if (!superAdminToken) {
                           : uploadProfile
                     }
                     alt=""
-
-
-
-
-                  />
-                  <p>{user?.company_name}</p>
+                  /> */}
+                   {profileImage ||  user?.image ?<img
+                                      src={
+                                        profileImage
+                                          ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
+                                          : user && user?.image
+                                          ? `${IMAGE_BASE_URL_WITH_SLASH}${user?.image}`
+                                          : uploadProfile
+                                      }
+                                      alt=""
+                                    />:
+                                       <div className="firstLetterPic">
+                    {user?.fullname?.charAt(0)?.toUpperCase()}
+                  </div>}
+                  <p>{user?.fullname}</p>
                 </Link>
               </div>
             </div>
@@ -563,16 +572,22 @@ if (!superAdminToken) {
                       <div className="profile-user-h">
                         <Link>
                           {" "}
-                          <img
-                            src={
-                              profileImage
-                                ? `https://spartanbots.xyz/borpact/public/${profileImage}`
-                                : user && user.image
-                                  ? `https://spartanbots.xyz/borpact/public/${user.image}`
-                                  : uploadProfile
-                            }
-                            alt="profile"
-                          />
+                        {
+                                                   profileImage ||  user?.image ? <img
+                                                   src={
+                                                     profileImage
+                                                       ? `${IMAGE_BASE_URL_WITH_SLASH}${profileImage}`
+                                                       : user && user.image
+                                                       ? `${IMAGE_BASE_URL_WITH_SLASH}${user.image}`
+                                                       : uploadProfile
+                                                   }
+                                                   alt="profile"
+                                                 />:
+                                                                <div className="firstLetterPicSmall">
+                         {user?.fullname?.charAt(0)?.toUpperCase()}
+                         
+                       </div>
+                                                 }
                         </Link>
                       </div>
                     </div>

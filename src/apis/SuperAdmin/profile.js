@@ -64,6 +64,15 @@ export const superAdminProfileApi = api.injectEndpoints({
       },
       invalidatesTags: ['Profile'],
     }),
+
+     deleteAdminProfileImage: builder.mutation({
+      query: (id) => ({
+        url: `admin/delete-superadmin-image/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags:['Profile']
+
+    }),
   }),
   overrideExisting: false,
 });
@@ -74,5 +83,6 @@ export const {
   useGetSuperAdminDetailsQuery,
   useUpdateAdminPasswordMutation,
   useUpdateAdminImageMutation,
-  useUpdateProfileByIdMutation
+  useUpdateProfileByIdMutation,
+  useDeleteAdminProfileImageMutation
 }= superAdminProfileApi;

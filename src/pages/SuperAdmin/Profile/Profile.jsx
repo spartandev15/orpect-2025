@@ -18,9 +18,10 @@ import CountrySelect from "../../../component/CountrySelect";
 import { SingleField } from "../../../component/SingleField";
 import { linkedin } from "../../../asset";
 import { Input } from "../../../component/Input";
-import { useGetSuperAdminDetailsQuery, useUpdateProfileByIdMutation, useUpdateSuperAdminProfileMutation } from "../../../apis/SuperAdmin/profile";
+import { useDeleteAdminProfileImageMutation, useGetSuperAdminDetailsQuery, useUpdateProfileByIdMutation, useUpdateSuperAdminProfileMutation } from "../../../apis/SuperAdmin/profile";
 import { useUpdateUserByIdMutation } from "../../../apis/SuperAdmin/user";
 import UpdateSuperAdminImage from "../../../component/extras/crop-image/UpdateSuperAdminImage";
+import { useDeleteProfileImageMutation } from "../../../apis/profile";
 
 const initialValues = {
   email: "",
@@ -46,6 +47,8 @@ const SuperAdminProfile = () => {
 
   const { data } = useGetSuperAdminDetailsQuery();
   const [updateProfileById] = useUpdateProfileByIdMutation();
+    const [deleteAdminProfileImage,{loading:deleteLoading}]=useDeleteAdminProfileImageMutation()
+  
   console.log(data)
   useEffect(() => {
     if (data) {
@@ -159,7 +162,21 @@ const SuperAdminProfile = () => {
   };
 
   const renderValue = (value, fallback = "---") => (value ? value : fallback);
+//  remove profile
+  const handleDeleteProfileImage =async()=>{
+    try {
+  const res=  await deleteAdminProfileImage(profile?.id)
+   removeFromLocalStorage("user");
+         setToLocalStorage("profileImage", "")
+   
+            setToLocalStorage("user", res?.data?.data);
+      window.location.reload();
 
+    } catch (error) {
+      
+    }
+  console.log(profile)
+  }
   if (!profile) {
     return <LoadingSpinner />;
   }
@@ -181,7 +198,10 @@ const SuperAdminProfile = () => {
                   <UpdateSuperAdminImage
                     empId={profile?.id}
                     oldImage={values?.oldImage}
-
+                   setLoading={setLoading}
+                      handleDeleteProfileImage={handleDeleteProfileImage}
+                      name={profile?.fullname}
+                      deleteLoading={deleteLoading}
                   />
                 </div>
                 <div
