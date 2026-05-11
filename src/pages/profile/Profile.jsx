@@ -1010,6 +1010,8 @@ const Profile = () => {
                       name={profile?.company_name}
                       deleteLoading={deleteLoading}
                     />
+
+                    
                   </div>
                   <div
                     className="profileimgboxdetail"

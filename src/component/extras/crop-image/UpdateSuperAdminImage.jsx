@@ -8,8 +8,9 @@ import "../../../asset/css/cropImage.css";
 import { uploadProfile } from "../../../asset";
 import { BASE_URL, IMAGE_BASE_URL_WITH_SLASH } from "../../../api/baseUrl";
 import { useUpdateAdminImageMutation } from "../../../apis/SuperAdmin/profile";
-const UpdateSuperAdminImage = ({ oldImage,empId }) => {
-  const [image, setImage] = useState(null);
+const UpdateSuperAdminImage = ({ oldImage,empId,handleDeleteProfileImage ,name,deleteLoading }) => {
+ const existImage = `${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`
+  const [image, setImage] = useState(oldImage ? existImage :null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -108,7 +109,7 @@ const [updateAdminImage]=useUpdateAdminImageMutation()
       toast.success("Successfully updated");
       handleReset()
       handleCloseModal();
-      // window.location.reload();
+      window.location.reload();
     } catch (error) {
       setLoading(false);
       toast.error(error?.response?.data.message);
@@ -125,7 +126,19 @@ const [updateAdminImage]=useUpdateAdminImageMutation()
   return (
     <>
       <div className="pic-holder" onClick={handleOpenModal}>
-        <img
+          {oldImage ?
+              
+                  <img
+                    className="pic"
+                    src={`${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`}
+                    alt="profile"
+                  /> 
+                  :
+                    <div className="firstLetterPic">
+          {name?.charAt(0)?.toUpperCase()}
+        </div>
+                }
+        {/* <img
           className="pic"
           src={
             oldImage?
@@ -133,7 +146,7 @@ const [updateAdminImage]=useUpdateAdminImageMutation()
             :uploadProfile
           }
           alt="profile" 
-        />
+        /> */}
         <label htmlFor="newProfilePhoto" className="upload-file-block">
           <div className="text-center">
             <div className="mb-2">
@@ -229,6 +242,14 @@ const [updateAdminImage]=useUpdateAdminImageMutation()
                         onClick={handleSaveImage}
                         className="btn mybtn"
                       />
+                       { oldImage&&
+                 <Button
+                    loading={deleteLoading}
+                    text="Delete Image"
+                    onClick={handleDeleteProfileImage}
+                    className="btn btn-warning text-white px-4"
+                  />
+                }
                       <button className="btn mybtn" onClick={handleReset} >
                         Cancel
                       </button>
