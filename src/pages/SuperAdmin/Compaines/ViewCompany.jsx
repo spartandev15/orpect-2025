@@ -13,6 +13,8 @@ import { Input } from "../../../component/Input";
 import { useGetCompaniesByIdQuery, useUpdateCompanyMutation } from "../../../apis/SuperAdmin/companies";
 import { currentem, exemploye, nonjoiner, review } from '../../../asset'
 import * as yup from "yup";
+import UpdateSuperAdminImage from "../../../component/extras/crop-image/UpdateSuperAdminImage";
+import UpdateCompanyImage from "../../../component/extras/crop-image/UpdateCompanyImage";
 
 const initialValues = {
   sid: "", 
@@ -51,7 +53,7 @@ const Validation = yup.object().shape({
   company_postal_code: yup
     .string()
     .matches(/^\d+$/, "Only numbers are allowed")
-    .required("Postal code is required"),
+    // .required("Postal code is required"),
 });
   const { values, errors, touched, handleChange, handleSubmit, setFieldValue } =
     useFormik({
@@ -233,11 +235,20 @@ const Validation = yup.object().shape({
             <div className="viewem">
               <div className="employebox">
                 <div className="profile-pic-wrapper">
-                  <CropImage
+                  {/* <CropImage
                     loading={loading}
                     oldImage={values?.image}
                     setLoading={setLoading}
-                  />
+                    name={profile?.full_name}
+                  /> */}
+                  <UpdateCompanyImage
+                                      empId={profile?.id}
+                                      oldImage={values?.image}
+                                     setLoading={setLoading}
+                                        // handleDeleteProfileImage={handleDeleteProfileImage}
+                                        name={profile?.full_name}
+                                        // deleteLoading={deleteLoading}
+                                    />
                 </div>
                 <div
                   className="profileimgboxdetail"
