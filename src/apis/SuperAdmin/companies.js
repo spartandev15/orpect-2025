@@ -62,6 +62,20 @@ export const companiesApi = api.injectEndpoints({
         }),
         providesTags: ['Companies'],
       }),
+
+        updateCompanyImage: builder.mutation({
+      query: ( formData) => {
+        
+        return{
+          url: `admin/UpdateUseridImage`,
+          method: "POST",
+          body: formData,
+        }
+       
+        
+      },
+      invalidatesTags: ['Companies'],
+    }),
   
   }),
   overrideExisting: false,
@@ -74,5 +88,6 @@ export const {
  useAccountVerifiedMutation,
  useAddCompanyMutation,
  useUpdateCompanyMutation,
- useGetCompanyReviewsQuery
+ useGetCompanyReviewsQuery,
+ useUpdateCompanyImageMutation
 } = companiesApi;
