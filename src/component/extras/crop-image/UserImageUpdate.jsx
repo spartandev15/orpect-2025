@@ -25,6 +25,7 @@ const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
 
     const handleCloseModal = () => {
         setModalOpen(false);
+        
     };
 
     const onCropComplete = useCallback(
@@ -118,12 +119,19 @@ const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
         }
     };
 
-    const handleReset = () => {
+   const handleReset = () => {
+    setCrop({ x: 0, y: 0 });
+    setZoom(1);
+    setCropedImage(null);
+
+    if (oldImage) {
+        setImage(`${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`);
+    } else {
         setImage(null);
-        setCrop({ x: 0, y: 0 });
-        setZoom(1);
-        setCropedImage(null);
-    };
+    }
+
+    setModalOpen(false);
+};
     const handleDeleteProfileImage = async () => {
         try {
             await deleteUserProfileImage(empId)
