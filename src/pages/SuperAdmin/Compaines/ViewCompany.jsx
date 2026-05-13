@@ -10,7 +10,7 @@ import { Country, State } from "country-state-city";
 import Select from "react-select";
 import { SingleField } from "../../../component/SingleField";
 import { Input } from "../../../component/Input";
-import { useGetCompaniesByIdQuery, useUpdateCompanyMutation } from "../../../apis/SuperAdmin/companies";
+import { useDeleteCompanyProfileImageMutation, useGetCompaniesByIdQuery, useUpdateCompanyMutation } from "../../../apis/SuperAdmin/companies";
 import { currentem, exemploye, nonjoiner, review } from '../../../asset'
 import * as yup from "yup";
 import UpdateSuperAdminImage from "../../../component/extras/crop-image/UpdateSuperAdminImage";
@@ -47,7 +47,7 @@ const ViewCompany = () => {
   const { id } = useParams();
   const { data, refetch } = useGetCompaniesByIdQuery(id);
   const [updateCompany, { isLoading: updateLoading }] = useUpdateCompanyMutation();
-
+   const [deleteCompanyProfileImage]=useDeleteCompanyProfileImageMutation()
   const countries = Country.getAllCountries();
 const Validation = yup.object().shape({
   company_postal_code: yup
@@ -173,7 +173,20 @@ const Validation = yup.object().shape({
   };
 
   const renderValue = (value, fallback = "---") => (value ? value : fallback);
+ const handleDeleteProfileImage =async()=>{
+    try {
+  const res=  await deleteCompanyProfileImage(profile?.id)
+  //  removeFromLocalStorage("user");
+  //        setToLocalStorage("profileImage", "")
+   
+  //           setToLocalStorage("user", res?.data?.data);
+      // window.location.reload();
 
+    } catch (error) {
+      
+    }
+  console.log(profile)
+  }
   if (!profile) {
     return <LoadingSpinner />;
   }
@@ -245,8 +258,9 @@ const Validation = yup.object().shape({
                                       empId={profile?.id}
                                       oldImage={values?.image}
                                      setLoading={setLoading}
-                                        // handleDeleteProfileImage={handleDeleteProfileImage}
+                                        handleDeleteProfileImage={handleDeleteProfileImage}
                                         name={profile?.full_name}
+                                        
                                         // deleteLoading={deleteLoading}
                                     />
                 </div>

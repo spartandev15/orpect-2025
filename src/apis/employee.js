@@ -95,7 +95,28 @@ export const employeeApi = api.injectEndpoints({
       providesTags:['Previous_Review']
     }),
    
-   
+   updateUserImage: builder.mutation({
+      query: (formData) => {
+
+        return {
+          url: `UpdateUseridImage`,
+          method: "POST",
+          body: formData,
+        }
+
+
+      },
+      invalidatesTags: ['Employee'],
+    }),
+
+    deleteUserProfileImage: builder.mutation({
+      query: (id) => ({
+        url: `deleteUseridImage/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags:['Employee']
+
+    }),
   }),
   overrideExisting: false,
 });
@@ -111,7 +132,12 @@ export const {
   useAddEmployeeMutation,
   useAddExEmployeeReviewMutation,
   useGetExEmployeeAndNonJoinerQuery,
-  useUpdateEmployeeImageMutation
+  useUpdateEmployeeImageMutation,
+  useUpdateUserImageMutation,
+  useDeleteUserProfileImageMutation,
+
+
+
 
   
 } = employeeApi;

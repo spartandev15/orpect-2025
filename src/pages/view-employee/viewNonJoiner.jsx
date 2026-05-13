@@ -24,6 +24,7 @@ import { SingleField } from "../../component/SingleField";
 import { Input } from "../../component/Input";
 import { useGetEmployeeByIdQuery, useUpdateEmployeeByIdMutation } from "../../apis/employee";
 import RenderIf from "../../component/RenderIf";
+import UserImageUpdate from "../../component/extras/crop-image/UserImageUpdate";
 
 const initialValues = {
   empName: "",
@@ -350,10 +351,19 @@ const ViewNonJoiner = () => {
                 <div className="viewem">
                   <div className="employebox">
                     <div className="profile-pic-wrapper">
-                      <UpdateEmployeeCropImage
+                      {/* <UpdateEmployeeCropImage
                         oldImage={values.oldImageName}
                         empId={id}
-                      />
+                      /> */}
+                       <UserImageUpdate
+                        empId={employee?.id}
+                        oldImage={values?.oldImageName}
+                        // setLoading={setLoading}
+                        // handleDeleteProfileImage={handleDeleteProfileImage}
+                        name={employee?.emp_name}
+
+                      // deleteLoading={deleteLoading}
+                      /> 
                     </div>{" "}
                     {errors.image && touched.image ? (
                       <p className="text-danger msg">{errors.image}</p>
