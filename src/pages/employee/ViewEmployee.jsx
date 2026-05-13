@@ -26,6 +26,8 @@ import { useGetEmployeeByIdQuery, useUpdateEmployeeByIdMutation } from "../../ap
 import RenderIf from "../../component/RenderIf";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 import "react-tooltip/dist/react-tooltip.css";
+import UpdateCompanyImage from "../../component/extras/crop-image/UpdateCompanyImage";
+import UserImageUpdate from "../../component/extras/crop-image/UserImageUpdate";
 const initialValues = {
   empId: "",
   empName: "",
@@ -269,9 +271,18 @@ const ViewEmployee = () => {
                 <div className="viewem">
                   <div className="employebox">
                     <div className="profile-pic-wrapper">
-                      <UpdateEmployeeCropImage
+                      {/* <UpdateEmployeeCropImage
                         oldImage={values.oldImageName}
                         empId={id}
+                      /> */}
+                      <UserImageUpdate
+                        empId={employee?.id}
+                        oldImage={values?.oldImageName}
+                        // setLoading={setLoading}
+                        // handleDeleteProfileImage={handleDeleteProfileImage}
+                        name={employee?.emp_name}
+
+                      // deleteLoading={deleteLoading}
                       />
                     </div>
                     {errors.image && touched.image ? (
