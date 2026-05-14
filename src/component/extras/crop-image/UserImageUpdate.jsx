@@ -25,7 +25,7 @@ const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
 
     const handleCloseModal = () => {
         setModalOpen(false);
-        
+
     };
 
     const onCropComplete = useCallback(
@@ -119,19 +119,19 @@ const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
         }
     };
 
-   const handleReset = () => {
-    setCrop({ x: 0, y: 0 });
-    setZoom(1);
-    setCropedImage(null);
+    const handleReset = () => {
+        setCrop({ x: 0, y: 0 });
+        setZoom(1);
+        setCropedImage(null);
 
-    if (oldImage) {
-        setImage(`${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`);
-    } else {
-        setImage(null);
-    }
+        if (oldImage) {
+            setImage(`${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`);
+        } else {
+            setImage(null);
+        }
 
-    setModalOpen(false);
-};
+        setModalOpen(false);
+    };
     const handleDeleteProfileImage = async () => {
         try {
             await deleteUserProfileImage(empId)
@@ -142,13 +142,13 @@ const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
 
         }
     }
-    useEffect(()=>{
-        if(oldImage){
+    useEffect(() => {
+        if (oldImage) {
 
             setImage(existImage)
         }
-    },[oldImage])
-  console.log(existImage,oldImage,image)
+    }, [oldImage])
+    console.log(existImage, oldImage, image)
 
     return (
         <>
@@ -224,9 +224,21 @@ const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
                                         accept="image/*"
                                         onChange={handleImageUpload}
                                     />
+                                    {image && <div
+                                        className="d-flex justify-content-end p-2"
+
+
+                                    >
+                                        <i className="far fa-trash-alt"
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={handleDeleteProfileImage}
+                                        ></i>
+                                    </div>}
+
                                     {image && (
                                         <>
-                                            <div className="crop-container">
+                                            <div className="crop-container" >
+
                                                 <Cropper
                                                     image={image}
                                                     crop={crop}
@@ -257,31 +269,25 @@ const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
                                         </>
 
                                     )}
-                                    {image && (
-                                        <div
-                                            className="col-md-12 mb-4 pb-2"
-                                            style={{ display: "flex", gap: "1rem" }}
+                                    {/* Buttons */}
+                                   {image && <div className="d-flex flex-wrap gap-2 mt-4">
+                                        <Button
+                                            loading={loading}
+                                            text="Save"
+                                            onClick={handleSaveImage}
 
+                                            className="btn btn-primary px-4"
+                                        />
+
+
+                                        <button
+                                            className="btn btn-outline-secondary px-4"
+                                            onClick={handleReset}
                                         >
-                                            <Button
-                                                loading={loading}
-                                                text="Save"
-                                                onClick={handleSaveImage}
-                                                className="btn mybtn"
-                                            />
-                                            {oldImage &&
-                                                <Button
-                                                    loading={deleteLoading}
-                                                    text="Delete Image"
-                                                    onClick={handleDeleteProfileImage}
-                                                    className="btn btn-warning text-white px-4"
-                                                />
-                                            }
-                                            <button className="btn mybtn" onClick={handleReset} >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    )}
+                                            Cancel
+                                        </button>
+                                    </div>}
+
                                 </section>
                             </div>
                         </div>

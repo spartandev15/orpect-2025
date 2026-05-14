@@ -97,7 +97,7 @@ const Layout = ({ children }) => {
   const searchValue = useSelector((state) => state?.dashboardData?.searchValue);
   const user = getFromLocalStorage("user");
   const profileImage = getFromLocalStorage("profileImage");
-
+const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const logoutUser = () => {
     dispatch(logoutUserapi())
       .then((res) => {
@@ -111,26 +111,54 @@ const Layout = ({ children }) => {
       });
   };
 
-  function handleSidebarToggle(event) {
-    event.preventDefault();
 
-    document.body.classList.toggle("sb-sidenav-toggled");
-    localStorage.setItem(
-      "sb|sidebar-toggle",
-      document.body.classList.contains("sb-sidenav-toggled")
-    );
+function handleSidebarToggle(event) {
+  event.preventDefault();
+
+  const toggled = !isSidebarCollapsed;
+
+  setIsSidebarCollapsed(toggled);
+
+  document.body.classList.toggle(
+    "sb-sidenav-toggled",
+    toggled
+  );
+
+  localStorage.setItem(
+    "sb|sidebar-toggle",
+    toggled
+  );
+}
+
+useEffect(() => {
+  const savedSidebarState =
+    localStorage.getItem("sb|sidebar-toggle") === "true";
+
+  setIsSidebarCollapsed(savedSidebarState);
+
+  if (savedSidebarState) {
+    document.body.classList.add("sb-sidenav-toggled");
+  } else {
+    document.body.classList.remove("sb-sidenav-toggled");
   }
-  useEffect(() => {
-    const sidebarToggle = document.body.querySelector("#sidebarToggle");
 
-    if (sidebarToggle) {
-      sidebarToggle.addEventListener("click", handleSidebarToggle);
+  const sidebarToggle =
+    document.body.querySelector("#sidebarToggle");
 
-      return () => {
-        sidebarToggle.removeEventListener("click", handleSidebarToggle);
-      };
-    }
-  }, []);
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener(
+      "click",
+      handleSidebarToggle
+    );
+
+    return () => {
+      sidebarToggle.removeEventListener(
+        "click",
+        handleSidebarToggle
+      );
+    };
+  }
+}, [isSidebarCollapsed]);
 
   const handleSearchInputChange = () => {
     dispatch(setEmpType(""));
@@ -324,7 +352,7 @@ console.log(profileImage,user)
                     }
                     alt=""
                   />:
-                     <div className="firstLetterPic">
+                     <div className={isSidebarCollapsed ? "firstLetterPicSmall":"firstLetterPic"}>
   {user?.company_name?.charAt(0)?.toUpperCase()}
 </div>}
 
