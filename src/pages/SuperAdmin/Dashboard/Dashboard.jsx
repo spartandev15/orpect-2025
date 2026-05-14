@@ -2,16 +2,23 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { useGetDashboardQuery } from '../../../apis/SuperAdmin/dashboard'
 import { currentem, exemploye, nonjoiner, review } from '../../../asset'
+import { getFromLocalStorage } from '../../../helper'
 
 const Dashboard = () => {
   const {data}=useGetDashboardQuery()
-  console.log(data)
+  const user=getFromLocalStorage('user')
+  console.log(user,"data")
   return (
     <div className="dashboardindex">
          
     <div className='row pd-4 viewemployee'>
         <div className='col-lg-12 c_name pd-4'>
-          <h3>Welcome,  </h3>
+        <h3>
+  Welcome,{" "}
+  {user?.fullname
+    ? user.fullname.charAt(0).toUpperCase() + user.fullname.slice(1)
+    : null}
+</h3>
         </div>
        
         <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
