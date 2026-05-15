@@ -115,7 +115,7 @@ const ViewEmployeeAllReview = () => {
                   <div className="linkedinsearch">
                     {i.linked_in && (
                       <a className="" href={i.linked_in}>
-                        <img src={linkedin} alt="linkedin" width="20%" />
+                        <img src={linkedin} alt="linkedin" width="15%" />
                       </a>
                     )}
                   </div>

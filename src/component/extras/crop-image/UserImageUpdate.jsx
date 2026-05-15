@@ -456,14 +456,14 @@ const UserImageUpdate = ({
                                     {/* CROPPER */}
                                     {image && (
                                         <>
-                                           <div
-                        className="position-relative overflow-hidden rounded"
-                        style={{
-                          height: "320px",
-                          width: "100%",
-                          background: "#f8f9fa",
-                        }}
-                      >
+                                            <div
+                                                className="position-relative overflow-hidden rounded"
+                                                style={{
+                                                    height: "320px",
+                                                    width: "100%",
+                                                    background: "#f8f9fa",
+                                                }}
+                                            >
                                                 <Cropper
                                                     image={image}
                                                     crop={crop}
@@ -508,7 +508,7 @@ const UserImageUpdate = ({
                                     {/* BUTTONS */}
                                     {image && (
                                         <div
-                        className="col-md-12 mb-4 pb-2 mt-4"
+                                            className="col-md-12 mb-4 pb-2 mt-4"
                                             style={{
                                                 display: "flex",
                                                 gap: "1rem",

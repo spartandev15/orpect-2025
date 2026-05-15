@@ -161,7 +161,7 @@ const UpdateSuperAdminImage = ({
             className="pic"
             src={existImage}
             alt="profile"
-            // crossOrigin="anonymous"
+          // crossOrigin="anonymous"
           />
         ) : (
           <div className="firstLetterPic">
@@ -186,19 +186,19 @@ const UpdateSuperAdminImage = ({
               {/* HEADER */}
               <div className="modal-header">
                 <h5>Upload Image</h5>
-              
-                                <button
-                                    type="button"
-                                    className="close closebtn"
-                                    onClick={() => {
-                                        handleCloseModal();
-                                        handleReset();
-                                    }}
-                                >
-                                    <span aria-hidden="true">
-                                        &#10006;
-                                    </span>
-                                </button>
+
+                <button
+                  type="button"
+                  className="close closebtn"
+                  onClick={() => {
+                    handleCloseModal();
+                    handleReset();
+                  }}
+                >
+                  <span aria-hidden="true">
+                    &#10006;
+                  </span>
+                </button>
               </div>
 
               {/* BODY */}
@@ -210,22 +210,22 @@ const UpdateSuperAdminImage = ({
                   accept="image/*"
                   onChange={handleImageUpload}
                 />
- {image && (
-                                        <div className="d-flex justify-content-end p-2">
-                                            <i
-                                                className="far fa-trash-alt"
-                                                style={{
-                                                    cursor:
-                                                        "pointer",
-                                                    fontSize:
-                                                        "20px",
-                                                }}
-                                                onClick={
-                                                    handleDeleteProfileImage
-                                                }
-                                            ></i>
-                                        </div>
-                                    )}
+                {image && (
+                  <div className="d-flex justify-content-end p-2">
+                    <i
+                      className="far fa-trash-alt"
+                      style={{
+                        cursor:
+                          "pointer",
+                        fontSize:
+                          "20px",
+                      }}
+                      onClick={
+                        handleDeleteProfileImage
+                      }
+                    ></i>
+                  </div>
+                )}
                 {image && (
                   <>
                     <div className="crop-container">
@@ -243,50 +243,50 @@ const UpdateSuperAdminImage = ({
                     </div>
 
                     <div className="mt-4">
-                                                <input
-                                                    type="range"
-                                                    min={1}
-                                                    max={3}
-                                                    step={0.1}
-                                                    value={zoom}
-                                                    className="zoom-range"
-                                                    onChange={(
-                                                        e
-                                                    ) =>
-                                                        setZoom(
-                                                            e.target
-                                                                .value
-                                                        )
-                                                    }
-                                                />
-                                            </div>
-  {image && (
-                                        <div
-                                   className="col-md-12 mb-4 pb-2 mt-4"
-                                            style={{
-                                                display: "flex",
-                                                gap: "1rem",
-                                            }}
-                                        >
-                                            <Button
-                                                loading={loading}
-                                                text="Save"
-                                                onClick={
-                                                    handleSaveImage
-                                                }
-                                                className="btn mybtn"
-                                            />
+                      <input
+                        type="range"
+                        min={1}
+                        max={3}
+                        step={0.1}
+                        value={zoom}
+                        className="zoom-range"
+                        onChange={(
+                          e
+                        ) =>
+                          setZoom(
+                            e.target
+                              .value
+                          )
+                        }
+                      />
+                    </div>
+                    {image && (
+                      <div
+                        className="col-md-12 mb-4 pb-2 mt-4"
+                        style={{
+                          display: "flex",
+                          gap: "1rem",
+                        }}
+                      >
+                        <Button
+                          loading={loading}
+                          text="Save"
+                          onClick={
+                            handleSaveImage
+                          }
+                          className="btn mybtn"
+                        />
 
-                                            <button
-                                                className="btn mybtn"
-                                                onClick={
-                                                    handleReset
-                                                }
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    )}
+                        <button
+                          className="btn mybtn"
+                          onClick={
+                            handleReset
+                          }
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
                     {/* <div
                       style={{
                         display: "flex",

@@ -18,6 +18,7 @@ import { Input } from "../../../component/Input";
 import { useGetUserByIdQuery, useUpdateUserByIdMutation } from "../../../apis/SuperAdmin/user";
 import UpdateSuperAdminImage from "../../../component/extras/crop-image/UpdateSuperAdminImage";
 import UserUpdateImage from "../../../component/extras/crop-image/UserUpdateImage";
+import UpdateCompanyImage from "../../../component/extras/crop-image/UpdateCompanyImage";
 
 
 const initialValues = {
@@ -170,11 +171,21 @@ console.log(data)
                     oldImage={values?.oldImage}
                     setLoading={setLoading}
                   /> */}
-                    <UserUpdateImage
+                    <UpdateCompanyImage
+                                                        empId={profile?.id}
+                                                        oldImage={values?.oldImage}
+                                                      //  setLoading={setLoading}
+                                                          // handleDeleteProfileImage={handleDeleteProfileImage}
+                                                          name={profile?.fullname}
+                                                          
+                                                          // deleteLoading={deleteLoading}
+                                                      />
+                    {/* <UserUpdateImage
                                   empId={id}
                                       oldImage={values?.oldImage}
+                                      name={profile?.fullname}
                              
-                                    />
+                                    /> */}
                 </div>
                 <div
                   className="profileimgboxdetail"

@@ -341,7 +341,7 @@ const SearchEmployeeTable = () => {
                         <th style={{ background: "#e1e9ed" }}>Employee Type</th>
                         <th style={{ background: "#e1e9ed" }}>Company</th>
                         <th style={{ background: "#e1e9ed" }}>Date of List</th>
-                        <th className="sticky-column-last" style={{ background: "#e1e9ed" }}>Action</th>
+                        <th className="sticky-column-last" style={{ background: "#e1e9ed",textAlign:'center' }}>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -355,10 +355,10 @@ const SearchEmployeeTable = () => {
                           <td>{i.employee_type}</td>
                           <td>{i.company_name}</td>
                           <td>{i.added_on}</td>
-                          <td className="sticky-column-last">
-                            <Link to={`/view-search-employee/${i.id}`} style={{ textDecoration: "none" }}>
-                              <button type="button" className="btn act_btn_v">
-                                <i className="fas fa-eye eye-cs"></i>
+                          <td className="sticky-column-last" style={{textAlign:'center'}}>
+                            <Link to={`/view-search-employee/${i.id}`} style={{ textDecoration: "none" ,textAlign:'center'}}>
+                              <button type="button" className="btn act_btn_v" >
+                                <i className="fas fa-eye eye-cs" ></i>
                               </button>
                             </Link>
                           </td>

@@ -234,7 +234,7 @@ const ViewSearchEmployee = () => {
                       style={{ fontSize: "18px" }}
                     >
                       <span>
-                        <b>Profile Added by -</b>
+                        <b>Profile Added by - </b>
                       </span>
 
                       <span className="hoverable">
@@ -280,7 +280,7 @@ const ViewSearchEmployee = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <img src={linkedin} alt="linkedin" />
+                          <img src={linkedin} alt="linkedin" width="15%" />
                         </a>
                       </RenderIf>
                     </div>
