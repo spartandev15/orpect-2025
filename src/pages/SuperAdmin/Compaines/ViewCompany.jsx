@@ -258,7 +258,7 @@ const Validation = yup.object().shape({
                                       empId={profile?.id}
                                       oldImage={values?.image}
                                      setLoading={setLoading}
-                                        handleDeleteProfileImage={handleDeleteProfileImage}
+                                        // handleDeleteProfileImage={handleDeleteProfileImage}
                                         name={profile?.full_name}
                                         
                                         // deleteLoading={deleteLoading}
