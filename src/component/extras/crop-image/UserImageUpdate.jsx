@@ -1,209 +1,413 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { getFromLocalStorage, removeFromLocalStorage, setToLocalStorage } from "../../../helper";
-import axios from "axios";
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
+
 import Cropper from "react-easy-crop";
 import { toast } from "react-toastify";
+
 import Button from "../../Button";
+
 import "../../../asset/css/cropImage.css";
-import { uploadProfile } from "../../../asset";
-import { BASE_URL, IMAGE_BASE_URL_WITH_SLASH } from "../../../api/baseUrl";
-import { useDeleteUserProfileImageMutation, useUpdateUserImageMutation } from "../../../apis/employee";
-const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
-    const [deleteUserProfileImage] = useDeleteUserProfileImageMutation()
-    const existImage = `${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`
-    const [image, setImage] = useState(oldImage ? existImage : null);
-    const [crop, setCrop] = useState({ x: 0, y: 0 });
-    const [zoom, setZoom] = useState(1);
-    const [loading, setLoading] = useState(false);
-    const [cropedImage, setCropedImage] = useState(null);
-    const [modalOpen, setModalOpen] = useState(false);
-    const bearerToken = getFromLocalStorage("token");
-    const [updateUserImage] = useUpdateUserImageMutation()
+
+import {
+    IMAGE_BASE_URL_WITH_SLASH,
+} from "../../../api/baseUrl";
+
+import {
+    useDeleteUserProfileImageMutation,
+    useUpdateUserImageMutation,
+} from "../../../apis/employee";
+
+const UserImageUpdate = ({
+    oldImage,
+    empId,
+    name,
+}) => {
+    const [deleteUserProfileImage] =
+        useDeleteUserProfileImageMutation();
+
+    const [updateUserImage] =
+        useUpdateUserImageMutation();
+
+    // =========================
+    // IMAGE URL FIX
+    // =========================
+    const existImage = oldImage
+        ? `${IMAGE_BASE_URL_WITH_SLASH}/${oldImage}`.replace(
+            /([^:]\/)\/+/g,
+            "$1"
+        )
+        : null;
+
+    // =========================
+    // STATES
+    // =========================
+    const [image, setImage] =
+        useState(existImage);
+
+    const [crop, setCrop] =
+        useState({
+            x: 0,
+            y: 0,
+        });
+
+    const [zoom, setZoom] =
+        useState(1);
+
+    const [loading, setLoading] =
+        useState(false);
+
+    const [modalOpen, setModalOpen] =
+        useState(false);
+
+    const [
+        croppedAreaPixels,
+        setCroppedAreaPixels,
+    ] = useState(null);
+
+    // =========================
+    // OPEN MODAL
+    // =========================
     const handleOpenModal = () => {
         setModalOpen(true);
     };
 
+    // =========================
+    // CLOSE MODAL
+    // =========================
     const handleCloseModal = () => {
         setModalOpen(false);
-
     };
 
-    const onCropComplete = useCallback(
-        (croppedArea, croppedAreaPixels) => {
-            // Generate cropped image file
-            const canvas = document.createElement("canvas");
-            const img = document.createElement("img");
-            img.src = image;
-            canvas.width = croppedAreaPixels.width;
-            canvas.height = croppedAreaPixels.height;
-            const ctx = canvas.getContext("2d");
-            ctx.drawImage(
-                img,
-                croppedAreaPixels.x,
-                croppedAreaPixels.y,
-                croppedAreaPixels.width,
-                croppedAreaPixels.height,
-                0,
-                0,
-                croppedAreaPixels.width,
-                croppedAreaPixels.height
-            );
-            canvas.toBlob((blob) => {
-                const modifiedBlob = new File([blob], "cropped-image.png", {
-                    type: blob.type,
-                });
+    // =========================
+    // CROP COMPLETE
+    // =========================
+    const onCropComplete =
+        useCallback(
+            (
+                croppedArea,
+                croppedPixels
+            ) => {
+                setCroppedAreaPixels(
+                    croppedPixels
+                );
+            },
+            []
+        );
 
-                // Create an object with blob and properties
-                const blobWithInfo = {
-                    blob: modifiedBlob,
-                    name: modifiedBlob.name,
-                    size: modifiedBlob.size,
-                    type: modifiedBlob.type,
-                    lastModifiedDate: modifiedBlob.lastModifiedDate,
-                    lastModified: modifiedBlob.lastModified,
-                };
-                setCropedImage(blobWithInfo);
-            }, "image/png");
-        },
-        [image]
-    );
+    // =========================
+    // IMAGE UPLOAD
+    // =========================
+    const handleImageUpload = (
+        event
+    ) => {
+        const file =
+            event.target.files[0];
 
-    const handleImageUpload = (event) => {
-        const file = event.target.files[0];
-        const reader = new FileReader();
+        if (!file) return;
+
+        // SIZE VALIDATION
         if (file.size > 2048 * 1024) {
-            // File size exceeds 2048 kilobytes (2 megabytes)
-            toast.error("Image size must not exceed 2MB");
+            toast.error(
+                "Image size must not exceed 2MB"
+            );
             return;
         }
+
+        const reader =
+            new FileReader();
+
         reader.onload = () => {
             setImage(reader.result);
         };
+
         reader.readAsDataURL(file);
     };
 
-    const handleSaveImage = async () => {
-        setLoading(true);
-        const formData = new FormData();
-        formData.append("image", cropedImage?.blob);
-        formData.append("oldImageName", oldImage);
-        formData.append("status", "profile_imageupdate");
-        formData.append("id", empId);
+    // =========================
+    // CREATE CROPPED IMAGE
+    // =========================
+    const createCroppedImage =
+        async () => {
+            try {
+                const canvas =
+                    document.createElement(
+                        "canvas"
+                    );
 
+                const ctx =
+                    canvas.getContext("2d");
 
+                const img = new Image();
 
+                // IMPORTANT FOR CORS
+                img.crossOrigin =
+                    "anonymous";
 
-        try {
-            // await updateAdminImage({id:empId,formData})
-            const response = await updateUserImage(formData).unwrap();
-            //  removeFromLocalStorage("user");
-            //     setToLocalStorage("user", response?.superadmin_data);
-            // await axios.post(
-            //   `${BASE_URL}/updateEmployeeImage/${empId}`,
-            //   formData,
-            //   {
-            //     headers: {
-            //       Authorization: `Bearer ${bearerToken}`,
-            //     },
-            //   }
-            // );
-            setImage(null)
-            setLoading(false);
-            toast.success("Successfully updated");
-            handleReset()
-            handleCloseModal();
-            // window.location.reload();
-        } catch (error) {
-            setLoading(false);
-            toast.error(error?.response?.data.message);
-        }
-    };
+                img.src = image;
 
+                await new Promise(
+                    (resolve, reject) => {
+                        img.onload = resolve;
+                        img.onerror = reject;
+                    }
+                );
+
+                canvas.width =
+                    croppedAreaPixels.width;
+
+                canvas.height =
+                    croppedAreaPixels.height;
+
+                ctx.drawImage(
+                    img,
+                    croppedAreaPixels.x,
+                    croppedAreaPixels.y,
+                    croppedAreaPixels.width,
+                    croppedAreaPixels.height,
+                    0,
+                    0,
+                    croppedAreaPixels.width,
+                    croppedAreaPixels.height
+                );
+
+                return new Promise(
+                    (resolve) => {
+                        canvas.toBlob(
+                            (blob) => {
+                                if (!blob) {
+                                    resolve(null);
+                                    return;
+                                }
+
+                                const file =
+                                    new File(
+                                        [blob],
+                                        "cropped-image.png",
+                                        {
+                                            type:
+                                                "image/png",
+                                        }
+                                    );
+
+                                resolve(file);
+                            },
+                            "image/png",
+                            1
+                        );
+                    }
+                );
+            } catch (error) {
+                console.log(error);
+
+                toast.error(
+                    "Failed to crop image"
+                );
+
+                return null;
+            }
+        };
+
+    // =========================
+    // SAVE IMAGE
+    // =========================
+    const handleSaveImage =
+        async () => {
+            try {
+                setLoading(true);
+
+                const croppedFile =
+                    await createCroppedImage();
+
+                if (!croppedFile) {
+                    setLoading(false);
+                    return;
+                }
+
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "image",
+                    croppedFile
+                );
+
+                formData.append(
+                    "oldImageName",
+                    oldImage || ""
+                );
+
+                formData.append(
+                    "status",
+                    "profile_imageupdate"
+                );
+
+                formData.append(
+                    "id",
+                    empId
+                );
+
+                await updateUserImage(
+                    formData
+                ).unwrap();
+
+                toast.success(
+                    "Successfully updated"
+                );
+
+                setLoading(false);
+
+                handleReset();
+
+                handleCloseModal();
+            } catch (error) {
+                console.log(error);
+
+                setLoading(false);
+
+                toast.error(
+                    error?.data?.message ||
+                    "Image update failed"
+                );
+            }
+        };
+
+    // =========================
+    // RESET
+    // =========================
     const handleReset = () => {
-        setCrop({ x: 0, y: 0 });
-        setZoom(1);
-        setCropedImage(null);
+        setCrop({
+            x: 0,
+            y: 0,
+        });
 
-        if (oldImage) {
-            setImage(`${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`);
+        setZoom(1);
+
+        setCroppedAreaPixels(
+            null
+        );
+
+        if (existImage) {
+            setImage(existImage);
         } else {
             setImage(null);
         }
 
         setModalOpen(false);
     };
-    const handleDeleteProfileImage = async () => {
-        try {
-            await deleteUserProfileImage(empId)
 
-            handleReset()
-            handleCloseModal();
-        } catch (error) {
+    // =========================
+    // DELETE IMAGE
+    // =========================
+    const handleDeleteProfileImage =
+        async () => {
+            try {
+                await deleteUserProfileImage(
+                    empId
+                ).unwrap();
 
-        }
-    }
+                toast.success(
+                    "Profile image deleted"
+                );
+
+                setImage(null);
+
+                handleCloseModal();
+            } catch (error) {
+                console.log(error);
+
+                toast.error(
+                    "Delete failed"
+                );
+            }
+        };
+
+    // =========================
+    // UPDATE IMAGE
+    // =========================
     useEffect(() => {
-        if (oldImage) {
-
-            setImage(existImage)
+        if (existImage) {
+            setImage(existImage);
         }
-    }, [oldImage])
-    console.log(existImage, oldImage, image)
+    }, [existImage]);
+
+    console.log(
+        "OLD IMAGE =>",
+        oldImage
+    );
+
+    console.log(
+        "EXIST IMAGE =>",
+        existImage
+    );
 
     return (
         <>
-            <div className="pic-holder" onClick={handleOpenModal}>
-                {oldImage ?
-
+            {/* PROFILE IMAGE */}
+            <div
+                className="pic-holder"
+                onClick={handleOpenModal}
+            >
+                {image ? (
                     <img
                         className="pic"
-                        src={`${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`}
+                        src={image}
                         alt="profile"
+                        // crossOrigin="anonymous"
+                        onError={() => {
+                            console.log(
+                                "IMAGE LOAD FAILED =>",
+                                image
+                            );
+                        }}
                     />
-                    :
+                ) : (
                     <div className="firstLetterPic">
-                        {name?.charAt(0)?.toUpperCase()}
+                        {name
+                            ?.charAt(0)
+                            ?.toUpperCase()}
                     </div>
-                }
-                {/* <img
-          className="pic"
-          src={
-            oldImage?
-            `${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`
-            :uploadProfile
-          }
-          alt="profile" 
-        /> */}
-                <label htmlFor="newProfilePhoto" className="upload-file-block">
+                )}
+
+                <label className="upload-file-block">
                     <div className="text-center">
                         <div className="mb-2">
                             <i className="fa fa-camera fa-2x"></i>
                         </div>
+
                         <div className="text-uppercase">
-                            Update <br /> Profile Photo
+                            Update
+                            <br />
+                            Profile Photo
                         </div>
                     </div>
                 </label>
             </div>
 
-            {/* Modal */}
+            {/* MODAL */}
             {modalOpen && (
                 <div
-                    className="modal show"
-                    tabIndex="-1"
-                    role="dialog"
+                    className="modal fade show"
                     style={{
                         display: "block",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)",
+                        backgroundColor: "rgba(0,0,0,0.6)",
                         zIndex: 9999,
                     }}
                 >
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLabel">
+                    <div
+                        className="modal-dialog modal-dialog-centered modal-md"
+                        role="document"
+                    >
+                        <div className="modal-content border-0 shadow-lg"
+                            style={{ borderRadius: "16px" }}>
+                            {/* HEADER */}
+                            <div className="modal-header border-0 pb-0">
+                                <h5 className="modal-title fw-bold">
                                     Upload Image
                                 </h5>
+
                                 <button
                                     type="button"
                                     className="close closebtn"
@@ -212,82 +416,123 @@ const UserImageUpdate = ({ oldImage, empId, name, deleteLoading }) => {
                                         handleReset();
                                     }}
                                 >
-                                    <span aria-hidden="true">&#10006;</span>
+                                    <span aria-hidden="true">
+                                        &#10006;
+                                    </span>
                                 </button>
                             </div>
 
+                            {/* BODY */}
                             <div className="modal-body">
                                 <section>
+                                    {/* FILE INPUT */}
                                     <input
                                         className="form-control"
                                         type="file"
                                         accept="image/*"
-                                        onChange={handleImageUpload}
+                                        onChange={
+                                            handleImageUpload
+                                        }
                                     />
-                                    {image && <div
-                                        className="d-flex justify-content-end p-2"
 
+                                    {/* DELETE ICON */}
+                                    {image && (
+                                        <div className="d-flex justify-content-end p-2">
+                                            <i
+                                                className="far fa-trash-alt"
+                                                style={{
+                                                    cursor:
+                                                        "pointer",
+                                                    fontSize:
+                                                        "20px",
+                                                }}
+                                                onClick={
+                                                    handleDeleteProfileImage
+                                                }
+                                            ></i>
+                                        </div>
+                                    )}
 
-                                    >
-                                        <i className="far fa-trash-alt"
-                                            style={{ cursor: 'pointer' }}
-                                            onClick={handleDeleteProfileImage}
-                                        ></i>
-                                    </div>}
-
+                                    {/* CROPPER */}
                                     {image && (
                                         <>
-                                            <div className="crop-container" >
-
+                                           <div
+                        className="position-relative overflow-hidden rounded"
+                        style={{
+                          height: "320px",
+                          width: "100%",
+                          background: "#f8f9fa",
+                        }}
+                      >
                                                 <Cropper
                                                     image={image}
                                                     crop={crop}
                                                     zoom={zoom}
                                                     aspect={1}
-                                                    onCropChange={setCrop}
-                                                    onCropComplete={onCropComplete}
-                                                    onZoomChange={setZoom}
-                                                    cropShape="round" // Set cropSha e to 'round'
-                                                    showGrid={false} // Optionally hide the grid lines
+                                                    cropShape="round"
+                                                    showGrid={false}
+                                                    onCropChange={
+                                                        setCrop
+                                                    }
+                                                    onZoomChange={
+                                                        setZoom
+                                                    }
+                                                    onCropComplete={
+                                                        onCropComplete
+                                                    }
                                                 />
                                             </div>
 
-                                            <div className="controls">
+                                            {/* ZOOM */}
+                                            <div className="mt-4">
                                                 <input
                                                     type="range"
-                                                    value={zoom}
                                                     min={1}
                                                     max={3}
                                                     step={0.1}
-                                                    aria-labelledby="Zoom"
-                                                    onChange={(e) => {
-                                                        setZoom(e.target.value);
-                                                    }}
+                                                    value={zoom}
                                                     className="zoom-range"
+                                                    onChange={(
+                                                        e
+                                                    ) =>
+                                                        setZoom(
+                                                            e.target
+                                                                .value
+                                                        )
+                                                    }
                                                 />
                                             </div>
                                         </>
-
                                     )}
-                                    {/* Buttons */}
-                                   {image && <div className="d-flex flex-wrap gap-2 mt-4">
-                                        <Button
-                                            loading={loading}
-                                            text="Save"
-                                            onClick={handleSaveImage}
 
-                                            className="btn btn-primary px-4"
-                                        />
-
-
-                                        <button
-                                            className="btn btn-outline-secondary px-4"
-                                            onClick={handleReset}
+                                    {/* BUTTONS */}
+                                    {image && (
+                                        <div
+                        className="col-md-12 mb-4 pb-2 mt-4"
+                                            style={{
+                                                display: "flex",
+                                                gap: "1rem",
+                                            }}
                                         >
-                                            Cancel
-                                        </button>
-                                    </div>}
+                                            <Button
+                                                loading={loading}
+                                                text="Save"
+                                                onClick={
+                                                    handleSaveImage
+                                                }
+                                                className="btn mybtn"
+                                            />
 
+                                            <button
+                                                className="btn mybtn"
+                                                onClick={
+                                                    handleReset
+                                                }
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    )}
                                 </section>
                             </div>
                         </div>
