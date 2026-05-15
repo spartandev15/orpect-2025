@@ -95,6 +95,7 @@ console.log(notifications)
   const superAdminToken = getFromLocalStorage("superAdmintoken");
   const regularToken = getFromLocalStorage("token");
   
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   
 
   // Check if current route matches submenu items and open submenu accordingly
@@ -126,26 +127,53 @@ console.log(notifications)
       });
   };
 
-  function handleSidebarToggle(event) {
-    event.preventDefault();
+function handleSidebarToggle(event) {
+  event.preventDefault();
 
-    document.body.classList.toggle("sb-sidenav-toggled");
-    localStorage.setItem(
-      "sb|sidebar-toggle",
-      document.body.classList.contains("sb-sidenav-toggled")
-    );
+  const toggled = !isSidebarCollapsed;
+
+  setIsSidebarCollapsed(toggled);
+
+  document.body.classList.toggle(
+    "sb-sidenav-toggled",
+    toggled
+  );
+
+  localStorage.setItem(
+    "sb|sidebar-toggle",
+    toggled
+  );
+}
+
+useEffect(() => {
+  const savedSidebarState =
+    localStorage.getItem("sb|sidebar-toggle") === "true";
+
+  setIsSidebarCollapsed(savedSidebarState);
+
+  if (savedSidebarState) {
+    document.body.classList.add("sb-sidenav-toggled");
+  } else {
+    document.body.classList.remove("sb-sidenav-toggled");
   }
-  useEffect(() => {
-    const sidebarToggle = document.body.querySelector("#sidebarToggle");
 
-    if (sidebarToggle) {
-      sidebarToggle.addEventListener("click", handleSidebarToggle);
+  const sidebarToggle =
+    document.body.querySelector("#sidebarToggle");
 
-      return () => {
-        sidebarToggle.removeEventListener("click", handleSidebarToggle);
-      };
-    }
-  }, []);
+  if (sidebarToggle) {
+    sidebarToggle.addEventListener(
+      "click",
+      handleSidebarToggle
+    );
+
+    return () => {
+      sidebarToggle.removeEventListener(
+        "click",
+        handleSidebarToggle
+      );
+    };
+  }
+}, [isSidebarCollapsed]);
   useEffect(()=>{
 
   },[])
@@ -319,7 +347,7 @@ if (!superAdminToken) {
                                       }
                                       alt=""
                                     />:
-                                       <div className="firstLetterPic">
+                     <div className={isSidebarCollapsed ? "firstLetterPicSmall":"firstLetterPic"}>
                     {user?.fullname?.charAt(0)?.toUpperCase()}
                   </div>}
                   <p>{user?.fullname}</p>
