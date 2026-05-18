@@ -9,7 +9,7 @@ import { linkedin, orpect1, uploadProfile } from "../../asset";
 import { IMAGE_BASE_URL_WITH_SLASH } from "../../api/baseUrl";
 
 const ViewEmployeeAllReview = () => {
-  debugger;
+  
   const [loading, setLoading] = useState(true);
   const [employee, setEmployee] = useState(null);
   const dispatch = useDispatch();
@@ -89,7 +89,7 @@ const ViewEmployeeAllReview = () => {
                 <div className="col-lg-6 col-md-5">
                   <div className="companyreview " style={{ fontSize: "18px" }}>
                     <span>
-                      <b>Profile Added by -</b>
+                      <b>Profile Added by - </b>
                     </span>
                     <span className="hoverable">
                       <span className="companynamereview hoverable__main">

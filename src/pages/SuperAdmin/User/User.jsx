@@ -114,7 +114,7 @@ const User = () => {
                           </button>
                         </Link>
                         &nbsp;&nbsp;
-                        <DeleteTableUser id={admin?.sid} onDeleteSuccess={refetch} />
+                        <DeleteTableUser id={admin?.id} onDeleteSuccess={refetch} />
                       </td>
                     </tr>
                   ))

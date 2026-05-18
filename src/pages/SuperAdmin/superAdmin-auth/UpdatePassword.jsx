@@ -50,7 +50,6 @@ const UpdateAdminPassword = () => {
         toast.success("Password updated");
         navigate("/super-admin/profile");
       } catch (err) {
-        debugger;
         toast.error(err?.data?.message || "Something went wrong");
       } finally {
         setLoading(false);

@@ -40,7 +40,7 @@ const ViewUser = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [status, setStatus] = useState("profile");
-
+  const [isTrue,setTrue]=useState(false)
   const [showInfoForm, setShowInfoForm] = useState(false);
   const [showAddressForm, setShowAddressForm] = useState(false);
     const { id } = useParams();
@@ -145,7 +145,12 @@ console.log(data)
     const state = states.find((s) => s.isoCode === stateId);
     setSelectedState(state);
   };
+  useEffect(()=>{
+   if(isTrue){
+    refetch()
+   }
 
+  },[isTrue])
   const renderValue = (value, fallback = "---") => (value ? value : fallback);
 
   if (!profile) {
@@ -177,7 +182,7 @@ console.log(data)
                                                       //  setLoading={setLoading}
                                                           // handleDeleteProfileImage={handleDeleteProfileImage}
                                                           name={profile?.fullname}
-                                                          
+                                                          setTrue={setTrue}
                                                           // deleteLoading={deleteLoading}
                                                       />
                     {/* <UserUpdateImage

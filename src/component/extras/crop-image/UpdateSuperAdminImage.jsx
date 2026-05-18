@@ -168,7 +168,16 @@ const UpdateSuperAdminImage = ({
             {name?.charAt(0)?.toUpperCase()}
           </div>
         )}
+          <label className="upload-file-block">
+          <div className="text-center">
+            <i className="fa fa-camera fa-2x mb-2"></i>
+            <div className="text-uppercase">
+              Update <br /> Profile Photo
+            </div>
+          </div>
+        </label>
       </div>
+
 
       {/* MODAL */}
       {modalOpen && (

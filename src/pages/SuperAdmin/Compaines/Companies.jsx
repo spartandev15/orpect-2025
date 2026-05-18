@@ -77,13 +77,13 @@ const handleFormatChange = (e) => {
            
                 <div style={{ position: 'relative' }}>
                     <select
-                      style={{width:'100px'}}
+                      style={{width:'150px'}}
                         className="form-control main_inner_dropdown"
                         defaultValue=""
                         onChange={handleFormatChange}
                         disabled={isLoading}
                     >
-                        <option value=" ">Select</option>
+                        <option value=" ">Account Status</option>
                         <option value="1">Verified</option>
                         <option value="0">Unverified</option>
                     </select>

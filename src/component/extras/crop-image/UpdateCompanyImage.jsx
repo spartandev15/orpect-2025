@@ -12,6 +12,7 @@ const UpdateCompanyImage = ({
   empId,
   name,
   deleteLoading,
+  setTrue
 }) => {
   const existImage = oldImage
     ? `${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`
@@ -129,7 +130,7 @@ const UpdateCompanyImage = ({
 
     try {
       setLoading(true);
-
+        setTrue(false)
       const formData = new FormData();
       formData.append("image", croppedFile.blob);
       formData.append("oldImageName", oldImage);
@@ -139,7 +140,7 @@ const UpdateCompanyImage = ({
       await updateCompanyImage(formData).unwrap();
 
       toast.success("Image updated successfully");
-
+      setTrue(true)
       handleReset();
       handleCloseModal();
     } catch (error) {
