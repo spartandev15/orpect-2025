@@ -11,7 +11,6 @@ export const employeeApi = api.injectEndpoints({
           if (page) url += `&page=${page}`;
           if (searchText) url += `&searchText=${searchText}`;
           if (position) url += `&position=${position}`;
-        debugger
           return url;
         },
         providesTags: ['CurrentEmployee'],

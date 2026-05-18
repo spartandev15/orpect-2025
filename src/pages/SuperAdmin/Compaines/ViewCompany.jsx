@@ -261,6 +261,7 @@ const Validation = yup.object().shape({
                                         // handleDeleteProfileImage={handleDeleteProfileImage}
                                         name={profile?.full_name}
                                         
+                                        
                                         // deleteLoading={deleteLoading}
                                     />
                 </div>

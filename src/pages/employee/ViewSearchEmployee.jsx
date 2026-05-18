@@ -280,7 +280,7 @@ const ViewSearchEmployee = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                         >
-                          <img src={linkedin} alt="linkedin" width="15%" />
+                          <img src={linkedin} alt="linkedin" width="10%" />
                         </a>
                       </RenderIf>
                     </div>
