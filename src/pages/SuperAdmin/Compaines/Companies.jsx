@@ -37,7 +37,9 @@ const Companies = () => {
       const response = await accountVerified(id).unwrap();
       if (response?.status === "error") {
         toast.error(response?.message || "Failed to verify company");
-      } else {
+      }else   if (response?.status) {
+        toast.success(response?.message || "Company has been successfully verified");
+      }  else {
         toast.success("Company has been successfully verified.");
         refetch();
       }
