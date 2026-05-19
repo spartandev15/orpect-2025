@@ -12,7 +12,8 @@ const UpdateCompanyImage = ({
   empId,
   name,
   deleteLoading,
-  setTrue
+  setTrue = () => {}
+  // setTrue
 }) => {
   const existImage = oldImage
     ? `${IMAGE_BASE_URL_WITH_SLASH}${oldImage}`
@@ -127,10 +128,10 @@ const UpdateCompanyImage = ({
       toast.error("Please crop image first");
       return;
     }
+        setTrue(false)
 
     try {
       setLoading(true);
-        setTrue(false)
       const formData = new FormData();
       formData.append("image", croppedFile.blob);
       formData.append("oldImageName", oldImage);
