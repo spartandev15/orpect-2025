@@ -93,6 +93,8 @@ const EmployeeCropImage = ({ getImageValue, setFieldValue }) => {
     setCrop({ x: 0, y: 0 });
     setZoom(1);
     setCropedImage(null);
+    setModalOpen(false);
+
   };
 
   return (
@@ -152,7 +154,7 @@ const EmployeeCropImage = ({ getImageValue, setFieldValue }) => {
               <div className="modal-body">
                 <section>
                   <input
-                    className="form-control"
+                    className="form-control mb-4"
                     type="file"
                     accept="image/*"
                     onChange={handleImageUpload}
@@ -189,7 +191,7 @@ const EmployeeCropImage = ({ getImageValue, setFieldValue }) => {
                   )}
                   {image && (
                     <div
-                      className="col-md-12 mb-4"
+                      className="col-md-12 mb-4 mt-4"
                       style={{ display: "flex", gap: "1rem" }}
                     >
                       <Button
