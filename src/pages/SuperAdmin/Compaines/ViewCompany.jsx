@@ -33,6 +33,7 @@ const initialValues = {
   company_social_link: "", 
   company_country: "", 
   company_state: "", 
+  is_admin:""
 };
 
 const ViewCompany = () => {
@@ -118,6 +119,8 @@ const Validation = yup.object().shape({
       setFieldValue("registration_number", companyData?.registration_number || "");
       setFieldValue("company_social_link", companyData?.company_social_link || "");
       setFieldValue("image", companyData?.image || "");
+      setFieldValue("is_admin", companyData?.is_admin || "");
+
       
       // Set country and state for selectors
       if (companyData?.company_country) {
@@ -255,6 +258,7 @@ const Validation = yup.object().shape({
                     name={profile?.full_name}
                   /> */}
                   <UpdateCompanyImage
+                                       is_admin={profile?.is_admin}
                                       empId={profile?.id}
                                       oldImage={values?.image}
                                      setLoading={setLoading}

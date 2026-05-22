@@ -150,6 +150,7 @@ const UpdateSuperAdminImage = ({
     setImage(existImage);
     setCrop({ x: 0, y: 0 });
     setZoom(1);
+    setModalOpen(false)
   };
 
   return (
