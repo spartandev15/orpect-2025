@@ -111,7 +111,7 @@ const NotificationList = () => {
                       <td className="sticky-column-1 column-1">{notification.title}</td>
                       <td>
                         <button
-                          className={`btn ${notification.is_read ? "btn-success" : "btn-danger"}`}
+                          className={`btn ${notification.is_read === "1"? "btn-success" : "btn-danger"}`}
                           onClick={async () => {
                             try {
                               await isReadNotificationById({ notification_id: notification.id }).unwrap();
@@ -121,7 +121,7 @@ const NotificationList = () => {
                             }
                           }}
                         >
-                          {notification.is_read ? "Read" : "Unread"}
+                          {notification.is_read === "1" ? "Read" : "Unread"}
                         </button>
                       </td>
                       <td>{new Date(notification.created_at).toLocaleString()}</td>

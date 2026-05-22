@@ -32,6 +32,7 @@ const initialValues = {
   postal_code: "",
   image: null,
   oldImage: null,
+  is_admin:''
 };
 
 const ViewUser = () => {
@@ -43,7 +44,7 @@ const ViewUser = () => {
   const [isTrue,setTrue]=useState(false)
   const [showInfoForm, setShowInfoForm] = useState(false);
   const [showAddressForm, setShowAddressForm] = useState(false);
-    const { id } = useParams();
+  const { id } = useParams();
   const { data, refetch } = useGetUserByIdQuery(id);
   const [updateUserById] = useUpdateUserByIdMutation();
 console.log(data)
@@ -113,6 +114,7 @@ console.log(data)
     values.country = data?.country;
     values.postal_code = data?.postal_code;
     values.oldImage = data?.image;
+    values.is_admin = data?.is_admin
   };
 
   const countries = Country.getAllCountries();
@@ -177,6 +179,7 @@ console.log(data)
                     setLoading={setLoading}
                   /> */}
                     <UpdateCompanyImage
+                                       is_admin={values?.is_admin}
                                                         empId={profile?.id}
                                                         oldImage={values?.oldImage}
                                                       //  setLoading={setLoading}

@@ -12,6 +12,7 @@ const UpdateCompanyImage = ({
   empId,
   name,
   deleteLoading,
+  is_admin,
   setTrue = () => {}
   // setTrue
 }) => {
@@ -137,6 +138,8 @@ const UpdateCompanyImage = ({
       formData.append("oldImageName", oldImage);
       formData.append("status", "profile_imageupdate");
       formData.append("id", empId);
+      formData.append("is_admin", is_admin);
+
 
       await updateCompanyImage(formData).unwrap();
 
@@ -184,6 +187,8 @@ const UpdateCompanyImage = ({
                     setImage(existImage);
                 }
             }, [existImage]);
+
+            console.log(is_admin)
   return (
     <>
       {/* PROFILE IMAGE */}
