@@ -36,6 +36,10 @@ const User = () => {
     setCurrentPage(1);
   }, [debouncedSearch]);
 
+
+  useEffect(()=>{
+        refetch()
+  },[refetch])
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
   };

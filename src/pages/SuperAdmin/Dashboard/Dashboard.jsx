@@ -49,7 +49,16 @@ const Dashboard = () => {
             </div>
           </div></Link>
         </div>
-        <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
+           <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
+                    <Link to="/super-admin/data-request" className="cardtag"> <div className="card  ">
+                      <img src={review} className="card1 img-fluid" alt='' />
+                      <div className="os-inner-col">
+                        <h4 className="blue-violet"> Data Request</h4>
+                        <h5 className="blue-violet_text">{data?.totalDataRequest || 0}</h5>
+                      </div>
+                    </div></Link>
+                  </div>
+        {/* <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
          <Link to="#" className="cardtag"> <div className="card  ">
           <img src={review} className="card1 img-fluid" alt='' />
             <div className="os-inner-col">
@@ -58,7 +67,7 @@ const Dashboard = () => {
               
             </div>
           </div></Link>
-        </div>
+        </div> */}
       </div>
 
       
