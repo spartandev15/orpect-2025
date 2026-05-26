@@ -13,7 +13,7 @@ const UpdateCompanyImage = ({
   name,
   deleteLoading,
   is_admin,
-  setTrue = () => {}
+  setTrue = () => { }
   // setTrue
 }) => {
   const existImage = oldImage
@@ -28,7 +28,7 @@ const UpdateCompanyImage = ({
   const [modalOpen, setModalOpen] = useState(false);
 
   const [updateCompanyImage] = useUpdateCompanyImageMutation();
-   const [deleteCompanyProfileImage]=useDeleteCompanyProfileImageMutation()
+  const [deleteCompanyProfileImage] = useDeleteCompanyProfileImageMutation()
 
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
@@ -129,7 +129,7 @@ const UpdateCompanyImage = ({
       toast.error("Please crop image first");
       return;
     }
-        setTrue(false)
+    setTrue(false)
 
     try {
       setLoading(true);
@@ -162,33 +162,44 @@ const UpdateCompanyImage = ({
     setCroppedFile(null);
     setModalOpen(false)
   };
-    const handleDeleteProfileImage =
-        async () => {
-            try {
-                await deleteCompanyProfileImage(empId).unwrap();
+  const handleDeleteProfileImage = async () => {
+    try {
+      if (!empId) {
+        toast.error("Employee ID is missing");
+        return;
+      }
 
-                toast.success(
-                    "Profile image deleted"
-                );
+      const payload = {
+        empId,
+        is_admin,
+      };
 
-                setImage(null);
+      const response = await deleteCompanyProfileImage(payload).unwrap();
 
-                handleCloseModal();
-            } catch (error) {
-                console.log(error);
+      toast.success(response?.message || "Profile image deleted successfully");
 
-                toast.error(
-                    "Delete failed"
-                );
-            }
-        };
-           useEffect(() => {
-                if (existImage) {
-                    setImage(existImage);
-                }
-            }, [existImage]);
+      // Clear local image state
+      setImage(null);
 
-            console.log(is_admin)
+      // Optional: clear old image state if you have one
+      // setOldImage("");
+
+      handleCloseModal();
+    } catch (error) {
+      console.error("Delete Profile Image Error:", error);
+
+      toast.error(
+        error?.data?.message || "Failed to delete profile image"
+      );
+    }
+  };
+  useEffect(() => {
+    if (existImage) {
+      setImage(existImage);
+    }
+  }, [existImage]);
+
+  console.log(is_admin)
   return (
     <>
       {/* PROFILE IMAGE */}
@@ -231,17 +242,17 @@ const UpdateCompanyImage = ({
               <div className="modal-header">
                 <h5>Upload Image</h5>
                 <button
-                                    type="button"
-                                    className="close closebtn"
-                                    onClick={() => {
-                                        handleCloseModal();
-                                        handleReset();
-                                    }}
-                                >
-                                    <span aria-hidden="true">
-                                        &#10006;
-                                    </span>
-                                </button>
+                  type="button"
+                  className="close closebtn"
+                  onClick={() => {
+                    handleCloseModal();
+                    handleReset();
+                  }}
+                >
+                  <span aria-hidden="true">
+                    &#10006;
+                  </span>
+                </button>
               </div>
 
               <div className="modal-body">
@@ -252,22 +263,22 @@ const UpdateCompanyImage = ({
                   onChange={handleImageUpload}
                   className="form-control"
                 />
- {image && (
-                                        <div className="d-flex justify-content-end p-2">
-                                            <i
-                                                className="far fa-trash-alt"
-                                                style={{
-                                                    cursor:
-                                                        "pointer",
-                                                    fontSize:
-                                                        "20px",
-                                                }}
-                                                onClick={
-                                                    handleDeleteProfileImage
-                                                }
-                                            ></i>
-                                        </div>
-                                    )}
+                {image && (
+                  <div className="d-flex justify-content-end p-2">
+                    <i
+                      className="far fa-trash-alt"
+                      style={{
+                        cursor:
+                          "pointer",
+                        fontSize:
+                          "20px",
+                      }}
+                      onClick={
+                        handleDeleteProfileImage
+                      }
+                    ></i>
+                  </div>
+                )}
                 {image && (
                   <>
                     <div className="crop-container">
@@ -284,51 +295,51 @@ const UpdateCompanyImage = ({
                       />
                     </div>
 
-                       <div className="mt-4">
-                                                <input
-                                                    type="range"
-                                                    min={1}
-                                                    max={3}
-                                                    step={0.1}
-                                                    value={zoom}
-                                                    className="zoom-range"
-                                                    onChange={(
-                                                        e
-                                                    ) =>
-                                                        setZoom(
-                                                            e.target
-                                                                .value
-                                                        )
-                                                    }
-                                                />
-                                            </div>
-{image && (
-                                        <div
-                                            className="col-md-12 mb-4 pb-2 mt-4"
-                                            style={{
-                                                display: "flex",
-                                                gap: "1rem",
-                                            }}
-                                        >
-                                            <Button
-                                                loading={loading}
-                                                text="Save"
-                                                onClick={
-                                                    handleSaveImage
-                                                }
-                                                className="btn mybtn"
-                                            />
+                    <div className="mt-4">
+                      <input
+                        type="range"
+                        min={1}
+                        max={3}
+                        step={0.1}
+                        value={zoom}
+                        className="zoom-range"
+                        onChange={(
+                          e
+                        ) =>
+                          setZoom(
+                            e.target
+                              .value
+                          )
+                        }
+                      />
+                    </div>
+                    {image && (
+                      <div
+                        className="col-md-12 mb-4 pb-2 mt-4"
+                        style={{
+                          display: "flex",
+                          gap: "1rem",
+                        }}
+                      >
+                        <Button
+                          loading={loading}
+                          text="Save"
+                          onClick={
+                            handleSaveImage
+                          }
+                          className="btn mybtn"
+                        />
 
-                                            <button
-                                                className="btn mybtn"
-                                                onClick={
-                                                    handleReset
-                                                }
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    )}
+                        <button
+                          className="btn mybtn"
+                          onClick={
+                            handleReset
+                          }
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
                     {/* <div style={{ display: "flex", gap: "10px" }}>
                       <Button
                         loading={loading}

@@ -69,6 +69,8 @@ const DataRequest = () => {
                   <th style={{ background: "#e1e9ed" }}>Name</th>
                   <th style={{ background: "#e1e9ed" }}>Email</th>
                   <th style={{ background: "#e1e9ed" }}>Request Type</th>
+                  <th style={{ background: "#e1e9ed" }}>Any Supporting</th>
+
                   <th style={{ background: "#e1e9ed" }}>Country</th>
                   <th style={{ background: "#e1e9ed" }}>Created At</th>
                 </tr>
@@ -92,7 +94,10 @@ const DataRequest = () => {
                       <td>{item?.id}</td>
                       <td>{item?.name}</td>
                       <td>{item?.registered_email || "N/A"}</td>
+
+                      
                       <td>{item?.type_of_request}</td>
+                      <td>{item?.any_supporting || "N/A"}</td>
                       <td>{item?.country}</td>
                       <td>{new Date(item?.created_at).toLocaleString()}</td>
                     </tr>

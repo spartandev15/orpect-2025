@@ -76,13 +76,18 @@ export const companiesApi = api.injectEndpoints({
       },
       invalidatesTags: ['Companies'],
     }),
-   deleteCompanyProfileImage: builder.mutation({
-      query: (id) => ({
-        url: `admin/UserDeletImage/${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags:['Companies']
+    deleteCompanyProfileImage: builder.mutation({
+      query: ({ empId, is_admin }) => {
+        return {
+          url: `admin/UserDeleteImage/${empId}`,
+          method: "DELETE",
+          body: {
+            is_admin,
+          },
+        };
+      },
 
+      invalidatesTags: ["Companies"],
     }),
   }),
   overrideExisting: false,
