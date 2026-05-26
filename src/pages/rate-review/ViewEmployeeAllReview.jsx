@@ -134,6 +134,9 @@ const ViewEmployeeAllReview = () => {
                       <div className="product-thumbnail1 mt-3">
                         <img
                           className="pic"
+                          width={"150px"}
+                          height={"150px"}
+                          style={{objectFit:'contain'}}
                           src={
                             i?.company_logo
                               ? `${IMAGE_BASE_URL_WITH_SLASH}${i?.company_logo}`
@@ -143,13 +146,13 @@ const ViewEmployeeAllReview = () => {
                         />
                         <h6>{i?.company_name}</h6>
                       </div>
-                      <div className="companynamereview mt-3">
+                      <div className="companynamereview">
                         {i?.domain_name}
                       </div>
-                      <div className="companynamereview mt-3">
+                      <div className="companynamereview">
                         {i?.company_email}
                       </div>
-                      <div className="companynamereview mt-3">
+                      <div className="companynamereview">
                         {i?.company_phone}
                       </div>
                       {/* <span className="hoverable__tooltip12">

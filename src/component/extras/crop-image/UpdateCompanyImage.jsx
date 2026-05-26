@@ -163,6 +163,8 @@ const UpdateCompanyImage = ({
     setModalOpen(false)
   };
   const handleDeleteProfileImage = async () => {
+    setTrue(false)
+
     try {
       if (!empId) {
         toast.error("Employee ID is missing");
@@ -177,6 +179,7 @@ const UpdateCompanyImage = ({
       const response = await deleteCompanyProfileImage(payload).unwrap();
 
       toast.success(response?.message || "Profile image deleted successfully");
+      setTrue(true)
 
       // Clear local image state
       setImage(null);
