@@ -57,14 +57,14 @@ const NotificationList = () => {
   return (
     <div className="container-fluid viewemployee main_inner_padding">
       <div className="row">
-        <div className="col-lg-6">
+        <div className="col-lg-10">
           <h3>Notifications</h3>
         </div>
-        <div className="col-lg-3 col-md-6 pb-4">
+        <div className="col-lg-2 col-md-6 pb-4">
         <button type="button" class="btn btn-outline-secondary" onClick={markAllAsRead}>Mark All as Read</button>
    
           </div>
-        <div className="col-lg-3 col-md-6 pb-4">
+        {/* <div className="col-lg-3 col-md-6 pb-4">
           <div className="search_button">
             <input
               type="search"
@@ -75,7 +75,7 @@ const NotificationList = () => {
             />
             <i className="fa fa-search navi-search"></i>
           </div>
-        </div>
+        </div> */}
        
       </div>
 

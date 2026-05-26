@@ -71,6 +71,8 @@ import blog5 from './images/blog5.png'
 import commingsoon from './images/comming-soon.png'
 import ccpapng from './images/ccpapng.png'
 import gdprpng from './images/gdprpng.png'
+import datarequest from './images/datarequest.png'
+
 
 
 
@@ -149,4 +151,5 @@ export {
   back,
   backbanner,
   rigthArrow,
+  datarequest
 };

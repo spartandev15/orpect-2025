@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { useGetDashboardQuery } from '../../../apis/SuperAdmin/dashboard'
-import { currentem, exemploye, nonjoiner, review } from '../../../asset'
+import { currentem, exemploye, nonjoiner, review ,datarequest} from '../../../asset'
 import { getFromLocalStorage } from '../../../helper'
 
 const Dashboard = () => {
@@ -51,7 +51,7 @@ const Dashboard = () => {
         </div>
            <div className='col-lg-3 col-md-3 col-sm-12 pd-4'>
                     <Link to="/super-admin/data-request" className="cardtag"> <div className="card  ">
-                      <img src={review} className="card1 img-fluid" alt='' />
+                      <img src={datarequest} className="card1 img-fluid" alt='' />
                       <div className="os-inner-col">
                         <h4 className="blue-violet"> Data Request</h4>
                         <h5 className="blue-violet_text">{data?.totalDataRequest || 0}</h5>

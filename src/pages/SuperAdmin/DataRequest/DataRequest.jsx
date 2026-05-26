@@ -93,9 +93,7 @@ const DataRequest = () => {
                     <tr key={index} className="table_data_background">
                       <td>{item?.id}</td>
                       <td>{item?.name}</td>
-                      <td>{item?.registered_email || "N/A"}</td>
-
-                      
+                      <td>{item?.registered_email || "N/A"}</td> 
                       <td>{item?.type_of_request}</td>
                       <td>{item?.any_supporting || "N/A"}</td>
                       <td>{item?.country}</td>
