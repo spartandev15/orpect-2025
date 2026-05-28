@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "../../asset/css/auth.css";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { loginSchema } from "../../helper/schema";
@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { saveFormData } from "../../store/FormSlice";
 import LayoutOrpect from "../LandingPage/Index";
-import { useLoginUserMutation } from "../../apis/auth";
+import { useLoginCompanyUserMutation, useLoginUserMutation } from "../../apis/auth";
 import { fetchPosition } from "../../store/positionSlice";
 import { COMPANY_ROUTES, PUBLIC_ROUTES } from "../../config/routes.config";
 
@@ -24,9 +24,13 @@ const initialValues = {
 
 const LoginWrapper = () => {
   const [loginUser, { isLoading }] = useLoginUserMutation();
+  const [loginCompanyUser, { isLoading:companyUserLoading }] = useLoginCompanyUserMutation();
+
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [show, toggleShow] = useToggle();
+  const [roleChange,setRoleChange]=useState("admin")
 
   useEffect(() => {
     const isLoggedIn = !!getFromLocalStorage("token");
@@ -38,7 +42,15 @@ const LoginWrapper = () => {
   const onSubmit = async (values) => {
     try {
       dispatch(saveFormData(null));
-      const response = await loginUser(values).unwrap();
+      let response;
+      if(roleChange === 'admin'){
+
+         response = await loginUser(values).unwrap();
+      }else{
+         response = await loginCompanyUser(values).unwrap();
+
+        
+      }
       console.log(response)
       if (response?.status === "error") {
         toast.error(response?.message || "Login failed");
@@ -88,6 +100,40 @@ const LoginWrapper = () => {
                 {({ setFieldValue }) => (
                   <Form noValidate className="text-center signin_pd_inner">
                     <h3>Sign In</h3>
+                    <div className="d-flex justify-content-center align-items-center gap-3">
+                      <div className="d-flex align-items-center gap-2">
+                        <input
+                          type="radio"
+                          id="admin"
+                          name="role"
+                          value="admin"
+                          checked={roleChange === "admin"}
+                          onChange={()=>setRoleChange("admin")}
+                        />
+
+                        <label htmlFor="admin">Admin</label>
+                      </div>
+
+                      <div className="d-flex align-items-center gap-2">
+                        <input
+                          type="radio"
+                          id="user"
+                          name="user"
+                          value="user"
+                        checked={roleChange === "user"}
+                          onChange={()=>setRoleChange("user")}
+                        />
+
+                        <label htmlFor="user">User</label>
+                      </div>
+                    </div>
+
+                    {/* ERROR */}
+                    {/* {errors.role && touched.role ? (
+                      <p className="text-danger msg">{errors.role}</p>
+                    ) : null} */}
+
+
                     <div className="row mt-4">
                       <div className="col-md-2"></div>
                       <div className="col-md-8 auth_page_padding">
