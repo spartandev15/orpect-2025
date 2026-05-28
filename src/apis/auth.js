@@ -23,6 +23,20 @@ export const authApi = api.injectEndpoints({
       },
   
     }),
+    loginCompanyUser: builder.mutation({
+      query: (credentials) => {
+        // Debugging: log the credentials being passed
+        console.log("Attempting to log in with credentials:", credentials);
+        
+        return {
+          url: "company-user-login",
+          method: "POST",
+          body: credentials,
+        };
+      },
+  
+    }),
+    
     
 
     registerUser: builder.mutation({
@@ -89,4 +103,5 @@ export const {
   useResetPasswordUserMutation,
   useLogoutUserMutation,
   useIsDomainValidQuery,
+  useLoginCompanyUserMutation
 } = authApi;

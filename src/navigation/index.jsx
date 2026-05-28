@@ -76,6 +76,8 @@ import Compliance from "../pages/LandingPage/Compliance/Compliance";
 import DataProcessingAgreement from "../pages/LandingPage/DataProcessingAgreement/DataProcessingAgreement";
 import DoNotSell from "../pages/LandingPage/DoNotSell/DoNotSell";
 import UserDataManagement from "../component/UserDataManagement/UserDataManagement";
+import AddUserHR from "../pages/User/AddUserHR";
+import ListUser from "../pages/User/ListUser";
 
 const Navigation = () => {
   const location = useLocation();
@@ -320,6 +322,24 @@ const Navigation = () => {
             </ProtectedRoute>
           }
         />
+
+          <Route
+          path="/add-user-hr"
+          element={
+            <ProtectedRoute>
+              <AddUserHR />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/list-user-hr"
+          element={
+            <ProtectedRoute>
+              <ListUser />
+            </ProtectedRoute>
+          }
+        />
+        
         <Route path="super-admin/login" element={<SuperAdmin_login />} />
         <Route path="/super-admin" element={
           <SuperAdminProtectedRoute>

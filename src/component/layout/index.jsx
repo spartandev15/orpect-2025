@@ -36,6 +36,27 @@ const sidebarRoutes = [
       },
     ],
   },
+   {
+    id: "submenu2",
+    type: "submenu",
+    label: "USer",
+    icon: "fas fa-users",
+    submenu: [
+   
+      {
+        path: "/add-user-hr",
+        label: "Add user",
+        icon: "fa fa-users-slash",
+        className: "logouticon curentemploye2",
+      },
+        {
+        path: "/list-user-hr",
+        label: "List user",
+        icon: "fa fa-users-slash",
+        className: "logouticon curentemploye2",
+      },
+    ],
+  },
   {
     type: "link",
     path: "/add-position",
