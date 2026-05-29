@@ -131,7 +131,7 @@ const ViewEmployeeAllReview = () => {
                       className="companyreview mt-3  hoverable__main"
                       style={{ fontSize: "18px", textAlign: "center" }}
                     >
-                      <div className="product-thumbnail1 mt-3">
+                      <div className="product-thumbnail1 mt-3 mb-2">
                         <img
                           className="pic"
                           width={"150px"}
@@ -144,7 +144,10 @@ const ViewEmployeeAllReview = () => {
                           }
                           alt="profile"
                         />
-                        <h6>{i?.company_name}</h6>
+                        {/* <h6>{i?.company_name}</h6> */}
+                      </div>
+                       <div className="companynamereview">
+                        {i?.company_name}
                       </div>
                       <div className="companynamereview">
                         {i?.domain_name}

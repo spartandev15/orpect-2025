@@ -39,20 +39,20 @@ const sidebarRoutes = [
    {
     id: "submenu2",
     type: "submenu",
-    label: "USer",
+    label: "User",
     icon: "fas fa-users",
     submenu: [
    
       {
         path: "/add-user-hr",
         label: "Add user",
-        icon: "fa fa-users-slash",
+        icon: "fa fa-plus-circle",
         className: "logouticon curentemploye2",
       },
         {
         path: "/list-user-hr",
         label: "List user",
-        icon: "fa fa-users-slash",
+        icon: "fa fa-users",
         className: "logouticon curentemploye2",
       },
     ],
@@ -123,7 +123,7 @@ const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
     dispatch(logoutUserapi())
       .then((res) => {
         logout(false); // Pass false to indicate regular user logout
-        toast.success("Logged out successfully");
+        // toast.success("Logged out successfully");
       })
       .catch((err) => {
         // Even if API call fails, still logout locally

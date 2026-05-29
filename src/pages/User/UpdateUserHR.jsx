@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 import Layout from "../../component/layout";
 import { InputAdd } from "../../component/InputAdd";
-import { useAddUserHRMutation } from "../../apis/userHR";
+import { useEditUserHRQuery, useUpdateUserHRMutation } from "../../apis/userHR";
+
 
 
 const initialValues = {
@@ -22,9 +24,9 @@ const validationSchema = Yup.object({
     .email("Invalid email")
     .required("Email is required"),
 
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+//   password: Yup.string()
+//     .min(6, "Password must be at least 6 characters")
+//     .required("Password is required"),
 
   role: Yup.string().required("Role is required"),
 });
@@ -42,12 +44,12 @@ const formFields = [
     type: "email",
     star: true,
   },
-  {
-    name: "password",
-    label: "Password",
-    type: "password",
-    star: true,
-  },
+//   {
+//     name: "password",
+//     label: "Password",
+//     type: "password",
+//     star: true,
+//   },
   {
     name: "role",
     label: "Role",
@@ -56,8 +58,20 @@ const formFields = [
   },
 ];
 
-const AddUserHR = () => {
-  const [addUserHR, { isLoading }] = useAddUserHRMutation();
+const UpdateUserHR = () => {
+  const { id } = useParams();
+
+  // =========================
+  // GET SINGLE USER
+  // =========================
+  const { data, isLoading: detailsLoading } =
+    useEditUserHRQuery(id);
+
+  // =========================
+  // UPDATE API
+  // =========================
+  const [updateUserHR, { isLoading }] =
+    useUpdateUserHRMutation();
 
   const {
     values,
@@ -67,26 +81,30 @@ const AddUserHR = () => {
     handleChange,
     handleSubmit,
     resetForm,
+    setValues,
   } = useFormik({
     initialValues,
     validationSchema,
 
     onSubmit: async (values) => {
       try {
-        const formData = new FormData();
+        const payload = {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+          role: values.role,
+        };
 
-        formData.append("name", values.name);
-        formData.append("email", values.email);
-        formData.append("password", values.password);
-        formData.append("role", values.role);
-
-        const response = await addUserHR(formData).unwrap();
+        const response = await updateUserHR({
+          id,
+          data: payload,
+        }).unwrap();
 
         console.log("response", response);
 
-        toast.success(response?.message || "User Added Successfully");
-
-        resetForm();
+        toast.success(
+          response?.message || "User Updated Successfully"
+        );
       } catch (error) {
         console.log("error", error);
 
@@ -97,12 +115,26 @@ const AddUserHR = () => {
     },
   });
 
+  // =========================
+  // SET FORM VALUES
+  // =========================
+  useEffect(() => {
+    if (data?.data) {
+      setValues({
+        name: data?.data?.name || "",
+        email: data?.data?.email || "",
+        password: "",
+        role: data?.data?.role || "",
+      });
+    }
+  }, [data, setValues]);
+
   return (
     <Layout>
       <div className="container-fluid searchemploye add-employe">
         <div className="row">
           <div className="col-lg-12">
-            <h3>Add User</h3>
+            <h3>Update User</h3>
           </div>
         </div>
 
@@ -144,9 +176,14 @@ const AddUserHR = () => {
             <div className="col-lg-12">
               <button
                 type="submit"
-className="btn addempbtn"                disabled={isLoading}
+                className="btn addempbtn"
+                disabled={isLoading || detailsLoading}
               >
-                {isLoading ? "Submitting..." : "Add User"}
+                {isLoading
+                  ? "Updating..."
+                  : detailsLoading
+                  ? "Loading..."
+                  : "Update User"}
               </button>
             </div>
           </div>
@@ -156,4 +193,4 @@ className="btn addempbtn"                disabled={isLoading}
   );
 };
 
-export default AddUserHR;
+export default UpdateUserHR;
