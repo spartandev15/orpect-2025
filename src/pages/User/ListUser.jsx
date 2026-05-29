@@ -1,16 +1,25 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 import Layout from "../../component/layout";
 import Pagination from "../../component/Pagination";
 import TableEmptyMsg from "../../component/table/TableEmptyMsg";
-import { useListUserHRQuery } from "../../apis/userHR";
 
+import {
+  useDeleteUserHRMutation,
+  useListUserHRQuery,
+} from "../../apis/userHR";
+import DeleteTableEmployee from "../../component/delete/DeleteTableEmployee";
+import DeleteUser from "../../component/delete/DeleteUser";
 
 const ListUser = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [search, setSearch] = useState("");
 
+  // =========================
+  // LIST API
+  // =========================
   const {
     data,
     isLoading,
@@ -26,7 +35,14 @@ const ListUser = () => {
     }
   );
 
+  // =========================
+  // DELETE API
+  // =========================
+  const [deleteUserHR, { isLoading: deleteLoading }] =
+    useDeleteUserHRMutation();
+
   const users = data?.users?.data || data?.data?.data || [];
+
   const totalPages =
     data?.users?.last_page ||
     data?.data?.last_page ||
@@ -36,16 +52,43 @@ const ListUser = () => {
     setCurrentPage(selectedPage.selected + 1);
   };
 
+  // =========================
+  // DELETE HANDLER
+  // =========================
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this user?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const response = await deleteUserHR(id).unwrap();
+
+      toast.success(
+        response?.message || "User Deleted Successfully"
+      );
+
+      refetch();
+    } catch (error) {
+      console.log(error);
+
+      toast.error(
+        error?.data?.message || "Something went wrong"
+      );
+    }
+  };
+
   return (
     <Layout>
       <div className="container-fluid viewemployee main_inner_padding">
         {/* HEADER */}
         <div className="row mb-3 align-items-center">
-          <div className="col-lg-4 px-1">
+          <div className="col-lg-6 px-1">
             <h3>User HR List</h3>
           </div>
 
-          <div className="col-lg-3 col-md-6 px-1">
+          {/* <div className="col-lg-3 col-md-6 px-1">
             <div className="search_button">
               <input
                 type="search"
@@ -57,9 +100,9 @@ const ListUser = () => {
 
               <i className="fa fa-search navi-search"></i>
             </div>
-          </div>
+          </div> */}
 
-          <div className="col-lg-3 col-md-6 px-1">
+          {/* <div className="col-lg-3 col-md-6 px-1">
             <Link
               to="/add-user-hr"
               style={{ textDecoration: "none" }}
@@ -68,7 +111,7 @@ const ListUser = () => {
                 Add User HR
               </button>
             </Link>
-          </div>
+          </div> */}
         </div>
 
         {/* TABLE */}
@@ -85,7 +128,7 @@ const ListUser = () => {
                       className="sticky-column-1 column-1"
                       style={{ background: "#e1e9ed" }}
                     >
-                      ID
+                      #
                     </th>
 
                     <th
@@ -144,7 +187,7 @@ const ListUser = () => {
                         className="table_data_background"
                       >
                         <td className="sticky-column-1 column-1">
-                          {user?.id}
+                          {index + 1}
                         </td>
 
                         <td>{user?.name}</td>
@@ -152,38 +195,18 @@ const ListUser = () => {
                         <td>{user?.email}</td>
 
                         <td>{user?.role}</td>
-
                         <td className="sticky-column-last">
-                          <Link
-                            to={`/view-user-hr/${user?.id}`}
-                            style={{
-                              textDecoration: "none",
-                            }}
-                          >
-                            <button
-                              type="button"
-                              className="btn act_btn_v"
-                            >
-                              <i className="fas fa-eye eye-cs"></i>
+                          <Link to={`/update-user/${user?.id}`} style={{ textDecoration: "none" }}>
+                            <button type="button" className="btn act_btn_v">
+                              <span className="hoverable">
+                                <i className="fas fa-eye eye-cs"></i>
+                              </span>
                             </button>
                           </Link>
-
-                          &nbsp;
-
-                          {/* <Link
-                            to={`/edit-user-hr/${user?.id}`}
-                            style={{
-                              textDecoration: "none",
-                            }}
-                          >
-                            <button
-                              type="button"
-                              className="btn act_btn_e"
-                            >
-                              <i className="fas fa-edit"></i>
-                            </button>
-                          </Link> */}
+                          &nbsp;&nbsp;
+                          <DeleteUser id={user?.id} />
                         </td>
+
                       </tr>
                     ))
                   )}

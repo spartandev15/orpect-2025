@@ -78,6 +78,7 @@ import DoNotSell from "../pages/LandingPage/DoNotSell/DoNotSell";
 import UserDataManagement from "../component/UserDataManagement/UserDataManagement";
 import AddUserHR from "../pages/User/AddUserHR";
 import ListUser from "../pages/User/ListUser";
+import UpdateUserHR from "../pages/User/UpdateUserHR";
 
 const Navigation = () => {
   const location = useLocation();
@@ -339,6 +340,15 @@ const Navigation = () => {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/update-user/:id"
+          element={
+            <ProtectedRoute>
+              <UpdateUserHR />
+            </ProtectedRoute>
+          }
+        />
+        
         
         <Route path="super-admin/login" element={<SuperAdmin_login />} />
         <Route path="/super-admin" element={
