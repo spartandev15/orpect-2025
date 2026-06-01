@@ -107,6 +107,18 @@ const sidebarRoutes = [
     label: "Profile",
     icon: "fa fa-user",
   },
+   {
+    type: "link",
+    path: "/log-list",
+    label: "Log List",
+    icon: "fa fa-user",
+  },
+ {
+    type: "link",
+    path: "/hrms",
+    label: "HRMS",
+    icon: "fa fa-user",
+  },
 ];
 
 const Layout = ({ children }) => {

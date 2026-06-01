@@ -79,6 +79,8 @@ import UserDataManagement from "../component/UserDataManagement/UserDataManageme
 import AddUserHR from "../pages/User/AddUserHR";
 import ListUser from "../pages/User/ListUser";
 import UpdateUserHR from "../pages/User/UpdateUserHR";
+import LogList from "../pages/Logs/LogList";
+import TempHrms from "../pages/Temp/TempHrms";
 
 const Navigation = () => {
   const location = useLocation();
@@ -348,8 +350,22 @@ const Navigation = () => {
             </ProtectedRoute>
           }
         />
-        
-        
+         <Route
+          path="/log-list"
+          element={
+            <ProtectedRoute>
+              <LogList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hrms"
+          element={
+            <ProtectedRoute>
+              <TempHrms />
+            </ProtectedRoute>
+          }
+        />
         <Route path="super-admin/login" element={<SuperAdmin_login />} />
         <Route path="/super-admin" element={
           <SuperAdminProtectedRoute>
