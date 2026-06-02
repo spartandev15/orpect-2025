@@ -180,21 +180,24 @@ export const addEmployeeSchema = yup.object().shape({
         return !isNaN(numValue) && isFinite(numValue) && numValue > 0;
       }
     ),
-  increment_date: yup
-    .date()
-    .nullable()
-    .max(new Date(), "Increment date must not be a future date")
-    .test(
-      "increment-after-joining",
-      "Increment date must be after the joining date",
-      function (value) {
-        const { dateOfJoining } = this.parent;
-        if (!value || !dateOfJoining) return true; // Skip if either date is missing
-        const incrementDate = new Date(value);
-        const joiningDate = new Date(dateOfJoining);
-        return incrementDate >= joiningDate;
-      }
-    ),
+increment_date: yup
+  .date()
+  .nullable()
+  .min(
+    new Date(new Date().setHours(0, 0, 0, 0)),
+    "Increment date must be a future date"
+  )
+  .test(
+    "increment-after-joining",
+    "Increment date must be after the joining date",
+    function (value) {
+      const { dateOfJoining } = this.parent;
+
+      if (!value || !dateOfJoining) return true;
+
+      return new Date(value) > new Date(dateOfJoining);
+    }
+  ),
 });
 
 export const RateReviewSchema = yup.object().shape({
