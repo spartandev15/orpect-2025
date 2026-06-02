@@ -26,7 +26,7 @@ const LogList = () => {
   const logs = data?.logs?.data || [];
 
   const totalPages =
-    data?.data?.last_page ||
+    data?.logs?.last_page ||
     1;
 
   const handlePageChange = (selectedPage) => {
@@ -42,7 +42,7 @@ const LogList = () => {
             <h3>Log List</h3>
           </div>
 
-          <div className="col-lg-3 col-md-6 px-1">
+          {/* <div className="col-lg-3 col-md-6 px-1">
             <div className="search_button">
               <input
                 type="search"
@@ -54,7 +54,7 @@ const LogList = () => {
 
               <i className="fa fa-search navi-search"></i>
             </div>
-          </div>
+          </div> */}
         </div>
 
         {/* TABLE */}
@@ -67,16 +67,16 @@ const LogList = () => {
               >
                <thead>
   <tr>
-    <th
+    {/* <th
       className="sticky-column-1 column-1"
       style={{ background: "#e1e9ed" }}
     >
       #
-    </th>
+    </th> */}
 
-    <th style={{ background: "#e1e9ed" }}>
+    {/* <th style={{ background: "#e1e9ed" }}>
       Employee ID
-    </th>
+    </th> */}
 
     <th style={{ background: "#e1e9ed" }}>
       Log Details
@@ -86,9 +86,9 @@ const LogList = () => {
       Activity Time
     </th>
 
-    <th style={{ background: "#e1e9ed" }}>
+    {/* <th style={{ background: "#e1e9ed" }}>
       Created At
-    </th>
+    </th> */}
   </tr>
 </thead>
 
@@ -117,19 +117,19 @@ const LogList = () => {
         key={log?.id}
         className="table_data_background"
       >
-        <td className="sticky-column-1 column-1">
-          {(currentPage - 1) * 10 + index + 1}
-        </td>
+        {/* <td className="sticky-column-1 column-1">
+          {(currentPage - 1) * 20 + index + 1}
+        </td> */}
 
-        <td>{log?.employee_id}</td>
+        {/* <td>{log?.employee_id}</td> */}
 
         <td>{log?.log_text}</td>
 
         <td>{log?.activity_time}</td>
 
-        <td>
+        {/* <td>
           {new Date(log?.created_at).toLocaleString()}
-        </td>
+        </td> */}
       </tr>
     ))
   )}
