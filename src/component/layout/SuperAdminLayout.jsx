@@ -659,6 +659,12 @@ const SuperAdminLayout = () => {
       label: "Profile",
       icon: "fa fa-user",
     },
+     {
+        type: "link",
+        path: "/super-admin/hrms",
+        label: "HRMS",
+        icon: "fa fa-user",
+      },
   ];
 
   // =========================
