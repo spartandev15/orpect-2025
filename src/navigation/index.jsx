@@ -358,14 +358,14 @@ const Navigation = () => {
             </ProtectedRoute>
           }
         />
-        {/* <Route
+        <Route
           path="/hrms"
           element={
             <ProtectedRoute>
               <TempHrms />
             </ProtectedRoute>
           }
-        /> */}
+        />
         <Route path="super-admin/login" element={<SuperAdmin_login />} />
         <Route path="/super-admin" element={
           <SuperAdminProtectedRoute>
@@ -392,7 +392,7 @@ const Navigation = () => {
           <Route path="notification-list" element={<NotificationList />} />
           <Route path="data-request" element={<DataRequest />} />
           <Route path="company-reviews" element={<CompanyReviews />} />
-          <Route path="hrms" element={<TempHrms />} />
+          {/* <Route path="hrms" element={<TempHrms />} /> */}
 
               
 
