@@ -6,13 +6,13 @@ import { useHrmsAccessMutation } from '../../apis/hrms'
 const TempHrms = () => {
   const [hrmsAccess]=useHrmsAccessMutation()
   return (
-    // <Layout>
+    <Layout>
 
         <div className='p-4'>
             TempHrms
             <button onClick={()=>hrmsAccess()}>Hit</button>
             </div>
-    // </Layout>
+    </Layout>
   )
 }
 
