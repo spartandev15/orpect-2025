@@ -980,12 +980,18 @@ const SuperAdminLayout = () => {
           {/* HEADER */}
           <nav className="navbar navbar-expand-lg navbar-light border-bottom header">
             <div className="container-fluid">
-              <button
+              {/* <button
                 className="btn togglebtn"
                 id="sidebarToggle"
               >
                 <i className="fa fa-bars"></i>
-              </button>
+              </button> */}
+              <button
+  className="btn togglebtn"
+  onClick={handleSidebarToggle}
+>
+  <i className="fa fa-bars"></i>
+</button>
 
               <span className="navibar navibarmobile">
                 <input

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -117,9 +117,17 @@ const AddPosition = () => {
     }
   };
   const totalPages = data?.positions?.last_page || 1;
+  useEffect(() => {
+  const lastPage = data?.positions?.last_page || 1;
+
+  if (currentPage > lastPage) {
+    setCurrentPage(lastPage);
+  }
+}, [data?.positions?.last_page, currentPage]);
   const handlePageChange = (selectedPage) => {
     setCurrentPage(selectedPage.selected + 1);
   };
+  
   return (
     <Layout>
       <div className="container-fluid addposition">
