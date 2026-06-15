@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 const ExcelPdf = ({ employeeType = "current_employee" }) => {
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
+    const [exportType, setExportType] = useState("");
     const [getExcelEmployee, { isLoading }] = useLazyGetExcelEmployeeQuery()
 
     // ✅ Get today's date (for max restriction)
@@ -37,19 +38,33 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
                 return
             }
 
-            // ✅ Open file in new tab
-            window.open(fileUrl, '_blank')
+        if (fileUrl) {
+    window.open(fileUrl, "_blank");
+
+    // Reset form
+    setStartDate("");
+    setEndDate("");
+    setExportType("");
+}
+            
         } catch (error) {
             console.error("Error opening file:", error)
             toast.error("Failed to open file.")
         }
     }
 
-    const handleFormatChange = (e) => {
-        const selectedFormat = e.target.value
-        if (!selectedFormat) return
-        handleImport(selectedFormat)
-    }
+   const handleFormatChange = async (e) => {
+    const selectedFormat = e.target.value;
+
+    if (!selectedFormat) return;
+
+    setExportType(selectedFormat);
+
+    await handleImport(selectedFormat);
+
+    // Reset dropdown after export
+    setExportType("");
+};
 
     return (
         <>
@@ -108,15 +123,17 @@ const ExcelPdf = ({ employeeType = "current_employee" }) => {
             <div className="col-lg-1 col-md-6" style={{paddingLeft:'5px'}}>
                 <div style={{ position: 'relative' }}>
                     <select
-                        className="form-control main_inner_dropdown"
-                        defaultValue=""
-                        onChange={handleFormatChange}
-                        disabled={isLoading}
-                    >
-                        <option value="" disabled>Export</option>
-                        <option value="pdf">PDF</option>
-                        <option value="csv">CSV</option>
-                    </select>
+    className="form-control main_inner_dropdown"
+    value={exportType}
+    onChange={handleFormatChange}
+    disabled={isLoading}
+>
+    <option value="" disabled>
+        Export
+    </option>
+    <option value="pdf">PDF</option>
+    <option value="csv">CSV</option>
+</select>
 
                     <i
                         className="fas fa-chevron-down"

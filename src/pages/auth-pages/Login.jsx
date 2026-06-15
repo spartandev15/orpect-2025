@@ -53,7 +53,7 @@ const LoginWrapper = () => {
       }
       console.log(response)
       if (response?.status === "error") {
-        toast.error(response?.message || "Login failed");
+        // toast.error(response?.message || "Login failed");
         if (response?.message === "Account not verified.") {
           navigate(PUBLIC_ROUTES.VERIFICATION);
         }

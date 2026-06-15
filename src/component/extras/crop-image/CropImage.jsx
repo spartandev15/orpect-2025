@@ -347,7 +347,10 @@ const CropImage = ({
 
                         <button
                           className="btn mybtn"
-                          onClick={handleReset}
+                             onClick={() => {
+                      handleCloseModal();
+                      handleReset();
+                    }}
                         >
                           Cancel
                         </button>
