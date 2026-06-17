@@ -499,14 +499,14 @@ export const adduserSchema = yup.object().shape({
       "Invalid email format"
     ),
 
-  password: yup
-    .string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
-      "Password must contain at least one uppercase letter, one lowercase letter, and one number"
-    ),
+ password: yup
+  .string()
+  .required("Password is required")
+  .min(8, "Password must be at least 8 characters")
+  .matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&^#()_+\-=\[\]{};':"\\|,.<>\/~`]).{8,}$/,
+    "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+  ),
 
   address: yup.string().nullable(),
 

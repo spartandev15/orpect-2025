@@ -119,19 +119,19 @@ const sidebarRoutes = [
     type: "link",
     path: "/profile",
     label: "Profile",
-    icon: "fa fa-circle-user",
+    icon: "fa fa-user",
   },
   {
     type: "link",
     path: "/log-list",
     label: "Log List",
-    icon: "fa fa-user",
+    icon: "fa fa-list",
   },
   {
     type: "link",
     path: "/hrms",
     label: "HRMS",
-    icon: "fa fa-user",
+    icon: "fa fa-id-card"
   },
 ].filter(Boolean);
   const profileImage = getFromLocalStorage("profileImage");

@@ -116,7 +116,7 @@ const { id } = useParams();
                          style={{ textDecoration: "none" }}>
                           <button type="button" className="btn act_btn_v">
                             <span className="hoverable">
-                              <i className="fas fa-eye eye-cs "></i>
+                              <i className="fas fa-eye eye-cs   "></i>
                               {/* <span className="hoverable__tooltip">Add Reviews</span> */}
                             </span>
                           </button>
