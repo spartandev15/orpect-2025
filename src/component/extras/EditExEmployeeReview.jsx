@@ -186,7 +186,7 @@ const EditExEmployeeReview = ({ employee, dateOfJoining, isEditable, setIsEditab
 
                 <div className="form-outline">
                   <input
-                    type="number"
+                    type="text"
                     name="lastCTC"
                     className="form-control"
                     value={values.lastCTC || ""}
@@ -198,7 +198,7 @@ const EditExEmployeeReview = ({ employee, dateOfJoining, isEditable, setIsEditab
                     for="typeText"
                     style={{ background: "#fff" }}
                   >
-                    CTC
+                    CTCs
                   </label>
                 </div>
                 <div style={{ paddingBottom: "1rem" }}>
