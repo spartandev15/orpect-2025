@@ -70,7 +70,7 @@ const LoginWrapper = () => {
       if (errorMessage === "Account not verified.") {
         navigate(PUBLIC_ROUTES.VERIFICATION);
       }
-      toast.error(errorMessage);
+      // toast.error(errorMessage);
       console.error("Login failed:", error);
     }
   };

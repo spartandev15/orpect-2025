@@ -105,7 +105,7 @@ const AddEmployeeReview = ({ id, dateOfJoining, onClose }) => {
 
                   <div className="form-outline">
                     <input
-                      type="number"
+                      type="text"
                       name="lastCTC"
                       className="form-control"
                       value={values.lastCTC || ""}
@@ -117,7 +117,7 @@ const AddEmployeeReview = ({ id, dateOfJoining, onClose }) => {
                       htmlFor="typeText"
                       style={{ background: "#fff" }}
                     >
-                      CTC
+                      CTCs
                     </label>
                     {errors.lastCTC && touched.lastCTC ? (
                       <p className="text-danger msg">{errors.lastCTC}</p>
