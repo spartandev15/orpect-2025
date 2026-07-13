@@ -128,7 +128,7 @@ const ListUser = () => {
                       className="sticky-column-1 column-1"
                       style={{ background: "#e1e9ed" }}
                     >
-                      #
+                      Sr. No.
                     </th>
 
                     <th

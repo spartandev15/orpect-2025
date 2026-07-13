@@ -198,7 +198,7 @@ const EditExEmployeeReview = ({ employee, dateOfJoining, isEditable, setIsEditab
                     for="typeText"
                     style={{ background: "#fff" }}
                   >
-                    CTCs
+                    CTC
                   </label>
                 </div>
                 <div style={{ paddingBottom: "1rem" }}>
