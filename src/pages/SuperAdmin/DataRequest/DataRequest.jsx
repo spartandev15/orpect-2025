@@ -65,7 +65,7 @@ const DataRequest = () => {
             <table id="main-table" className="main-table table">
               <thead>
                 <tr>
-                  <th style={{ background: "#e1e9ed" }}>ID</th>
+                  <th style={{ background: "#e1e9ed" }}>S. No.</th>
                   <th style={{ background: "#e1e9ed" }}>Name</th>
                   <th style={{ background: "#e1e9ed" }}>Email</th>
                   <th style={{ background: "#e1e9ed" }}>Request Type</th>
@@ -91,7 +91,7 @@ const DataRequest = () => {
                 ) : (
                   filteredData?.map((item, index) => (
                     <tr key={index} className="table_data_background">
-                      <td>{item?.id}</td>
+                      <td>{index + 1}</td>
                       <td>{item?.name}</td>
                       <td>{item?.registered_email || "N/A"}</td> 
                       <td>{item?.type_of_request}</td>

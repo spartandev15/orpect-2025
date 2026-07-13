@@ -70,7 +70,7 @@ const User = () => {
             <table id="main-table" className="main-table table">
               <thead>
                 <tr>
-                  <th className="sticky-column-1 column-1" style={{ background: "#e1e9ed" }}>Employee ID</th>
+                  <th className="sticky-column-1 column-1" style={{ background: "#e1e9ed" }}>S. No.</th>
                   <th className="sticky-column-2" style={{ background: "#e1e9ed" }}>Name</th>
                   <th className="sticky-column-3" style={{ background: "#e1e9ed" }}>Email</th>
                   <th style={{ background: "#e1e9ed" }}>Phone Number</th>
@@ -98,7 +98,7 @@ const User = () => {
                 ) : (
                   admins.map((admin, index) => (
                     <tr key={index} className="table_data_background">
-                      <td className="sticky-column-1 column-1">{admin.sid}</td>
+                      <td className="sticky-column-1 column-1">{index + 1}</td>
                       <td className="sticky-column-2">{admin.fullname}</td>
                       <td className="sticky-column-3">{admin.email}</td>
                       <td>{admin.phone}</td>
