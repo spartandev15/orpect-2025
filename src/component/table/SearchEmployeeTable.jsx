@@ -347,7 +347,7 @@ const SearchEmployeeTable = () => {
                     <tbody>
                       {employees.map((i, index) => (
                         <tr key={index} className="table_data_background">
-                          <td className="sticky-column-1 column-1">{i.sid ?? "-"}</td>
+                          <td className="sticky-column-1 column-1">{i?.emp_id ?? "-"}</td>
                           <td className="sticky-column-2" style={{ maxWidth: "150px", wordWrap: "break-word" }}>{i.emp_name}</td>
                           <td className="sticky-column-3">{i.email}</td>
                           <td>{i.phone}</td>
