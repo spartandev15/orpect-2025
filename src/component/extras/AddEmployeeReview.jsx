@@ -117,7 +117,7 @@ const AddEmployeeReview = ({ id, dateOfJoining, onClose }) => {
                       htmlFor="typeText"
                       style={{ background: "#fff" }}
                     >
-                      CTCs
+                      CTC
                     </label>
                     {errors.lastCTC && touched.lastCTC ? (
                       <p className="text-danger msg">{errors.lastCTC}</p>
