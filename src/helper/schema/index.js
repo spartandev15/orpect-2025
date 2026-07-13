@@ -216,11 +216,11 @@ export const RateReviewSchema = yup.object().shape({
   teamworkCommunicationRating: yup
     .number()
     .required("Communication Rating is required"),
-    // lastCTC: yup
-    // .string()
-    // .nullable()
-    // .matches(/^\d+$/, "Last CTC must contain only numbers")
-    // .typeError("Last CTC must be a string"),
+      // lastCTC: yup
+      // .string()
+      // .nullable()
+      // .matches(/^\d+$/, "Last CTC must contain only numbers")
+      // .typeError("Last CTC must be a string"),
 });
 
 export const AddExEmployeeReviewSchema = yup.object().shape({
