@@ -125,7 +125,7 @@ const handleFormatChange = (e) => {
             <table id="main-table" className="main-table table">
               <thead>
                 <tr>
-                  <th className="sticky-column-1 column-1" style={{ background: "#e1e9ed" }}>Company ID</th>
+                  <th className="sticky-column-1 column-1" style={{ background: "#e1e9ed" }}>S.No.</th>
                   <th className="sticky-column-2" style={{ background: "#e1e9ed" }}>Company Name</th>
                   <th style={{ background: "#e1e9ed" }}>Owner</th>
                   <th style={{ background: "#e1e9ed" }}>Email</th>
@@ -156,7 +156,7 @@ const handleFormatChange = (e) => {
                 ) : (
                   companies?.map((company, index) => (
                     <tr key={index} className="table_data_background">
-                      <td >{company.sid}</td>
+                      <td >{index + 1 }</td>
                       <td >{company.company_name}</td>
                       <td>{company.full_name}</td>
                       <td>{company.email}</td>
